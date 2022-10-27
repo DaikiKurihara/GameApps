@@ -1,11 +1,11 @@
 # GameApps
 ## *5 finger stop watch* (***temp***)
-# Version
+### Version
 | Package | Versioin |
 | :---: |  :--: |
 | Unity | LTS 2021.3.12f1 |
 | C#? | |
 | Swift? | |
-### ToDo
+#### ToDo
 - [ ] 環境開発
 - [ ] ラフデザイン
