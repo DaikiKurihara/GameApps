@@ -37,6 +37,7 @@ public class TouchArea : MonoBehaviour {
     /// 今タップしている指のリストを作る
     /// </summary>
     private void _createCurrentFingerIdList(int touchCount) {
+        // TODO: touchCountが1ずつ増加するとは限らないのでループで追加する必要がある
         // touchCountは1始まりだが、GetTouchのインデックスは0始まりなので-1する
         this.currentFingerList.Add(Input.GetTouch(touchCount - 1).fingerId);
         Debug.Log("現在のFignerList" + string.Join(",", currentFingerList));
