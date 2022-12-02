@@ -13,6 +13,12 @@ public class TouchArea : MonoBehaviour {
     private Touch[] _currentFingerList;
     /** GameManager */
     private GameManager _gameManager;
+    /** タッチクラス0〜4 */
+    Touch touch0;
+    Touch touch1;
+    Touch touch2;
+    Touch touch3;
+    Touch touch4;
 
 
     void Start() {
