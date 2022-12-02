@@ -7,49 +7,49 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour {
 
     public static float currentCountDownTime;
-    private float currentCountUpTime = 0.0F;
+    private float _currentCountUpTime = 0.0F;
     public TextMeshProUGUI countDownText;
     [SerializeField] float countTime = 5.0F;
-    private CanvasManager _canvasManager;
-    private bool isStarted;
+    private GameManager _gameManager;
+    private bool _isStarted;
     /** 指を離す時間（最大）の指定 */
     [SerializeField] int maxLeavingTime = 20;
-    bool leaveFingerCounted = false;
-    private float leavingTime = 0.0F;
+    private bool _leaveFingerCounted = false;
+    private float _leavingTime = 0.0F;
 
 
     void Start() {
-        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
+        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         // カウントダウン開始秒数をセット
         currentCountDownTime = countTime;
     }
 
     void Update() {
         // カウントダウン
-        if (!this.isStarted) {
+        if (!this._isStarted) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
             // 残り5.00秒で表示「05」残り4.00秒で表示「04」としたいため。+1秒しないと4.99秒で表示「04」となり感覚とズレる
             this.countDownText.text = string.Format("{0:00.00}", currentCountDownTime + 1.0);
             if (currentCountDownTime <= 0.000F) {
                 currentCountDownTime = 0.00F;
-                this.isStarted = true;
+                this._isStarted = true;
                 this.countDownText.text = "";
-                this.leavingTime = createLeaveFingerTime();
-                Debug.Log("離す時間は：" + this.leavingTime);
+                this._leavingTime = createLeaveFingerTime();
+                Debug.Log("離す時間は：" + this._leavingTime);
                 this.gameStart();
             }
         }
 
 
         // 離す時間までのカウントアップ
-        if (isStarted && !leaveFingerCounted) {
-            currentCountUpTime += Time.deltaTime;
-            this.countDownText.text = string.Format("{0:00.00}", currentCountUpTime - 1.0);
+        if (_isStarted && !_leaveFingerCounted) {
+            _currentCountUpTime += Time.deltaTime;
+            this.countDownText.text = string.Format("{0:00.00}", _currentCountUpTime - 1.0);
 
-            if (this.currentCountUpTime >= this.leavingTime) {
+            if (this._currentCountUpTime >= this._leavingTime) {
                 Debug.Log("離せ！");
-                this.leaveFingerCounted = true;
+                this._leaveFingerCounted = true;
             }
         }
 
@@ -59,7 +59,7 @@ public class Timer : MonoBehaviour {
     /// ゲーム開始の通知
     /// </summary>
     private void gameStart() {
-        this._canvasManager.gameStart();
+        this._gameManager.gameStart();
     }
 
     /// <summary>

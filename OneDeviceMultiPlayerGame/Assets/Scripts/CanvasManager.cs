@@ -16,11 +16,4 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     void Start() {
 
     }
-
-    /// <summary>
-    /// スタートタイマーによるゲーム開始時の挙動
-    /// </summary>
-    public void gameStart() {
-        Debug.Log("ゲーム開始");
-    }
 }

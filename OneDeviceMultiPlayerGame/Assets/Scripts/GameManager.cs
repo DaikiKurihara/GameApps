@@ -2,17 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class GameManager : SingletonMonoBehaviour<GameManager> {
+
+    [System.NonSerialized] public bool isGameStart = false;
+
+    public void Awake() {
+        if (this != Instance) {
+            Destroy(gameObject);
+            return;
+        }
+
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    void Start() {
+
+    }
+
+    void Update() {
+
+    }
+
+    /// <summary>
+    /// ????????????????????
+    /// </summary>
+    public void gameStart() {
+        Debug.Log("?????");
+        this.isGameStart = true;
     }
 }

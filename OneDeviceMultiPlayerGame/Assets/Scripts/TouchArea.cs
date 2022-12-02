@@ -1,46 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class TouchArea : MonoBehaviour {
-    // Start is called before the first frame update
-    private int touchCount = 0;
-    private List<int> currentFingerList = new List<int>();
+    /** 現在タッチしている指の本数 */
+    private int _touchCount = 0;
+    /** 現在タッチしている指のIDのリスト */
+    private List<int> _currentFingerIdList = new List<int>();
+    /** 現在タッチしている指のIDのリスト */
+    private Touch[] _currentFingerList;
+    /** GameManager */
+    private GameManager _gameManager;
+
 
     void Start() {
-
+        this._gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update() {
-        // タッチしている指が増減した場合
-        if (touchCount != Input.touchCount) {
 
-            // 指が増えた場合
-            if (touchCount < Input.touchCount) {
-                _createCurrentFingerIdList(Input.touchCount);
-            }
+        if (Input.touchCount > 0) {
 
-            // 指が離れた場合
-            if (touchCount > Input.touchCount) {
-                int leftFfngerID = _getLeftFingerId(Input.touchCount);
-                _removeAtFromList(leftFfngerID);
+            //for (int i = 0; i < Input.touchCount; i++) {
+            //    Touch touch = Input.GetTouch(i);
+            //    if (touch.phase == TouchPhase.Ended) {
+            //        Debug.Log("fingerId:" + touch.fingerId + "が離れました");
+            //    }
+            //}
+            Touch[] touches = Input.touches;
+            Parallel.ForEach(touches, touch => { touchEnded(touch); });
 
-            }
-            touchCount = Input.touchCount;
+        }
+        //if (!this._gameManager.isGameStart) {
+        //    //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
+        //    ///やりたいこと
+        //    ///指を認識して指の周りに周りに丸い絵を起きたい（プレイヤーの視認性向上）
+        //    ///指が離れたら丸い絵を消したい
+
+        //    // 指が増減した場合
+        //    if (_touchCount != Input.touchCount) {
+        //        _currentFingerList = Input.touches;
+        //    }
+        //    //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
+        //} else {
+        //    //----------------ゲーム開始後のプレイ時間-----------------------------------
+        //    ///やりたいこと
+        //    ///指が離れたら各指の離れた時間を保持
+
+        //    // 指が離れた場合
+        //    if (_touchCount > Input.touchCount) {
+        //        Debug.Log("ゲーム開始後に指が離れた");
+        //        getExceptFigers(false);
+        //    }
+        //    if (_touchCount < Input.touchCount) {
+        //        Debug.Log("ゲーム開始後に指が増えた");
+        //        //this.getExceptFigers(false);
+        //        /// ↓これはテスト用
+        //        _currentFingerList = Input.touches;
+
+        //    }
+
+        //    //----------------ゲーム開始後のプレイ時間-----------------------------------
+        //}
+
+
+        // 2個以上指が増えた場合
+        if (_touchCount - Input.touchCount < -1) {
+
         }
 
-    }
-
-    /// <summary>
-    /// 今タップしている指のリストを作る
-    /// </summary>
-    private void _createCurrentFingerIdList(int touchCount) {
-        // TODO: touchCountが1ずつ増加するとは限らないのでループで追加する必要がある
-        // touchCountは1始まりだが、GetTouchのインデックスは0始まりなので-1する
-        this.currentFingerList.Add(Input.GetTouch(touchCount - 1).fingerId);
-        Debug.Log("現在のFignerList" + string.Join(",", currentFingerList));
+        _touchCount = Input.touchCount;
     }
 
     /// <summary>
@@ -53,17 +85,51 @@ public class TouchArea : MonoBehaviour {
         for (int i = 0; i < touchCount; i++) {
             tempFingerList.Add(Input.GetTouch(i).fingerId);
         }
-        int leftFingerId = this.currentFingerList.Except(tempFingerList).First<int>();
+        int leftFingerId = this._currentFingerIdList.Except(tempFingerList).First<int>();
         Debug.Log("差分" + leftFingerId);
         return leftFingerId;
     }
 
     /// <summary>
-    /// 指定した要素をcurrentFingerListから削除する
+    /// 指定した要素をcurrentFingerIdListから削除する
     /// </summary>
     /// <param name="fingerId"></param>
     private void _removeAtFromList(int fingerId) {
-        this.currentFingerList.Remove(fingerId);
-        Debug.Log("差分削除後のリスト" + string.Join(",", this.currentFingerList));
+        this._currentFingerIdList.Remove(fingerId);
+        Debug.Log("差分削除後のリスト" + string.Join(",", this._currentFingerIdList));
+    }
+
+    private void getExceptFigers(bool isIncrease) {
+
+        Touch touch0 = _currentFingerList[0];
+
+        switch (touch0.phase) {
+            // Record initial touch position.
+            case TouchPhase.Began:
+                Debug.Log("タッチした");
+                break;
+
+            // Determine direction by comparing the current touch position with the initial one.
+            case TouchPhase.Moved:
+                Debug.Log("動いた");
+                break;
+
+            // Report that a direction has been chosen when the finger is lifted.
+            case TouchPhase.Ended:
+                Debug.Log("離れた");
+                break;
+        }
+
+
+    }
+
+    private int[] createFingerIdList(Touch[] touches) {
+        return touches.Select(touch => touch.fingerId).ToArray();
+    }
+
+    private void touchEnded(Touch touch) {
+        if (touch.phase == TouchPhase.Ended) {
+            Debug.Log("fingerId:" + touch.fingerId + "が離れました");
+        }
     }
 }
