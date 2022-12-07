@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Timer : MonoBehaviour {
 
@@ -26,33 +23,34 @@ public class Timer : MonoBehaviour {
 
     void Update() {
         // カウントダウン
-        if (!this._isStarted) {
+        if (!this._gameManager.isGameStart) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
             // 残り5.00秒で表示「05」残り4.00秒で表示「04」としたいため。+1秒しないと4.99秒で表示「04」となり感覚とズレる
             this.countDownText.text = string.Format("{0:00.00}", currentCountDownTime + 1.0);
             if (currentCountDownTime <= 0.000F) {
                 currentCountDownTime = 0.00F;
-                this._isStarted = true;
+                this.gameStart();
                 this.countDownText.text = "";
                 this._leavingTime = createLeaveFingerTime();
                 Debug.Log("離す時間は：" + this._leavingTime);
-                this.gameStart();
             }
         }
 
 
         // 離す時間までのカウントアップ
-        if (_isStarted && !_leaveFingerCounted) {
+        if (this._gameManager.isGameStart && !_leaveFingerCounted) {
             _currentCountUpTime += Time.deltaTime;
             this.countDownText.text = string.Format("{0:00.00}", _currentCountUpTime - 1.0);
 
             if (this._currentCountUpTime >= this._leavingTime) {
                 Debug.Log("離せ！");
+                // ゲームマネージャーに離す時間確定を通知
+                this._gameManager.decideStandardTime();
                 this._leaveFingerCounted = true;
+                this.countDownText.text = " Leave!!!!!";
             }
         }
-
     }
 
     /// <summary>

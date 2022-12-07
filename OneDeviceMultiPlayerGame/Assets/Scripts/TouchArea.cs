@@ -13,6 +13,8 @@ public class TouchArea : MonoBehaviour {
     private Touch[] _currentFingerList;
     /** GameManager */
     private GameManager _gameManager;
+    /** 指を離した時間を格納する辞書 */
+    private Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
 
 
     void Start() {
@@ -22,57 +24,45 @@ public class TouchArea : MonoBehaviour {
     // Update is called once per frame
     void Update() {
 
-        if (Input.touchCount > 0) {
+        if (!this._gameManager.isGameStart) {
+            //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
+            ///やりたいこと
+            ///指を認識して指の周りに周りに丸い絵を起きたい（プレイヤーの視認性向上）
+            ///指が離れたら丸い絵を消したい
 
-            //for (int i = 0; i < Input.touchCount; i++) {
-            //    Touch touch = Input.GetTouch(i);
-            //    if (touch.phase == TouchPhase.Ended) {
-            //        Debug.Log("fingerId:" + touch.fingerId + "が離れました");
-            //    }
-            //}
-            Touch[] touches = Input.touches;
-            Parallel.ForEach(touches, touch => { touchEnded(touch); });
+            // 指が増減した場合
+            if (this._touchCount != Input.touchCount) {
+                this._currentFingerList = Input.touches;
+            }
+            //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
+        } else {
+            //----------------ゲーム開始後のプレイ時間-----------------------------------
+            ///やりたいこと
+            ///指が離れたら各指の離れた時間を保持
 
+            Parallel.ForEach(Input.touches, touch => { touchEnded(touch); });
+            if (_touchCount > Input.touchCount) {
+                Debug.Log("ゲーム開始後に指が離れた");
+            }
+
+            if (_touchCount < Input.touchCount) {
+                Debug.Log("ゲーム開始後に指が増えた");
+            }
+
+            if (Input.touchCount == 0 && !this._gameManager.isGameEnd) {
+                this._gameManager.gameEnd();
+            }
+
+            //----------------ゲーム開始後のプレイ時間-----------------------------------
         }
-        //if (!this._gameManager.isGameStart) {
-        //    //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
-        //    ///やりたいこと
-        //    ///指を認識して指の周りに周りに丸い絵を起きたい（プレイヤーの視認性向上）
-        //    ///指が離れたら丸い絵を消したい
-
-        //    // 指が増減した場合
-        //    if (_touchCount != Input.touchCount) {
-        //        _currentFingerList = Input.touches;
-        //    }
-        //    //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
-        //} else {
-        //    //----------------ゲーム開始後のプレイ時間-----------------------------------
-        //    ///やりたいこと
-        //    ///指が離れたら各指の離れた時間を保持
-
-        //    // 指が離れた場合
-        //    if (_touchCount > Input.touchCount) {
-        //        Debug.Log("ゲーム開始後に指が離れた");
-        //        getExceptFigers(false);
-        //    }
-        //    if (_touchCount < Input.touchCount) {
-        //        Debug.Log("ゲーム開始後に指が増えた");
-        //        //this.getExceptFigers(false);
-        //        /// ↓これはテスト用
-        //        _currentFingerList = Input.touches;
-
-        //    }
-
-        //    //----------------ゲーム開始後のプレイ時間-----------------------------------
-        //}
 
 
         // 2個以上指が増えた場合
-        if (_touchCount - Input.touchCount < -1) {
+        if (this._touchCount - Input.touchCount < -1) {
 
         }
 
-        _touchCount = Input.touchCount;
+        this._touchCount = Input.touchCount;
     }
 
     /// <summary>
@@ -90,6 +80,7 @@ public class TouchArea : MonoBehaviour {
         return leftFingerId;
     }
 
+
     /// <summary>
     /// 指定した要素をcurrentFingerIdListから削除する
     /// </summary>
@@ -99,37 +90,23 @@ public class TouchArea : MonoBehaviour {
         Debug.Log("差分削除後のリスト" + string.Join(",", this._currentFingerIdList));
     }
 
-    private void getExceptFigers(bool isIncrease) {
-
-        Touch touch0 = _currentFingerList[0];
-
-        switch (touch0.phase) {
-            // Record initial touch position.
-            case TouchPhase.Began:
-                Debug.Log("タッチした");
-                break;
-
-            // Determine direction by comparing the current touch position with the initial one.
-            case TouchPhase.Moved:
-                Debug.Log("動いた");
-                break;
-
-            // Report that a direction has been chosen when the finger is lifted.
-            case TouchPhase.Ended:
-                Debug.Log("離れた");
-                break;
-        }
-
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="fingerId"></param>
+    private void addLeftTimeMap(int fingerId) {
+        this.leftTimeMap.Add(fingerId, this._gameManager.getPassedTime());
+        Debug.Log(string.Join(",", this.leftTimeMap.ToArray()));
     }
 
-    private int[] createFingerIdList(Touch[] touches) {
-        return touches.Select(touch => touch.fingerId).ToArray();
-    }
-
+    /// <summary>
+    /// 指を離した瞬間を検知する
+    /// </summary>
+    /// <param name="touch"></param>
     private void touchEnded(Touch touch) {
         if (touch.phase == TouchPhase.Ended) {
             Debug.Log("fingerId:" + touch.fingerId + "が離れました");
+            this.addLeftTimeMap(touch.fingerId);
         }
     }
 }
