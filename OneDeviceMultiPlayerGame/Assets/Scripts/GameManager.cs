@@ -6,8 +6,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     [System.NonSerialized] public bool isGameStart = false;
     [System.NonSerialized] public bool isGameEnd = false;
+    /** ゲーム開始からの経過時間 */
     [System.NonSerialized] public float passedTime = 0.0F;
+    /** 指を離す指定時間 */
     [System.NonSerialized] public float standardTime = 0.0F;
+    /** 指を離した時間を格納する辞書 */
+    [System.NonSerialized] public Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
 
     public void Awake() {
         if (this != Instance) {
@@ -23,7 +27,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     void Update() {
-        this.passedTime += Time.deltaTime;
+        if (this.isGameStart) {
+            this.passedTime += Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -47,7 +53,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.isGameEnd = true;
     }
 
-    public float getPassedTime() {
-        return this.passedTime;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="fingerId"></param>
+    private void addLeftTimeMap(int fingerId) {
+        this.leftTimeMap.Add(fingerId, this.passedTime);
+        Debug.Log(string.Join(",", this.leftTimeMap.ToString()));
+        Debug.Log(string.Join(",", this.leftTimeMap.ToArray()));
     }
 }

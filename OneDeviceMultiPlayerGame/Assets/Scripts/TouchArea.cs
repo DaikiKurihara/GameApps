@@ -80,22 +80,12 @@ public class TouchArea : MonoBehaviour {
         return leftFingerId;
     }
 
-
-    /// <summary>
-    /// 指定した要素をcurrentFingerIdListから削除する
-    /// </summary>
-    /// <param name="fingerId"></param>
-    private void _removeAtFromList(int fingerId) {
-        this._currentFingerIdList.Remove(fingerId);
-        Debug.Log("差分削除後のリスト" + string.Join(",", this._currentFingerIdList));
-    }
-
     /// <summary>
     /// 
     /// </summary>
     /// <param name="fingerId"></param>
     private void addLeftTimeMap(int fingerId) {
-        this.leftTimeMap.Add(fingerId, this._gameManager.getPassedTime());
+        Debug.Log(string.Join(",", this.leftTimeMap.ToString()));
         Debug.Log(string.Join(",", this.leftTimeMap.ToArray()));
     }
 
