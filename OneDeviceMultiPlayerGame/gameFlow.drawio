@@ -1,0 +1,40 @@
+<mxfile host="app.diagrams.net" modified="2022-12-13T14:17:05.330Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="A_puGHlOPED5emv7IC4u" version="20.6.2" type="github">
+  <diagram id="pc3F08xyTTGjwIMSuzRH" name="ページ1">
+    <mxGraphModel dx="1422" dy="882" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="RlombEwHmYLS-OOxF9OD-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;sketch=1;" parent="1" source="RlombEwHmYLS-OOxF9OD-1" target="RlombEwHmYLS-OOxF9OD-2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;sketch=1;" parent="1" source="RlombEwHmYLS-OOxF9OD-1" target="RlombEwHmYLS-OOxF9OD-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-1" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;" parent="1" vertex="1">
+          <mxGeometry x="150" y="60" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;sketch=1;" parent="1" source="RlombEwHmYLS-OOxF9OD-2" target="RlombEwHmYLS-OOxF9OD-5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;sketch=1;" parent="1" source="RlombEwHmYLS-OOxF9OD-2" target="RlombEwHmYLS-OOxF9OD-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-2" value="" style="rhombus;whiteSpace=wrap;html=1;sketch=1;" parent="1" vertex="1">
+          <mxGeometry x="170" y="170" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-5" value="" style="rounded=0;whiteSpace=wrap;html=1;sketch=1;glass=0;" parent="1" vertex="1">
+          <mxGeometry x="410" y="330" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;sketch=1;" parent="1" source="RlombEwHmYLS-OOxF9OD-11" target="RlombEwHmYLS-OOxF9OD-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-11" value="start" style="rounded=1;whiteSpace=wrap;html=1;sketch=1;" parent="1" vertex="1">
+          <mxGeometry x="180" y="10" width="60" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="RlombEwHmYLS-OOxF9OD-12" value="end" style="rounded=1;whiteSpace=wrap;html=1;arcSize=25;sketch=1;" parent="1" vertex="1">
+          <mxGeometry x="180" y="565" width="60" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
