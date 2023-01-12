@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour {
 
     void Update() {
         // カウントダウン
-        if (!this._gameManager.isGameStart) {
+        if (!this._gameManager.IsGameStart) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
             // 残り5.00秒で表示「05」残り4.00秒で表示「04」としたいため。+1秒しないと4.99秒で表示「04」となり感覚とズレる
@@ -39,14 +39,13 @@ public class Timer : MonoBehaviour {
 
 
         // 離す時間までのカウントアップ
-        if (this._gameManager.isGameStart && !_leaveFingerCounted) {
+        if (this._gameManager.IsGameStart && !_leaveFingerCounted) {
             _currentCountUpTime += Time.deltaTime;
             this.countDownText.text = string.Format("{0:00.00}", _currentCountUpTime - 1.0);
 
             if (this._currentCountUpTime >= this._leavingTime) {
                 Debug.Log("離せ！");
-                // ゲームマネージャーに離す時間確定を通知
-                this._gameManager.decideStandardTime();
+                this.stop();
                 this._leaveFingerCounted = true;
                 this.countDownText.text = " Leave!!!!!";
             }
@@ -57,7 +56,14 @@ public class Timer : MonoBehaviour {
     /// ゲーム開始の通知
     /// </summary>
     private void gameStart() {
-        this._gameManager.gameStart();
+        this._gameManager.IsGameStart = true;
+    }
+
+    /// <summary>
+    /// 指を離す時間の通知
+    /// </summary>
+    private void stop() {
+        this._gameManager.IsStopped = true;
     }
 
     /// <summary>
@@ -65,8 +71,10 @@ public class Timer : MonoBehaviour {
     /// </summary>
     private float createLeaveFingerTime() {
 
-        float leavingTime = Random.Range(3 * 2, maxLeavingTime * 2);
         // 0.5秒単位で生成する
-        return leavingTime / 2;
+        float leavingTime = (Random.Range(3 * 2, maxLeavingTime * 2)) / 2;
+        // ゲームマネージャーに離す時間確定を通知
+        this._gameManager.decideStandardTime(leavingTime);
+        return leavingTime;
     }
 }

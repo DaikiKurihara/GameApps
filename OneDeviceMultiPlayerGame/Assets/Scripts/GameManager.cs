@@ -1,17 +1,45 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
 
 public class GameManager : SingletonMonoBehaviour<GameManager> {
 
-    [System.NonSerialized] public bool isGameStart = false;
-    [System.NonSerialized] public bool isGameEnd = false;
+    // 準備時間が終わって全プレイヤーの指がついている状態
+    private bool isGameStart = false;
+    public bool IsGameStart {
+        set { this.isGameStart = true; } // falseは代入不可
+        get { return this.isGameStart; }
+    }
+    // ゲーム終了（ゲーム開始→ストップタイム→指が全部離れた状態）フラグ
+    private bool isGameEnd = false;
+    public bool IsGameEnd {
+        set {
+            this.isGameEnd = true;
+            decideEndTime();
+        } // falseは代入不可
+        get { return this.isGameEnd; }
+    }
+    // 指を離す時間になったか
+    private bool isStopped = false;
+    public bool IsStopped {
+        set { this.isStopped = true; } // falseは代入不可
+        get { return this.isStopped; }
+    }
+
+    // 結果表示
+    private bool openResult = false;
+
     /** ゲーム開始からの経過時間 */
-    [System.NonSerialized] public float passedTime = 0.0F;
+    private float passedTime { get; set; } = 0.0F;
     /** 指を離す指定時間 */
-    [System.NonSerialized] public float standardTime = 0.0F;
+    private float standardTime { get; set; } = 0.0F;
+    /** 指を離す指定時間 */
+    private float endTime { get; set; } = 0.0F;
     /** 指を離した時間を格納する辞書 */
-    [System.NonSerialized] public Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
+    private Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
+
+    private TouchArea touchArea;
 
     public void Awake() {
         if (this != Instance) {
@@ -23,43 +51,42 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     void Start() {
-
+        this.touchArea = GameObject.FindWithTag("TouchArea").GetComponent<TouchArea>();
     }
 
     void Update() {
         if (this.isGameStart) {
             this.passedTime += Time.deltaTime;
         }
+
+        // 指が離れてから3秒後に結果を出す
+        if (this.openResult && this.passedTime - this.endTime > 3.0) {
+            Debug.Log("結果発表" + string.Join(",", this.leftTimeMap.ToArray()));
+            this.openResult = false;
+        }
     }
 
     /// <summary>
-    /// 離すべき時間を格納して基準時間とする
-    /// </summary>
-    public void decideStandardTime() {
-        this.standardTime = this.passedTime;
-    }
-
-    /// <summary>
-    /// ゲーム開始を受信
-    /// </summary>
-    public void gameStart() {
-        this.isGameStart = true;
-    }
-
-    /// <summary>
-    /// ゲーム終了を受信
-    /// </summary>
-    public void gameEnd() {
-        this.isGameEnd = true;
-    }
-
-    /// <summary>
-    /// 
+    /// fingerIdを受け取り、fingerIdをキーにした経過時間のセットを作る
     /// </summary>
     /// <param name="fingerId"></param>
-    private void addLeftTimeMap(int fingerId) {
-        this.leftTimeMap.Add(fingerId, this.passedTime);
-        Debug.Log(string.Join(",", this.leftTimeMap.ToString()));
-        Debug.Log(string.Join(",", this.leftTimeMap.ToArray()));
+    public void addLeftTimeMap(int fingerId) {
+        Debug.Log(fingerId + "のマップを作ります。" + "差分は" + (this.passedTime - this.standardTime));
+        this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
+    }
+
+    /// <summary>
+    /// 指を離す時間を決定する
+    /// </summary>
+    public void decideStandardTime(float standardTime) {
+        this.standardTime = standardTime;
+    }
+
+    /// <summary>
+    /// 全員の指が離れた時間を決定する
+    /// </summary>
+    private void decideEndTime() {
+        this.endTime = this.passedTime;
+        this.openResult = true;
     }
 }
