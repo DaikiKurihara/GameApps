@@ -8,7 +8,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     // 準備時間が終わって全プレイヤーの指がついている状態
     private bool isGameStart = false;
     public bool IsGameStart {
-        set { this.isGameStart = true; } // falseは代入不可
+        // falseは代入不可
+        set {
+            this.isGameStart = true;
+            this.gameStart();
+        }
         get { return this.isGameStart; }
     }
     // ゲーム終了（ゲーム開始→ストップタイム→指が全部離れた状態）フラグ
@@ -39,8 +43,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /** 指を離した時間を格納する辞書 */
     private Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
 
-    private TouchArea touchArea;
-
     public void Awake() {
         if (this != Instance) {
             Destroy(gameObject);
@@ -51,7 +53,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     void Start() {
-        this.touchArea = GameObject.FindWithTag("TouchArea").GetComponent<TouchArea>();
     }
 
     void Update() {
@@ -67,6 +68,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     /// <summary>
+    /// ゲームスタート（（準備時間が終わって全プレイヤーの指がついている状態）に走る処理
+    /// </summary>
+    private void gameStart() {
+    }
+
+    /// <summary>
     /// fingerIdを受け取り、fingerIdをキーにした経過時間のセットを作る
     /// </summary>
     /// <param name="fingerId"></param>
@@ -76,7 +83,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     /// <summary>
-    /// 指を離す時間を決定する
+    /// 指を離すべき基準時間を決定する
     /// </summary>
     public void decideStandardTime(float standardTime) {
         this.standardTime = standardTime;

@@ -6,9 +6,12 @@ public class TouchArea : MonoBehaviour {
     private int _touchCount = 0;
     /** GameManager */
     private GameManager _gameManager;
+    /** GameManager */
+    private CanvasManager _canvasManager;
 
     void Start() {
         this._gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
     }
 
     // Update is called once per frame
@@ -19,13 +22,12 @@ public class TouchArea : MonoBehaviour {
             ///やりたいこと
             ///指を認識して指の周りに周りに丸い絵を起きたい（プレイヤーの視認性向上）
             ///指が離れたら丸い絵を消したい
-
+            this.touchBegan();
 
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
         } else {
             //----------------ゲーム開始後のプレイ時間-----------------------------------
             ///やりたいこと
-            ///指が離れたら各指の離れた時間を保持
 
             this.touchEnded();
 
@@ -39,11 +41,23 @@ public class TouchArea : MonoBehaviour {
         this._touchCount = Input.touchCount;
     }
 
+
+    private void touchBegan() {
+        foreach (Touch touch in Input.touches) {
+            if (touch.phase == TouchPhase.Began) {
+                Debug.Log("fingerId:" + touch.fingerId + "がタッチ開始しました。");
+                this._canvasManager.generateTouchAreaCircle(touch.position, touch.fingerId);
+            }
+        }
+    }
+
     /// <summary>
     /// 指を離した瞬間を検知する
     /// </summary>
     /// <param name="touch"></param>
     private void touchEnded() {
+
+
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
                 Debug.Log("fingerId:" + touch.fingerId + "が離れました");

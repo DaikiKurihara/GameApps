@@ -1,12 +1,9 @@
 fileFormatVersion: 2
-guid: f61b8fd0b25be4431b363676ba02cb5a
+guid: 6a67636fcb92f413a92422e1336e69c8
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - canvas: {instanceID: 0}
-  - touchAreaCircle: {instanceID: 0}
-  - hoge: {instanceID: 0}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
