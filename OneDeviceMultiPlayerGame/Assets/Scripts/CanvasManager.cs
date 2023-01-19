@@ -31,4 +31,10 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
     }
+
+    public void destroyTouchAreaCircle(int fingerId){
+        // tag の形　Find ID　使ってね
+        // touchAreaCirclePrefabInsatance.tag = "FingerID" + fingerId.ToString();
+        Debug.Log("finger destroy");
+    }
 }
