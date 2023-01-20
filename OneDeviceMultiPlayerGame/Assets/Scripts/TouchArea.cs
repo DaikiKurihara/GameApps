@@ -29,7 +29,6 @@ public class TouchArea : MonoBehaviour {
             //----------------ゲーム開始後のプレイ時間-----------------------------------
             ///やりたいこと
 
-            this.touchEnded();
 
             if (Input.touchCount == 0 && !this._gameManager.IsGameEnd) {
                 this._gameManager.IsGameEnd = true;
@@ -37,6 +36,7 @@ public class TouchArea : MonoBehaviour {
 
             //----------------ゲーム開始後のプレイ時間-----------------------------------
         }
+        this.touchEnded();
 
         this._touchCount = Input.touchCount;
     }
@@ -56,12 +56,18 @@ public class TouchArea : MonoBehaviour {
     /// </summary>
     /// <param name="touch"></param>
     private void touchEnded() {
-
-
-        foreach (Touch touch in Input.touches) {
-            if (touch.phase == TouchPhase.Ended) {
-                Debug.Log("fingerId:" + touch.fingerId + "が離れました");
-                this._gameManager.addLeftTimeMap(touch.fingerId);
+        if (this._gameManager.IsGameStart) {
+            foreach (Touch touch in Input.touches) {
+                if (touch.phase == TouchPhase.Ended) {
+                    Debug.Log("fingerId:" + touch.fingerId + "が離れました");
+                    this._gameManager.addLeftTimeMap(touch.fingerId);
+                }
+            }
+        } else {
+            foreach (Touch touch in Input.touches) {
+                if (touch.phase == TouchPhase.Ended) {
+                    this._canvasManager.destroyTouchAreaCircle(touch.fingerId);
+                }
             }
         }
     }

@@ -6,6 +6,11 @@ TagManager:
   tags:
   - CanvasManager
   - TouchArea
+  - fingerID0
+  - fingerID1
+  - fingerID2
+  - fingerID3
+  - fingerID4
   layers:
   - Default
   - TransparentFX

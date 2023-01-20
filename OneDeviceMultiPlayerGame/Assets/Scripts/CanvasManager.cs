@@ -22,7 +22,6 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     public void generateTouchAreaCircle(Vector2 touchPosition, int fingerId) {
 
-        //var obj = Instantiate(touchAreaCircle);
         // touchPositionは画面ピクセルの位置なので、ワールド座標に変換
         Vector3 worldTouchPosition = Camera.main.ScreenToWorldPoint(touchPosition);
         worldTouchPosition.z = 0;
@@ -30,5 +29,11 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
+    }
+
+    public void destroyTouchAreaCircle(int fingerId) {
+        string tag = CommonConstant.fingerId + fingerId.ToString();
+        Debug.Log("破棄するタグ名：" + tag);
+        Destroy(GameObject.FindWithTag(tag).gameObject);
     }
 }

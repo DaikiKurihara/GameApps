@@ -9,6 +9,9 @@ public class TouchAreaCircleMove : MonoBehaviour {
     public static GameObject Init(int fingerId) {
         GameObject touchAreaCirclePrefab = Resources.Load<GameObject>("TouchAreaCircle");
         GameObject touchAreaCirclePrefabInsatance = Instantiate(touchAreaCirclePrefab);
+        // タグの付与
+        // タグは当プロダクトではあらかじめインスペクタから想定しうるタグを追加している。
+        touchAreaCirclePrefabInsatance.tag = CommonConstant.fingerId + fingerId.ToString();
         TouchAreaCircleMove touchAreaCircleMove = touchAreaCirclePrefabInsatance.GetComponent<TouchAreaCircleMove>();
         touchAreaCircleMove.fingerId = fingerId;
         return touchAreaCirclePrefabInsatance;
