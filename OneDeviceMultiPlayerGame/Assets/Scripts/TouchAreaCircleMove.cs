@@ -9,7 +9,8 @@ public class TouchAreaCircleMove : MonoBehaviour {
     public static GameObject Init(int fingerId) {
         GameObject touchAreaCirclePrefab = Resources.Load<GameObject>("TouchAreaCircle");
         GameObject touchAreaCirclePrefabInsatance = Instantiate(touchAreaCirclePrefab);
-        touchAreaCirclePrefabInsatance.tag = "FingerID" + fingerId.ToString();
+        // touchAreaCirclePrefabInsatance.tag = "FingerID" + fingerId.ToString();
+        touchAreaCirclePrefabInsatance.tag = "Finger";
         TouchAreaCircleMove touchAreaCircleMove = touchAreaCirclePrefabInsatance.GetComponent<TouchAreaCircleMove>();
         touchAreaCircleMove.fingerId = fingerId;
         return touchAreaCirclePrefabInsatance;

@@ -26,7 +26,7 @@ public class Timer : MonoBehaviour {
 
     void Update() {
         // カウントダウン
-        if (!this._gameManager.IsGameStart) {
+        if (this._gameManager.IsCountDownStart) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
             // 残り5.00秒で表示「05」残り4.00秒で表示「04」としたいため。+1秒しないと4.99秒で表示「04」となり感覚とズレる
@@ -38,6 +38,10 @@ public class Timer : MonoBehaviour {
                 this._leavingTime = createLeaveFingerTime();
                 Debug.Log("離す時間は：" + this._leavingTime);
             }
+        } else {
+            // カウントダウン開始秒数をリセット
+            currentCountDownTime = countTime;
+            this.countDownText.text = formatTime(currentCountDownTime);
         }
 
 
