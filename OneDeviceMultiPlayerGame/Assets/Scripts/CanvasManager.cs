@@ -5,7 +5,6 @@ using UnityEngine;
 public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     [SerializeField] private Canvas canvas;
-    [SerializeField] private GameObject touchAreaCircle;
 
     public void Awake() {
         if (this != Instance) {
@@ -25,14 +24,16 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         // touchPositionは画面ピクセルの位置なので、ワールド座標に変換
         Vector3 worldTouchPosition = Camera.main.ScreenToWorldPoint(touchPosition);
         worldTouchPosition.z = 0;
-        GameObject touchAreaCircleInstans = TouchAreaCircleMove.Init(fingerId);
+        GameObject touchAreaCircleInstans = TouchAreaCircle.Init(fingerId);
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
+        TouchAreaCircle hoge = touchAreaCircleInstans.GetComponent<TouchAreaCircle>();
+        hoge.displayPlayerNumber();
     }
 
     public void destroyTouchAreaCircle(int fingerId) {
-        string tag = CommonConstant.fingerId + fingerId.ToString();
+        string tag = CommonConstant.FINGER_ID + fingerId.ToString();
         Debug.Log("破棄するタグ名：" + tag);
         Destroy(GameObject.FindWithTag(tag).gameObject);
     }

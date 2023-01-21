@@ -467,7 +467,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1462841188}
-  touchAreaCircle: {fileID: 4416126698549306965, guid: 171fee5254ccc4c6bb40c70730d3588a, type: 3}
 --- !u!1 &1462841185
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,7 +623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countDownText: {fileID: 1974186057}
-  countTime: 999
+  countTime: 10
   maxLeavingTime: 20
 --- !u!114 &1974186057
 MonoBehaviour:
@@ -758,7 +757,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1067.3, y: 600}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1996355820
 MonoBehaviour:

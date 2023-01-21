@@ -11,6 +11,7 @@ TagManager:
   - fingerID2
   - fingerID3
   - fingerID4
+  - playerNum
   layers:
   - Default
   - TransparentFX
