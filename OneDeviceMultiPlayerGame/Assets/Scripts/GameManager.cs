@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class GameManager : SingletonMonoBehaviour<GameManager> {
 
+    /** GameManager */
+    private CanvasManager _canvasManager;
+
     // 準備時間が終わって全プレイヤーの指がついている状態
     private bool isGameStart = false;
     public bool IsGameStart {
@@ -53,6 +56,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     void Start() {
+        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
     }
 
     void Update() {
@@ -71,6 +75,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// ゲームスタート（（準備時間が終わって全プレイヤーの指がついている状態）に走る処理
     /// </summary>
     private void gameStart() {
+        this._canvasManager.dicidePlayerNumbers();
     }
 
     /// <summary>

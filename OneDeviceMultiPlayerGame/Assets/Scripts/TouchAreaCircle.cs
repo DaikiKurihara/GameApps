@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 public class TouchAreaCircle : MonoBehaviour {
     private int fingerId { get; set; }
-    //[SerializeField] private TextMeshProUGUI playerNumTxt;
+    private int playerNumber { get; set; }
 
     Vector2 startPos;
     Vector2 worldPos;
@@ -36,15 +36,14 @@ public class TouchAreaCircle : MonoBehaviour {
         }
     }
 
-    public void displayPlayerNumber() {
-        // TODO: プレイヤーNo.をfingerIdではなく1〜5の順に表示する
-
+    public void dicidePlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
         // 非アクティブなオブジェクトはfindWithTagでは取得できないためtransformのメソッドを使う
         GameObject textObj = transform.GetChild(0).gameObject;
 
         // デフォルトはfalseになっている
         textObj.SetActive(true);
         TextMeshProUGUI playerNumTxt = textObj.GetComponent<TextMeshProUGUI>();
-        playerNumTxt.text = "Player" + this.fingerId.ToString();
+        playerNumTxt.text = "Player" + playerNumber.ToString();
     }
 }

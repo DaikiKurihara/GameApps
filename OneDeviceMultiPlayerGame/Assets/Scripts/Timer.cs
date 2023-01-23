@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using System;
 // avoid a conflict between System.Random and UnityEngine.
-using Random=UnityEngine.Random;
+using Random = UnityEngine.Random;
 
 public class Timer : MonoBehaviour {
 
@@ -29,7 +29,6 @@ public class Timer : MonoBehaviour {
         if (!this._gameManager.IsGameStart) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
-            // 残り5.00秒で表示「05」残り4.00秒で表示「04」としたいため。+1秒しないと4.99秒で表示「04」となり感覚とズレる
             this.countDownText.text = formatTime(currentCountDownTime);
             if (currentCountDownTime <= 0.000F) {
                 currentCountDownTime = 0.00F;
@@ -84,15 +83,15 @@ public class Timer : MonoBehaviour {
     /// <summary>
     /// 表示時間の文字列を返す
     /// </summary>
-    private string formatTime(float t){
+    private string formatTime(float t) {
         // 返すフォーマット後文字列
         string s;
         // 秒以下表示桁数
         int Ndigit = 2;
         // 秒部分
-        int tSecond = (int) Math.Floor(Math.Abs(t));
+        int tSecond = (int)Math.Floor(Math.Abs(t));
         // 秒以下部分
-        int tMilliSecond = (int) Math.Floor(Math.Abs(t - tSecond) * Math.Pow(10, Ndigit)); 
+        int tMilliSecond = (int)Math.Floor(Math.Abs(t - tSecond) * Math.Pow(10, Ndigit));
         s = string.Format("{0:00}:{1:00}", tSecond, tMilliSecond);
         return s;
     }

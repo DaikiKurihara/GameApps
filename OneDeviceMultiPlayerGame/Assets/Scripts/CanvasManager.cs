@@ -28,8 +28,14 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
-        TouchAreaCircle hoge = touchAreaCircleInstans.GetComponent<TouchAreaCircle>();
-        hoge.displayPlayerNumber();
+    }
+
+    public void dicidePlayerNumbers() {
+        for (int i = 0; i < Input.touchCount; i++) {
+            Touch touch = Input.GetTouch(i);
+            TouchAreaCircle touchAreaCircle = GameObject.FindWithTag(CommonConstant.FINGER_ID + touch.fingerId).gameObject.GetComponent<TouchAreaCircle>();
+            touchAreaCircle.dicidePlayerNumber(i + 1);
+        }
     }
 
     public void destroyTouchAreaCircle(int fingerId) {
