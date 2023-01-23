@@ -5,8 +5,9 @@ public class TouchAreaCircle : MonoBehaviour {
     private int fingerId { get; set; }
     private int playerNumber { get; set; }
 
-    Vector2 startPos;
-    Vector2 worldPos;
+    private Vector2 startPos;
+    private Vector2 worldPos;
+    private Vector2 center = new Vector2(0, 0);
 
     /// <summary>
     /// fingerIDを設定したプレハブを作成する
@@ -31,6 +32,10 @@ public class TouchAreaCircle : MonoBehaviour {
                 Debug.Log("動いてる指のfingerIdは：" + fingerId);
                 this.startPos = transform.position;
                 this.worldPos = Camera.main.ScreenToWorldPoint(touch.position);
+                // センターからの角度を求めて回転させる
+                float degree = Mathf.Atan2(worldPos.y, worldPos.x) * Mathf.Rad2Deg;
+                // 横向き固定画面のため、取得した角度+90度回転させた角度でZ軸を設定する
+                this.GetComponent<RectTransform>().rotation = Quaternion.Euler(new Vector3(0, 0, 90 + degree));
                 transform.position = Vector3.Lerp(this.startPos, this.worldPos, 1);
             }
         }
