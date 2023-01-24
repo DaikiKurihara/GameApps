@@ -7,7 +7,6 @@ public class TouchAreaCircle : MonoBehaviour {
 
     private Vector2 startPos;
     private Vector2 worldPos;
-    private Vector2 center = new Vector2(0, 0);
 
     /// <summary>
     /// fingerIDを設定したプレハブを作成する
@@ -17,9 +16,11 @@ public class TouchAreaCircle : MonoBehaviour {
     public static GameObject Init(int fingerId) {
         GameObject touchAreaCirclePrefab = Resources.Load<GameObject>("TouchAreaCircle");
         GameObject touchAreaCirclePrefabInsatance = Instantiate(touchAreaCirclePrefab);
+        // 新規タグの追加
+        string tag = CommonConstant.FINGER_ID + fingerId.ToString();
         // タグの付与
-        // fingerIDは最大5個想定なので、あらかじめインスペクタから決め打ちで追加している
-        touchAreaCirclePrefabInsatance.tag = CommonConstant.FINGER_ID + fingerId.ToString();
+        GameManager.AddTag(tag);
+        touchAreaCirclePrefabInsatance.tag = tag;
         TouchAreaCircle TouchAreaCircle = touchAreaCirclePrefabInsatance.GetComponent<TouchAreaCircle>();
         TouchAreaCircle.fingerId = fingerId;
         return touchAreaCirclePrefabInsatance;
@@ -45,7 +46,6 @@ public class TouchAreaCircle : MonoBehaviour {
         this.playerNumber = playerNumber;
         // 非アクティブなオブジェクトはfindWithTagでは取得できないためtransformのメソッドを使う
         GameObject textObj = transform.GetChild(0).gameObject;
-
         // デフォルトはfalseになっている
         textObj.SetActive(true);
         TextMeshProUGUI playerNumTxt = textObj.GetComponent<TextMeshProUGUI>();

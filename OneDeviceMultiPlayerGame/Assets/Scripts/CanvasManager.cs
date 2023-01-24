@@ -40,7 +40,6 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     public void destroyTouchAreaCircle(int fingerId) {
         string tag = CommonConstant.FINGER_ID + fingerId.ToString();
-        Debug.Log("破棄するタグ名：" + tag);
         Destroy(GameObject.FindWithTag(tag).gameObject);
     }
 }
