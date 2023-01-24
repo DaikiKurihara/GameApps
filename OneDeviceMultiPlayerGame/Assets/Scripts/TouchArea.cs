@@ -16,7 +16,7 @@ public class TouchArea : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Input.touchCount == 0) {
+        if (Input.touchCount < 2) {
             this._gameManager.IsCountDownStart = false;
         } else {
             this._gameManager.IsCountDownStart = true;
