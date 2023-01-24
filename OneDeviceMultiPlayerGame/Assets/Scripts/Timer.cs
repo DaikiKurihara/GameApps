@@ -26,7 +26,7 @@ public class Timer : MonoBehaviour {
 
     void Update() {
         // カウントダウン
-        if (!this._gameManager.IsGameStart) {
+        if (this._gameManager.IsCountDownStart) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
             this.countDownText.text = formatTime(currentCountDownTime);
@@ -37,6 +37,10 @@ public class Timer : MonoBehaviour {
                 this._leavingTime = createLeaveFingerTime();
                 Debug.Log("離す時間は：" + this._leavingTime);
             }
+        } else {
+            // カウントダウン開始秒数をリセット
+            currentCountDownTime = countTime;
+            this.countDownText.text = formatTime(currentCountDownTime);
         }
 
 

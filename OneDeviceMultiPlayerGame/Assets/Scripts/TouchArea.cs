@@ -16,6 +16,11 @@ public class TouchArea : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+        if (Input.touchCount == 0) {
+            this._gameManager.IsCountDownStart = false;
+        } else {
+            this._gameManager.IsCountDownStart = true;
+        }
 
         if (!this._gameManager.IsGameStart) {
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------

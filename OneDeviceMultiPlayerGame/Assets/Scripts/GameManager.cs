@@ -8,6 +8,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /** GameManager */
     private CanvasManager _canvasManager;
 
+    // 準備画面突入有無のフラグ
+    private bool isCountDownStart = false;
+    public bool IsCountDownStart {
+        set { this.isCountDownStart = value; }
+        get { return this.isCountDownStart; }
+    }
+
     // 準備時間が終わって全プレイヤーの指がついている状態
     private bool isGameStart = false;
     public bool IsGameStart {
