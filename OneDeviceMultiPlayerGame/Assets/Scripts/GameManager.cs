@@ -87,8 +87,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             var sortedList = cloneDict.OrderBy(x => x.Value).ToList();
             // 結果の表示（Debug）
             int i = 1;
-            foreach (var d in cloneDict) {
-                Debug.Log(string.Format("{0}位: 差:{1:0.00}, ID {2}", i++, d.Value, d.Key));
+            foreach (KeyValuePair<int, float> kvp in sortedList) {
+                Debug.Log(string.Format("{0}位: 差:{1:0.00}, ID {2}", i++, kvp.Value, kvp.Key));
             }
             this.openResult = false;
         }
@@ -107,7 +107,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// <param name="fingerId"></param>
     public void addLeftTimeMap(int fingerId) {
         Debug.Log(fingerId + "のマップを作ります。" + "差分は" + (this.passedTime - this.standardTime));
-        //this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
+        this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
     }
 
     /// <summary>
