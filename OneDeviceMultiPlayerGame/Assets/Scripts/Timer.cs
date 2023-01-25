@@ -37,7 +37,7 @@ public class Timer : MonoBehaviour {
                 this._leavingTime = createLeaveFingerTime();
                 Debug.Log("離す時間は：" + this._leavingTime);
             }
-        } else {
+        } else if (!this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
             // カウントダウン開始秒数をリセット
             currentCountDownTime = countTime;
             this.countDownText.text = formatTime(currentCountDownTime);
@@ -63,7 +63,6 @@ public class Timer : MonoBehaviour {
     /// </summary>
     private void gameStart() {
         this._gameManager.IsGameStart = true;
-
     }
 
     /// <summary>
