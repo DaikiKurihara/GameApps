@@ -26,7 +26,7 @@ public class Timer : MonoBehaviour {
 
     void Update() {
         // カウントダウン
-        if (this._gameManager.IsCountDownStart) {
+        if (this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
             // 経過時刻を引いていく
             currentCountDownTime -= Time.deltaTime;
             this.countDownText.text = formatTime(currentCountDownTime);
@@ -63,6 +63,7 @@ public class Timer : MonoBehaviour {
     /// </summary>
     private void gameStart() {
         this._gameManager.IsGameStart = true;
+
     }
 
     /// <summary>

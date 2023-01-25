@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine;
 public class TouchAreaCircle : MonoBehaviour {
     private int fingerId { get; set; }
-    private int playerNumber { get; set; }
+    private int playerNumber = -1;
+    private bool isLeft = false;
 
     private Vector2 startPos;
     private Vector2 worldPos;
@@ -29,8 +30,8 @@ public class TouchAreaCircle : MonoBehaviour {
     void Update() {
         // 指に合わせて移動する
         foreach (Touch touch in Input.touches) {
-            if (touch.fingerId == this.fingerId) {
-                Debug.Log("動いてる指のfingerIdは：" + fingerId);
+            if (touch.fingerId == this.fingerId && !isLeft) {
+                Debug.Log("動いてる指のプレイヤーNoは：" + playerNumber);
                 this.startPos = transform.position;
                 this.worldPos = Camera.main.ScreenToWorldPoint(touch.position);
                 // センターからの角度を求めて回転させる
@@ -49,6 +50,11 @@ public class TouchAreaCircle : MonoBehaviour {
         // デフォルトはfalseになっている
         textObj.SetActive(true);
         TextMeshProUGUI playerNumTxt = textObj.GetComponent<TextMeshProUGUI>();
+        this.playerNumber = playerNumber;
         playerNumTxt.text = "Player" + playerNumber.ToString();
+    }
+
+    public void left() {
+        this.isLeft = true;
     }
 }

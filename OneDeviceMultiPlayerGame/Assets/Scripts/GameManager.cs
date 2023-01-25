@@ -6,7 +6,6 @@ using UnityEditor;
 using System;
 using System.Linq;
 
-
 public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     /** GameManager */
@@ -81,14 +80,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             var cloneDict = new Dictionary<int, float>(this.leftTimeMap);
             // 話した時間の絶対値を取る
             List<int> keys = new List<int>(this.leftTimeMap.Keys);
-            foreach (int k in keys){
+            foreach (int k in keys) {
                 cloneDict[k] = Math.Abs(cloneDict[k]);
             }
             // LINQを使ってValueでソート
             var sortedList = cloneDict.OrderBy(x => x.Value).ToList();
             // 結果の表示（Debug）
             int i = 1;
-            foreach (var d in cloneDict){
+            foreach (var d in cloneDict) {
                 Debug.Log(string.Format("{0}位: 差:{1:0.00}, ID {2}", i++, d.Value, d.Key));
             }
             this.openResult = false;
@@ -108,7 +107,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// <param name="fingerId"></param>
     public void addLeftTimeMap(int fingerId) {
         Debug.Log(fingerId + "のマップを作ります。" + "差分は" + (this.passedTime - this.standardTime));
-        this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
+        //this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
     }
 
     /// <summary>

@@ -16,32 +16,31 @@ public class TouchArea : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
-        if (Input.touchCount < 2) {
-            this._gameManager.IsCountDownStart = false;
-        } else {
-            this._gameManager.IsCountDownStart = true;
-        }
 
         if (!this._gameManager.IsGameStart) {
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
+            if (Input.touchCount < 2) {
+                this._gameManager.IsCountDownStart = false;
+            } else {
+                this._gameManager.IsCountDownStart = true;
+            }
             ///やりたいこと
             ///指を認識して指の周りに周りに丸い絵を起きたい（プレイヤーの視認性向上）
             ///指が離れたら丸い絵を消したい
             this.touchBegan();
 
+            this.touchEnded();
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
         } else {
             //----------------ゲーム開始後のプレイ時間-----------------------------------
             ///やりたいこと
-
-
+            this.touchFinished();
             if (Input.touchCount == 0 && !this._gameManager.IsGameEnd) {
                 this._gameManager.IsGameEnd = true;
             }
 
             //----------------ゲーム開始後のプレイ時間-----------------------------------
         }
-        this.touchEnded();
 
         this._touchCount = Input.touchCount;
     }
@@ -62,17 +61,27 @@ public class TouchArea : MonoBehaviour {
     /// <param name="touch"></param>
     private void touchEnded() {
         if (this._gameManager.IsGameStart) {
-            foreach (Touch touch in Input.touches) {
-                if (touch.phase == TouchPhase.Ended) {
-                    Debug.Log("fingerId:" + touch.fingerId + "が離れました");
-                    this._gameManager.addLeftTimeMap(touch.fingerId);
-                }
+            return;
+        }
+        foreach (Touch touch in Input.touches) {
+            if (touch.phase == TouchPhase.Ended) {
+                this._canvasManager.destroyTouchAreaCircle(touch.fingerId);
             }
-        } else {
-            foreach (Touch touch in Input.touches) {
-                if (touch.phase == TouchPhase.Ended) {
-                    this._canvasManager.destroyTouchAreaCircle(touch.fingerId);
-                }
+        }
+    }
+
+    /// <summary>
+    /// ゲーム開始後に指が離れた場合
+    /// </summary>
+    private void touchFinished() {
+        if (!this._gameManager.IsGameStart) {
+            return;
+        }
+        foreach (Touch touch in Input.touches) {
+            if (touch.phase == TouchPhase.Ended) {
+                Debug.Log("fingerId:" + touch.fingerId + "が離れました");
+                this._gameManager.addLeftTimeMap(touch.fingerId);
+                this._canvasManager.touchFinished(touch.fingerId);
             }
         }
     }

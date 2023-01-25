@@ -30,16 +30,40 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
     }
 
+    /// <summary>
+    /// 画面に表示するプレイヤーNoを決定する
+    /// </summary>
     public void dicidePlayerNumbers() {
         for (int i = 0; i < Input.touchCount; i++) {
             Touch touch = Input.GetTouch(i);
-            TouchAreaCircle touchAreaCircle = GameObject.FindWithTag(CommonConstant.FINGER_ID + touch.fingerId).gameObject.GetComponent<TouchAreaCircle>();
+            TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(touch.fingerId).GetComponent<TouchAreaCircle>();
             touchAreaCircle.dicidePlayerNumber(i + 1);
         }
     }
 
+    /// <summary>
+    /// タッチしているエリアの円オブジェクトを削除する
+    /// </summary>
+    /// <param name="fingerId"></param>
     public void destroyTouchAreaCircle(int fingerId) {
-        string tag = CommonConstant.FINGER_ID + fingerId.ToString();
-        Destroy(GameObject.FindWithTag(tag).gameObject);
+        Destroy(getTouchAreaCircleByFingerId(fingerId));
+    }
+
+    /// <summary>
+    /// ゲーム開始後にタップが終了した時の処理
+    /// </summary>
+    /// <param name="fingerId"></param>
+    public void touchFinished(int fingerId) {
+        TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(fingerId).GetComponent<TouchAreaCircle>();
+        touchAreaCircle.left();
+    }
+
+    /// <summary>
+    /// fingerIDからタッチエリアの円オブジェクトを取得する
+    /// </summary>
+    /// <param name="fingerId"></param>
+    /// <returns></returns>
+    private GameObject getTouchAreaCircleByFingerId(int fingerId) {
+        return GameObject.FindWithTag(CommonConstant.FINGER_ID + fingerId.ToString()).gameObject;
     }
 }
