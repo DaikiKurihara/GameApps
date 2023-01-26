@@ -56,5 +56,6 @@ public class TouchAreaCircle : MonoBehaviour {
 
     public void left() {
         this.isLeft = true;
+        this.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0.667F);
     }
 }

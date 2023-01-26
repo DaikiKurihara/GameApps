@@ -623,8 +623,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countDownText: {fileID: 1974186057}
-  countTime: 10
-  maxLeavingTime: 20
+  countTime: 5
+  maxLeavingTime: 6
 --- !u!114 &1974186057
 MonoBehaviour:
   m_ObjectHideFlags: 0
