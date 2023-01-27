@@ -37,7 +37,7 @@ public class TouchAreaCircle : MonoBehaviour {
                 // センターからの角度を求めて回転させる
                 float degree = Mathf.Atan2(worldPos.y, worldPos.x) * Mathf.Rad2Deg;
                 // 横向き固定画面のため、取得した角度+90度回転させた角度でZ軸を設定する
-                this.GetComponent<RectTransform>().rotation = Quaternion.Euler(new Vector3(0, 0, 90 + degree));
+                this.transform.rotation = Quaternion.Euler(new Vector3(0, 0, 90 + degree));
                 transform.position = Vector3.Lerp(this.startPos, this.worldPos, 1);
             }
         }

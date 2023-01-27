@@ -35,12 +35,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         } // falseは代入不可
         get { return this.isGameEnd; }
     }
+
     // 指を離す時間になったか
     private bool isStopped = false;
     public bool IsStopped {
         set { this.isStopped = true; } // falseは代入不可
         get { return this.isStopped; }
     }
+
+    private int playerCount = 0;
 
     // 結果表示
     private bool openResult = false;
@@ -121,6 +124,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private void decideEndTime() {
         this.endTime = this.passedTime;
         this.openResult = true;
+    }
+
+    public void increasePlayerCount() {
+        this.playerCount++;
+    }
+
+    public void decreasePlayerCount() {
+        this.playerCount--;
+    }
+
+    public void checkPlayerCount() {
+        if (Input.touchCount != this.playerCount) {
+            Debug.Log("プレイヤー人数に異常が発生しました。");
+        }
     }
 
     /// <summary>

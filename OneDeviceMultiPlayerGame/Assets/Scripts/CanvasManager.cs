@@ -5,6 +5,7 @@ using UnityEngine;
 public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     [SerializeField] private Canvas canvas;
+    private GameManager _gameManager;
 
     public void Awake() {
         if (this != Instance) {
@@ -16,7 +17,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     }
 
     void Start() {
-
+        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
     }
 
     public void generateTouchAreaCircle(Vector2 touchPosition, int fingerId) {
@@ -28,6 +29,8 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
+        // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
+        this._gameManager.increasePlayerCount();
     }
 
     /// <summary>
@@ -39,6 +42,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
             TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(touch.fingerId).GetComponent<TouchAreaCircle>();
             touchAreaCircle.dicidePlayerNumber(i + 1);
         }
+
     }
 
     /// <summary>
@@ -47,6 +51,8 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     /// <param name="fingerId"></param>
     public void destroyTouchAreaCircle(int fingerId) {
         Destroy(getTouchAreaCircleByFingerId(fingerId));
+        // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
+        this._gameManager.decreasePlayerCount();
     }
 
     /// <summary>
@@ -56,6 +62,8 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     public void touchFinished(int fingerId) {
         TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(fingerId).GetComponent<TouchAreaCircle>();
         touchAreaCircle.left();
+        // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
+        this._gameManager.decreasePlayerCount();
     }
 
     /// <summary>
@@ -64,6 +72,6 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     /// <param name="fingerId"></param>
     /// <returns></returns>
     private GameObject getTouchAreaCircleByFingerId(int fingerId) {
-        return GameObject.FindWithTag(CommonConstant.FINGER_ID + fingerId.ToString()).gameObject;
+        return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId.ToString()}").gameObject;
     }
 }
