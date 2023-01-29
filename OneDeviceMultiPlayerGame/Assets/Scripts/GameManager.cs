@@ -107,7 +107,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// </summary>
     /// <param name="fingerId"></param>
     public void addLeftTimeMap(int fingerId) {
-        Debug.Log(fingerId + "のマップを作ります。" + "差分は" + (this.passedTime - this.standardTime));
         this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
     }
 
@@ -136,8 +135,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     public void checkPlayerCount() {
         if (Input.touchCount != this.playerCount) {
-            Debug.Log("プレイヤー人数に異常が発生しました。");
+            Debug.Log($"プレイヤー人数に異常が発生しました。{this.playerCount}");
+            this.gameReset();
         }
+    }
+
+    private void gameReset() {
+        this.isCountDownStart = false;
+        this.isGameEnd = false;
+        this.isGameStart = false;
+        this.isStopped = false;
+        this.openResult = false;
+        this.playerCount = 0;
+        this.leftTimeMap.Clear();
+        this._canvasManager.resetCanvas();
     }
 
     /// <summary>

@@ -31,7 +31,6 @@ public class TouchAreaCircle : MonoBehaviour {
         // 指に合わせて移動する
         foreach (Touch touch in Input.touches) {
             if (touch.fingerId == this.fingerId && !isLeft) {
-                Debug.Log("動いてる指のプレイヤーNoは：" + playerNumber);
                 this.startPos = transform.position;
                 this.worldPos = Camera.main.ScreenToWorldPoint(touch.position);
                 // センターからの角度を求めて回転させる

@@ -51,7 +51,6 @@ public class TouchArea : MonoBehaviour {
     private void touchBegan() {
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Began) {
-                Debug.Log("fingerId:" + touch.fingerId + "がタッチ開始しました。");
                 this._canvasManager.generateTouchAreaCircle(touch.position, touch.fingerId);
             }
         }
@@ -81,18 +80,9 @@ public class TouchArea : MonoBehaviour {
         }
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
-                Debug.Log("fingerId:" + touch.fingerId + "が離れました");
                 this._gameManager.addLeftTimeMap(touch.fingerId);
                 this._canvasManager.touchFinished(touch.fingerId);
             }
         }
-    }
-
-    /// <summary>
-    /// 呼ばれた段階での指の配列を返す
-    /// </summary>
-    /// <returns></returns>
-    public Touch[] getTouches() {
-        return Input.touches;
     }
 }

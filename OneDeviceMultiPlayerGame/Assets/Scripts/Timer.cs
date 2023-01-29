@@ -6,32 +6,36 @@ using Random = UnityEngine.Random;
 
 public class Timer : MonoBehaviour {
 
-    public static float currentCountDownTime;
-    private float _currentCountUpTime = 0.0F;
+    private float currentCountDownTime;
+    private float currentCountUpTime = 0.0F;
     public TextMeshProUGUI countDownText;
-    [SerializeField] float countTime = 5.0F;
-    private GameManager _gameManager;
-    private bool _isStarted;
+    [SerializeField] private float countTime = 5.0F;
     /** 指を離す時間（最大）の指定 */
     [SerializeField] int maxLeavingTime = 20;
     private bool _leaveFingerCounted = false;
     private float _leavingTime = 0.0F;
+    private GameManager _gameManager;
 
+    public void reset() {
+        this.currentCountDownTime = countTime;
+        this._leaveFingerCounted = false;
+        this.currentCountUpTime = 0.0F;
+    }
 
     void Start() {
         _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         // カウントダウン開始秒数をセット
-        currentCountDownTime = countTime;
+        this.currentCountDownTime = countTime;
     }
 
     void Update() {
         // カウントダウン
         if (this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
             // 経過時刻を引いていく
-            currentCountDownTime -= Time.deltaTime;
-            this.countDownText.text = formatTime(currentCountDownTime);
-            if (currentCountDownTime <= 0.000F) {
-                currentCountDownTime = 0.00F;
+            this.currentCountDownTime -= Time.deltaTime;
+            this.countDownText.text = formatTime(this.currentCountDownTime);
+            if (this.currentCountDownTime <= 0.000F) {
+                this.currentCountDownTime = 0.00F;
                 this.gameStart();
                 this.countDownText.text = "";
                 this._leavingTime = createLeaveFingerTime();
@@ -39,18 +43,16 @@ public class Timer : MonoBehaviour {
             }
         } else if (!this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
             // カウントダウン開始秒数をリセット
-            currentCountDownTime = countTime;
-            this.countDownText.text = formatTime(currentCountDownTime);
+            this.currentCountDownTime = countTime;
+            this.countDownText.text = formatTime(this.currentCountDownTime);
         }
-
 
         // 離す時間までのカウントアップ
         if (this._gameManager.IsGameStart && !_leaveFingerCounted) {
-            _currentCountUpTime += Time.deltaTime;
-            this.countDownText.text = formatTime(_currentCountUpTime);
+            currentCountUpTime += Time.deltaTime;
+            this.countDownText.text = formatTime(currentCountUpTime);
 
-            if (this._currentCountUpTime >= this._leavingTime) {
-                Debug.Log("離せ！");
+            if (this.currentCountUpTime >= this._leavingTime) {
                 this.stop();
                 this._leaveFingerCounted = true;
                 this.countDownText.text = " Leave!!!!!";

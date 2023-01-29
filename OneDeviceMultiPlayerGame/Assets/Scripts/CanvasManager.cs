@@ -6,6 +6,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     [SerializeField] private Canvas canvas;
     private GameManager _gameManager;
+    private Timer timer;
 
     public void Awake() {
         if (this != Instance) {
@@ -18,6 +19,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     void Start() {
         _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
     }
 
     public void generateTouchAreaCircle(Vector2 touchPosition, int fingerId) {
@@ -72,6 +74,23 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     /// <param name="fingerId"></param>
     /// <returns></returns>
     private GameObject getTouchAreaCircleByFingerId(int fingerId) {
-        return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId.ToString()}").gameObject;
+        return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId}").gameObject;
+    }
+
+    public void resetCanvas() {
+        this.timer.reset();
+        destroyAllTouchAreaCircle();
+    }
+
+    /// <summary>
+    /// 画面に存在する円オブジェクトを全て削除する
+    /// </summary>
+    private void destroyAllTouchAreaCircle() {
+        for (int i = 0; i < this.canvas.transform.childCount; i++) {
+            GameObject go = this.canvas.transform.GetChild(i).gameObject;
+            if (go.tag.Contains(CommonConstant.FINGER_ID)) {
+                Destroy(go);
+            }
+        }
     }
 }
