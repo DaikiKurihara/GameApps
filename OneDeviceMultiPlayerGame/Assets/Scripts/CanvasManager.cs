@@ -52,7 +52,11 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     /// </summary>
     /// <param name="fingerId"></param>
     public void destroyTouchAreaCircle(int fingerId) {
-        Destroy(getTouchAreaCircleByFingerId(fingerId));
+        GameObject touchAreaCircle = getTouchAreaCircleByFingerId(fingerId);
+        if (touchAreaCircle == null) {
+            return;
+        }
+        Destroy(touchAreaCircle);
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
         this._gameManager.decreasePlayerCount();
     }
@@ -74,7 +78,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     /// <param name="fingerId"></param>
     /// <returns></returns>
     private GameObject getTouchAreaCircleByFingerId(int fingerId) {
-        return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId}").gameObject;
+        return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId}");
     }
 
     public void resetCanvas() {

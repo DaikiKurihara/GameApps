@@ -18,8 +18,8 @@ public class TouchArea : MonoBehaviour {
     void Update() {
         if (!this._gameManager.IsGameStart) {
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
-            // 触れている指が1本以下だったらカウントダウンしない
-            this._gameManager.IsCountDownStart = Input.touchCount < 2;
+            // 触れている指が2本以上でカウントダウン開始
+            this._gameManager.IsCountDownStart = Input.touchCount >= 2;
 
             this.touchBegan();
 
