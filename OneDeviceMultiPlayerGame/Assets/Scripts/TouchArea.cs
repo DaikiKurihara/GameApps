@@ -18,21 +18,15 @@ public class TouchArea : MonoBehaviour {
     void Update() {
         if (!this._gameManager.IsGameStart) {
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
-            if (Input.touchCount < 2) {
-                this._gameManager.IsCountDownStart = false;
-            } else {
-                this._gameManager.IsCountDownStart = true;
-            }
-            ///やりたいこと
-            ///指を認識して指の周りに周りに丸い絵を起きたい（プレイヤーの視認性向上）
-            ///指が離れたら丸い絵を消したい
+            // 触れている指が1本以下だったらカウントダウンしない
+            this._gameManager.IsCountDownStart = Input.touchCount < 2;
+
             this.touchBegan();
 
             this.touchEnded();
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
         } else {
             //----------------ゲーム開始後のプレイ時間-----------------------------------
-            ///やりたいこと
             this.touchFinished();
             if (Input.touchCount == 0 && !this._gameManager.IsGameEnd) {
                 this._gameManager.IsGameEnd = true;
