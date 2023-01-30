@@ -3,8 +3,10 @@ using TMPro;
 using UnityEngine;
 public class TouchAreaCircle : MonoBehaviour {
     private int fingerId { get; set; }
-    private int playerNumber = -1;
     private bool isLeft = false;
+    private int playerNumber = -1;
+    private int animationCount = 0;
+    private bool isAnimationEnd = false;
 
     private Vector2 startPos;
     private Vector2 worldPos;
@@ -28,6 +30,20 @@ public class TouchAreaCircle : MonoBehaviour {
     }
 
     void Update() {
+        if (!isAnimationEnd) {
+            if (this.animationCount < 5) {
+                Vector3 size = this.transform.localScale;
+                size = new Vector3(this.transform.localScale.x + 12, this.transform.localScale.y + 12);
+                this.transform.localScale = size;
+            } else if (this.animationCount > 4 && this.animationCount < 10) {
+                Vector3 size = this.transform.localScale;
+                size = new Vector3(this.transform.localScale.x - 12, this.transform.localScale.y - 12);
+                this.transform.localScale = size;
+            } else {
+                this.isAnimationEnd = true;
+            }
+            this.animationCount++;
+        }
         // 指に合わせて移動する
         foreach (Touch touch in Input.touches) {
             if (touch.fingerId == this.fingerId && !isLeft) {
