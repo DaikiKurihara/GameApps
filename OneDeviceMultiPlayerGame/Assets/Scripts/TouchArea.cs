@@ -31,10 +31,10 @@ public class TouchArea : MonoBehaviour {
             if (Input.touchCount == 0 && !this._gameManager.IsGameEnd) {
                 this._gameManager.IsGameEnd = true;
             }
-
             //----------------ゲーム開始後のプレイ時間-----------------------------------
         }
-        if (_touchCount != Input.touchCount) {
+        // iPhoneではタップの限界を超えた場合にtouchCountが0になるのでプレイヤー人数をチェックする
+        if (_touchCount != 0 && Input.touchCount == 0) {
             this._gameManager.checkPlayerCount();
         }
 
@@ -74,6 +74,10 @@ public class TouchArea : MonoBehaviour {
         }
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
+                if (!this._canvasManager.PlayerIds.Contains(touch.fingerId)) {
+                    // 画面常にいるプレイヤーではない場合処理終了
+                    return;
+                }
                 this._gameManager.addLeftTimeMap(touch.fingerId);
                 this._canvasManager.touchFinished(touch.fingerId);
             }

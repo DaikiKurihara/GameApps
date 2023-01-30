@@ -7,6 +7,13 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     [SerializeField] private Canvas canvas;
     private GameManager _gameManager;
     private Timer timer;
+    /** 現在タッチしているプレイヤーのIDリスト */
+    private List<int> playerIds = new List<int>();
+    public List<int> PlayerIds {
+        get {
+            return this.playerIds;
+        }
+    }
 
     public void Awake() {
         if (this != Instance) {
@@ -31,6 +38,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
+        playerIds.Add(fingerId);
         // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
         this._gameManager.increasePlayerCount();
     }
@@ -57,6 +65,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
             return;
         }
         Destroy(touchAreaCircle);
+        playerIds.Remove(fingerId);
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
         this._gameManager.decreasePlayerCount();
     }
