@@ -78,7 +78,7 @@ public class TouchArea : MonoBehaviour {
                     // 画面常にいるプレイヤーではない場合処理終了
                     return;
                 }
-                this._gameManager.addLeftTimeMap(touch.fingerId);
+                this._gameManager.fingerLeft(touch.fingerId);
                 this._canvasManager.touchFinished(touch.fingerId);
             }
         }

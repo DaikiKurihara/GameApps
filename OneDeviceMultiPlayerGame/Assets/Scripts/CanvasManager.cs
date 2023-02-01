@@ -47,7 +47,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
         playerIds.Add(fingerId);
         // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
-        this._gameManager.increasePlayerCount();
+        this._gameManager.increaseTouchingPlayerCount();
     }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         Destroy(touchAreaCircle);
         playerIds.Remove(fingerId);
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
-        this._gameManager.decreasePlayerCount();
+        this._gameManager.decreaseTouchingPlayerCount();
     }
 
     /// <summary>
@@ -84,8 +84,8 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     public void touchFinished(int fingerId) {
         TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(fingerId).GetComponent<TouchAreaCircle>();
         touchAreaCircle.left();
-        // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
-        this._gameManager.decreasePlayerCount();
+        // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
+        this._gameManager.decreaseTouchingPlayerCount();
     }
 
     /// <summary>

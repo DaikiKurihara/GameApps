@@ -43,6 +43,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         get { return this.isStopped; }
     }
 
+    // 現在タッチしているプレイヤーの数
+    private int touchingPlayerCount = 0;
+    // ゲーム開始時のプレイヤー数
     private int playerCount = 0;
 
     // 結果表示
@@ -52,10 +55,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private float passedTime { get; set; } = 0.0F;
     /** 指を離す指定時間 */
     private float standardTime { get; set; } = 0.0F;
-    /** 指を離す指定時間 */
+    /** ゲームが終了した時間 */
     private float endTime { get; set; } = 0.0F;
     /** 指を離した時間を格納する辞書 */
     private Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
+    /** フライングしたfingerIDリスト */
+    private List<int> falseStartedList = new List<int>();
 
     public void Awake() {
         if (this != Instance) {
@@ -99,6 +104,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// ゲームスタート（（準備時間が終わって全プレイヤーの指がついている状態）に走る処理
     /// </summary>
     private void gameStart() {
+        this.playerCount = Input.touchCount;
         this._canvasManager.dicidePlayerNumbers();
     }
 
@@ -106,8 +112,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// fingerIdを受け取り、fingerIdをキーにした経過時間のセットを作る
     /// </summary>
     /// <param name="fingerId"></param>
-    public void addLeftTimeMap(int fingerId) {
+    public void fingerLeft(int fingerId) {
         this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
+        if (!this.isStopped) {
+            // 指を離す時間になっていない場合、フライングしたプレイヤーとして格納しておく
+            falseStartPlayer(fingerId);
+        }
     }
 
     /// <summary>
@@ -125,17 +135,24 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.openResult = true;
     }
 
-    public void increasePlayerCount() {
-        this.playerCount++;
+    public void increaseTouchingPlayerCount() {
+        this.touchingPlayerCount++;
     }
 
-    public void decreasePlayerCount() {
-        this.playerCount--;
+    public void decreaseTouchingPlayerCount() {
+        this.touchingPlayerCount--;
+    }
+
+    public void falseStartPlayer(int fingerId) {
+        this.falseStartedList.Add(fingerId);
+        if (this.falseStartedList.Count == this.playerCount) {
+            this.gameReset();
+        }
     }
 
     public void checkPlayerCount() {
-        if (Input.touchCount != this.playerCount) {
-            Debug.Log($"プレイヤー人数に異常が発生しました。{this.playerCount}");
+        if (Input.touchCount != this.touchingPlayerCount) {
+            Debug.Log($"プレイヤー人数に異常が発生しました。{this.touchingPlayerCount}");
             this.gameReset();
         }
     }
@@ -146,8 +163,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.isGameStart = false;
         this.isStopped = false;
         this.openResult = false;
+        this.touchingPlayerCount = 0;
         this.playerCount = 0;
         this.leftTimeMap.Clear();
+        this.falseStartedList.Clear();
         this._canvasManager.resetCanvas();
     }
 
