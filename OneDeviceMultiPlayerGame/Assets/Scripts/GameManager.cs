@@ -82,10 +82,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
         // 指が離れてから3秒後に結果を出す
         if (this.openResult && this.passedTime - this.endTime > 3.0) {
-            // ディクショナリクローン
-            var cloneDict = new Dictionary<int, float>(this.leftTimeMap);
+            // フライングしたプレイヤーを除いたディクショナリをクローンする
+            var cloneDict = new Dictionary<int, float>(this.leftTimeMap).
+                Where(x => x.Value > 0).
+                ToDictionary(d => d.Key, d => d.Value);
             // 話した時間の絶対値を取る
-            List<int> keys = new List<int>(this.leftTimeMap.Keys);
+            List<int> keys = new List<int>(cloneDict.Keys);
             foreach (int k in keys) {
                 cloneDict[k] = Math.Abs(cloneDict[k]);
             }
@@ -95,6 +97,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             int i = 1;
             foreach (KeyValuePair<int, float> kvp in sortedList) {
                 Debug.Log(string.Format("{0}位: 差:{1:0.00}, ID {2}", i++, kvp.Value, kvp.Key));
+            }
+            foreach (int player in falseStartedList) {
+                Debug.Log(string.Format("失格者:Player{0}", player));
             }
             this.openResult = false;
         }
