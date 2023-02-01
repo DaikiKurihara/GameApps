@@ -30,20 +30,7 @@ public class TouchAreaCircle : MonoBehaviour {
     }
 
     void Update() {
-        if (!isAnimationEnd) {
-            if (this.animationCount < 5) {
-                Vector3 size = this.transform.localScale;
-                size = new Vector3(this.transform.localScale.x + 12, this.transform.localScale.y + 12);
-                this.transform.localScale = size;
-            } else if (this.animationCount > 4 && this.animationCount < 10) {
-                Vector3 size = this.transform.localScale;
-                size = new Vector3(this.transform.localScale.x - 12, this.transform.localScale.y - 12);
-                this.transform.localScale = size;
-            } else {
-                this.isAnimationEnd = true;
-            }
-            this.animationCount++;
-        }
+        this.animate();
         // 指に合わせて移動する
         foreach (Touch touch in Input.touches) {
             if (touch.fingerId == this.fingerId && !isLeft) {
@@ -72,5 +59,27 @@ public class TouchAreaCircle : MonoBehaviour {
     public void left() {
         this.isLeft = true;
         this.GetComponent<SpriteRenderer>().color = ColorConstant.CIRCLE_FINISHED;
+    }
+
+    /// <summary>
+    /// 円オブジェクト生成時にアニメーションを付与する
+    /// </summary>
+    private void animate() {
+        if (!isAnimationEnd) {
+            // 約0.1秒かけて60大きくし、0.1秒で元の大きさまで戻す
+            if (this.animationCount < 5) {
+                Vector3 size = this.transform.localScale;
+                size = new Vector3(this.transform.localScale.x + 12, this.transform.localScale.y + 12);
+                this.transform.localScale = size;
+            } else if (this.animationCount > 4 && this.animationCount < 10) {
+                Vector3 size = this.transform.localScale;
+                size = new Vector3(this.transform.localScale.x - 12, this.transform.localScale.y - 12);
+                this.transform.localScale = size;
+            } else {
+                this.isAnimationEnd = true;
+            }
+            this.animationCount++;
+        }
+
     }
 }

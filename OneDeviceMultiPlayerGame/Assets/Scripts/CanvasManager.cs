@@ -5,8 +5,13 @@ using UnityEngine;
 public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     [SerializeField] private Canvas canvas;
+
+    [SerializeField] private GameObject leftSignLight;
+
     private GameManager _gameManager;
+
     private Timer timer;
+
     /** 現在タッチしているプレイヤーのIDリスト */
     private List<int> playerIds = new List<int>();
     public List<int> PlayerIds {
@@ -14,6 +19,8 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
             return this.playerIds;
         }
     }
+
+
 
     public void Awake() {
         if (this != Instance) {
@@ -79,6 +86,13 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         touchAreaCircle.left();
         // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
         this._gameManager.decreasePlayerCount();
+    }
+
+    /// <summary>
+    /// 中央の円オブジェクトの色を変える
+    /// </summary>
+    public void turnLeftLightBlue() {
+        this.leftSignLight.GetComponent<SpriteRenderer>().color = ColorConstant.LEFT_LIGHT_BLUE;
     }
 
     /// <summary>

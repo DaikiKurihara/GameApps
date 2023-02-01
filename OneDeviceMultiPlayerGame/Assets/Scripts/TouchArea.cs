@@ -6,7 +6,7 @@ public class TouchArea : MonoBehaviour {
     private int _touchCount = 0;
     /** GameManager */
     private GameManager _gameManager;
-    /** GameManager */
+    /** CanvasManager */
     private CanvasManager _canvasManager;
 
     void Start() {

@@ -15,6 +15,8 @@ public class Timer : MonoBehaviour {
     private bool _leaveFingerCounted = false;
     private float _leavingTime = 0.0F;
     private GameManager _gameManager;
+    /** CanvasManager */
+    private CanvasManager _canvasManager;
 
     public void reset() {
         this.currentCountDownTime = countTime;
@@ -24,6 +26,7 @@ public class Timer : MonoBehaviour {
 
     void Start() {
         _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
         // カウントダウン開始秒数をセット
         this.currentCountDownTime = countTime;
     }
@@ -50,12 +53,12 @@ public class Timer : MonoBehaviour {
         // 離す時間までのカウントアップ
         if (this._gameManager.IsGameStart && !_leaveFingerCounted) {
             currentCountUpTime += Time.deltaTime;
-            this.countDownText.text = formatTime(currentCountUpTime);
 
             if (this.currentCountUpTime >= this._leavingTime) {
                 this.stop();
                 this._leaveFingerCounted = true;
-                this.countDownText.text = " Leave!!!!!";
+                // 色を変えて離す合図
+                this._canvasManager.turnLeftLightBlue();
             }
         }
     }

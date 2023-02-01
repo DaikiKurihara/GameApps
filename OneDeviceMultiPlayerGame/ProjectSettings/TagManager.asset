@@ -7,6 +7,7 @@ TagManager:
   - CanvasManager
   - TouchArea
   - playerNum
+  - Timer
   layers:
   - Default
   - TransparentFX
