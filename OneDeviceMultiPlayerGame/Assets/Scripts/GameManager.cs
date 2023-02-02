@@ -61,6 +61,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
     /** フライングしたfingerIDリスト */
     private List<int> falseStartedList = new List<int>();
+    /** fingerIDをキーにプレイヤーNoを格納する辞書 */
+    private Dictionary<int, int> playerNumberMap = new Dictionary<int, int>();
 
     public void Awake() {
         if (this != Instance) {
@@ -96,10 +98,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
             // 結果の表示（Debug）
             int i = 1;
             foreach (KeyValuePair<int, float> kvp in sortedList) {
-                Debug.Log(string.Format("{0}位: 差:{1:0.00}, ID {2}", i++, kvp.Value, kvp.Key));
+                Debug.Log(string.Format("{0}位: 差:{1:0.00}, プレイヤー {2}", i++, kvp.Value, playerNumberMap[kvp.Key]));
             }
-            foreach (int player in falseStartedList) {
-                Debug.Log(string.Format("失格者:Player{0}", player));
+            foreach (int fingerId in falseStartedList) {
+                Debug.Log(string.Format("失格者:Player{0}", playerNumberMap[fingerId]));
             }
             this.openResult = false;
         }
@@ -162,6 +164,10 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
     }
 
+    public void dicidePlayerNumber(int fingerId, int playerNum) {
+        this.playerNumberMap.Add(fingerId, playerNum);
+    }
+
     private void gameReset() {
         this.isCountDownStart = false;
         this.isGameEnd = false;
@@ -174,6 +180,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.falseStartedList.Clear();
         this._canvasManager.resetCanvas();
     }
+
 
     /// <summary>
     /// タグをスクリプトから追加する

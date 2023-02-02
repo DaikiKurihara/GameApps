@@ -58,6 +58,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
             Touch touch = Input.GetTouch(i);
             TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(touch.fingerId).GetComponent<TouchAreaCircle>();
             touchAreaCircle.dicidePlayerNumber(i + 1);
+            this._gameManager.dicidePlayerNumber(touch.fingerId, i + 1);
         }
 
     }
