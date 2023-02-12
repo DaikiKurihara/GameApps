@@ -69,7 +69,7 @@ public class TouchArea : MonoBehaviour {
     /// ゲーム開始後に指が離れた場合
     /// </summary>
     private void touchFinished() {
-        if (!this._gameManager.IsGameStart) {
+        if (!this._gameManager.IsGameStart || this._gameManager.IsGameEnd) {
             return;
         }
         foreach (Touch touch in Input.touches) {
