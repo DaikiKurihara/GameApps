@@ -21,8 +21,6 @@ public class TouchAreaCircle : MonoBehaviour {
         GameObject touchAreaCirclePrefabInsatance = Instantiate(touchAreaCirclePrefab);
         // 新規タグの追加
         string tag = CommonConstant.FINGER_ID + fingerId.ToString();
-        // タグの付与
-        GameManager.AddTag(tag);
         touchAreaCirclePrefabInsatance.tag = tag;
         TouchAreaCircle TouchAreaCircle = touchAreaCirclePrefabInsatance.GetComponent<TouchAreaCircle>();
         TouchAreaCircle.fingerId = fingerId;
