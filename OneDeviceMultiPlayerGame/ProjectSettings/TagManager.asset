@@ -8,6 +8,21 @@ TagManager:
   - TouchArea
   - playerNum
   - Timer
+  - fingerID0
+  - fingerID1
+  - fingerID2
+  - fingerID3
+  - fingerID4
+  - fingerID5
+  - fingerID6
+  - fingerID7
+  - fingerID8
+  - fingerID9
+  - fingerID10
+  - fingerID11
+  - fingerID12
+  - fingerID13
+  - fingerID14
   layers:
   - Default
   - TransparentFX
