@@ -23,6 +23,7 @@ TagManager:
   - fingerID12
   - fingerID13
   - fingerID14
+  - AudioManager
   layers:
   - Default
   - TransparentFX

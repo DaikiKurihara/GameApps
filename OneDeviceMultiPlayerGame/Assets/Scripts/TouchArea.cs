@@ -8,10 +8,12 @@ public class TouchArea : MonoBehaviour {
     private GameManager _gameManager;
     /** CanvasManager */
     private CanvasManager _canvasManager;
+    private AudioManager _audioManager;
 
     void Start() {
-        this._gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
+        _audioManager = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
     }
 
     // Update is called once per frame
@@ -45,6 +47,7 @@ public class TouchArea : MonoBehaviour {
     private void touchBegan() {
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Began) {
+                _audioManager.onTouch();
                 this._canvasManager.generateTouchAreaCircle(touch.position, touch.fingerId);
             }
         }
@@ -75,9 +78,10 @@ public class TouchArea : MonoBehaviour {
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
                 if (!this._canvasManager.PlayerIds.Contains(touch.fingerId)) {
-                    // 画面常にいるプレイヤーではない場合処理終了
+                    // 画面上にいるプレイヤーではない場合処理終了
                     return;
                 }
+                _audioManager.onLeftTouch();
                 this._gameManager.fingerLeft(touch.fingerId);
                 this._canvasManager.touchFinished(touch.fingerId);
             }
