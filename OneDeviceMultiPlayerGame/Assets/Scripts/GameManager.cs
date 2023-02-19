@@ -150,7 +150,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.touchingPlayerCount--;
     }
 
-    public void falseStartPlayer(int fingerId) {
+    /// <summary>
+    /// フライングしたプレイヤーを格納
+    /// </summary>
+    /// <param name="fingerId"></param>
+    private void falseStartPlayer(int fingerId) {
         this.falseStartedList.Add(fingerId);
         if (this.falseStartedList.Count == this.playerCount) {
             this.gameReset();
@@ -177,6 +181,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.touchingPlayerCount = 0;
         this.playerCount = 0;
         this.leftTimeMap.Clear();
+        this.playerNumberMap.Clear();
         this.falseStartedList.Clear();
         this._canvasManager.resetCanvas();
     }

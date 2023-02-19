@@ -87,6 +87,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         touchAreaCircle.left();
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
         this._gameManager.decreaseTouchingPlayerCount();
+        this._gameManager.fingerLeft(fingerId);
     }
 
     /// <summary>

@@ -43,7 +43,6 @@ public class TouchArea : MonoBehaviour {
         this._touchCount = Input.touchCount;
     }
 
-
     private void touchBegan() {
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Began) {
@@ -82,7 +81,6 @@ public class TouchArea : MonoBehaviour {
                     return;
                 }
                 _audioManager.onLeftTouch();
-                this._gameManager.fingerLeft(touch.fingerId);
                 this._canvasManager.touchFinished(touch.fingerId);
             }
         }

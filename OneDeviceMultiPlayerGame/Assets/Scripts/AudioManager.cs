@@ -14,16 +14,14 @@ public class AudioManager : SingletonMonoBehaviour<AudioManager> {
 
 
     public void onLeftTouch() {
-        Debug.Log("離れる音!");
         audioSource.PlayOneShot(leftTouchSE);
     }
 
     public void onTouch() {
-        Debug.Log("触った音!");
         audioSource.PlayOneShot(touchSE);
     }
 
     public void onSurprise() {
-
+        audioSource.PlayOneShot(surpriseSE);
     }
 }
