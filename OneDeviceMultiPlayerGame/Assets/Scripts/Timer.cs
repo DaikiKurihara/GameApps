@@ -9,7 +9,6 @@ public class Timer : MonoBehaviour {
 
     private float currentCountDownTime;
     private float currentCountUpTime = 0.0F;
-    private List<float> surpriseTimes = new List<float>();
     public TextMeshProUGUI countDownText;
     [SerializeField] private float countTime = 5.0F;
     /** 指を離す時間（最大）の指定 */
@@ -100,9 +99,9 @@ public class Timer : MonoBehaviour {
     /// ビビらす
     /// </summary>
     private void onSurprise() {
-        if (surpriseTimes?.Count > 0 && surpriseTimes[0] <= currentCountUpTime) {
+        if (_gameManager.SurpriseTimes?.Count > 0 && _gameManager.SurpriseTimes[0] <= currentCountUpTime) {
             _physicalLayerManager.onSurpriseRandom();
-            surpriseTimes.RemoveAt(0);
+            _gameManager.SurpriseTimes.RemoveAt(0);
         }
     }
 
@@ -111,22 +110,15 @@ public class Timer : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     private void createSurpriseTime() {
-        float minSurpriseTime = 1F;
         // 0 ~指を離す時間÷5の回数分びびらす（19秒なら3回）
         int surpriseCount = Mathf.FloorToInt(Random.Range(0, _gameManager.StandardTime / 5));
+        float maxTime = _gameManager.StandardTime - 1.0F;
         Debug.Log($"びびらし回数：{surpriseCount}");
         for (int i = 0; i < surpriseCount; i++) {
-            if (i == 0) {
-                surpriseTimes.Add(Random.Range(minSurpriseTime, _gameManager.StandardTime));
-            } else {
-                float surpriseTime = Random.Range(surpriseTimes[i - 1] + 1.0F, _gameManager.StandardTime);
-                // 指を離す時間より1秒以上前で値が生成された場合のみ追加
-                if (surpriseTime + 1.0F < _gameManager.StandardTime) {
-                    surpriseTimes.Add(surpriseTime);
-                }
-            }
+            float minTime = i == 0 ? 1.0F : _gameManager.SurpriseTimes[i - 1] + 1.0F;
+            _gameManager.SurpriseTimes.Add(Random.Range(minTime, maxTime));
         }
-        Debug.Log($"びびらし秒数：{string.Join(",", surpriseTimes)}");
+        Debug.Log($"びびらし秒数：{string.Join(",", _gameManager.SurpriseTimes)}");
     }
 
     /// <summary>

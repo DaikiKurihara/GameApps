@@ -66,6 +66,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private List<int> falseStartedList = new List<int>();
     /** fingerIDをキーにプレイヤーNoを格納する辞書 */
     private Dictionary<int, int> playerNumberMap = new Dictionary<int, int>();
+    /** ビビらす時間 */
+    private List<float> surpriseTimes = new List<float>();
+    public List<float> SurpriseTimes {
+        get { return surpriseTimes; }
+    }
 
     public void Awake() {
         if (this != Instance) {
@@ -186,6 +191,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.leftTimeMap.Clear();
         this.playerNumberMap.Clear();
         this.falseStartedList.Clear();
+        this.surpriseTimes.Clear();
         this._canvasManager.resetCanvas();
     }
 }

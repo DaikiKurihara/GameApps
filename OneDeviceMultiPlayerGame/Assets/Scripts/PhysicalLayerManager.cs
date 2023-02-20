@@ -35,7 +35,8 @@ public class PhysicalLayerManager : SingletonMonoBehaviour<PhysicalLayerManager>
     }
 
     public void onSurpriseRandom() {
-        int random = Random.Range(0, 2);
+        // 0,1,2のいずれかを取る。Max値は含まない
+        int random = Random.Range(0, 3);
         if (random == 0) onSurprise();
         else if (random == 1) onSurprise2();
         else shortVibration();
