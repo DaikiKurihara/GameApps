@@ -55,6 +55,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private float passedTime { get; set; } = 0.0F;
     /** 指を離す指定時間 */
     private float standardTime { get; set; } = 0.0F;
+    public float StandardTime {
+        get { return this.standardTime; }
+    }
     /** ゲームが終了した時間 */
     private float endTime { get; set; } = 0.0F;
     /** 指を離した時間を格納する辞書 */

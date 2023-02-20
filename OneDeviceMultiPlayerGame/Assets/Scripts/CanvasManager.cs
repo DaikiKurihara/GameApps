@@ -20,8 +20,6 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         }
     }
 
-
-
     public void Awake() {
         if (this != Instance) {
             Destroy(gameObject);

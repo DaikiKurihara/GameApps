@@ -671,11 +671,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1800171983}
-  - component: {fileID: 1800171982}
   - component: {fileID: 1800171981}
+  - component: {fileID: 1800171984}
   m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: AudioManager
+  m_Name: PhysicalLayerManager
+  m_TagString: PhysicalLayerManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -776,21 +776,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1800171982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1800171980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aded5d394bab5486b9d2a03ff9c67baf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leftTouchSE: {fileID: 8300000, guid: b48121a22f4c8466eb9706448c455dcc, type: 3}
-  touchSE: {fileID: 8300000, guid: a865acc188f5c40679901f96f4b19604, type: 3}
-  surpriseSE: {fileID: 0}
 --- !u!4 &1800171983
 Transform:
   m_ObjectHideFlags: 0
@@ -806,6 +791,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1800171984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800171980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 389ec0185c679407299cf821106e6954, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftTouchSE: {fileID: 8300000, guid: b48121a22f4c8466eb9706448c455dcc, type: 3}
+  touchSE: {fileID: 8300000, guid: a865acc188f5c40679901f96f4b19604, type: 3}
+  surpriseSE: {fileID: 8300000, guid: c3862d666885b48cead4c6f9266221d5, type: 3}
+  surprise2SE: {fileID: 8300000, guid: 141ceabb59da14620a37325314a7c8f7, type: 3}
+  fireSE: {fileID: 8300000, guid: 84021bf50a553462b8aba7e4f8380d33, type: 3}
 --- !u!1 &1974186054
 GameObject:
   m_ObjectHideFlags: 0
@@ -859,7 +861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countDownText: {fileID: 1974186057}
   countTime: 5
-  maxLeavingTime: 6
+  maxLeavingTime: 20
 --- !u!114 &1974186057
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 using System;
 // avoid a conflict between System.Random and UnityEngine.
 using Random = UnityEngine.Random;
@@ -8,15 +9,17 @@ public class Timer : MonoBehaviour {
 
     private float currentCountDownTime;
     private float currentCountUpTime = 0.0F;
+    private List<float> surpriseTimes = new List<float>();
     public TextMeshProUGUI countDownText;
     [SerializeField] private float countTime = 5.0F;
     /** 指を離す時間（最大）の指定 */
     [SerializeField] int maxLeavingTime = 20;
     private bool _leaveFingerCounted = false;
     private float _leavingTime = 0.0F;
+
     private GameManager _gameManager;
-    /** CanvasManager */
     private CanvasManager _canvasManager;
+    private PhysicalLayerManager _physicalLayerManager;
 
     public void reset() {
         this.currentCountDownTime = countTime;
@@ -27,6 +30,7 @@ public class Timer : MonoBehaviour {
     void Start() {
         _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
+        _physicalLayerManager = GameObject.FindWithTag("PhysicalLayerManager").GetComponent<PhysicalLayerManager>();
         // カウントダウン開始秒数をセット
         this.currentCountDownTime = countTime;
     }
@@ -42,6 +46,7 @@ public class Timer : MonoBehaviour {
                 this.gameStart();
                 this.countDownText.text = "";
                 this._leavingTime = createLeaveFingerTime();
+                createSurpriseTime();
                 Debug.Log("離す時間は：" + this._leavingTime);
             }
         } else if (!this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
@@ -53,6 +58,9 @@ public class Timer : MonoBehaviour {
         // 離す時間までのカウントアップ
         if (this._gameManager.IsGameStart && !_leaveFingerCounted) {
             currentCountUpTime += Time.deltaTime;
+
+            // びびらす
+            onSurprise();
 
             if (this.currentCountUpTime >= this._leavingTime) {
                 this.stop();
@@ -81,12 +89,44 @@ public class Timer : MonoBehaviour {
     /// 指を離す指定時間を生成する
     /// </summary>
     private float createLeaveFingerTime() {
-
-        // 0.5秒単位で生成する
-        float leavingTime = (Random.Range(3 * 2, maxLeavingTime * 2)) / 2;
+        // int型で生成した値をfloatの2で除算して0.5秒単位で生成する
+        float leavingTime = (Random.Range(3 * 2, maxLeavingTime * 2)) / 2.0F;
         // ゲームマネージャーに離す時間確定を通知
         this._gameManager.decideStandardTime(leavingTime);
         return leavingTime;
+    }
+
+    /// <summary>
+    /// ビビらす
+    /// </summary>
+    private void onSurprise() {
+        if (surpriseTimes?.Count > 0 && surpriseTimes[0] <= currentCountUpTime) {
+            _physicalLayerManager.onSurpriseRandom();
+            surpriseTimes.RemoveAt(0);
+        }
+    }
+
+    /// <summary>
+    /// びびらす時間と回数を生成
+    /// </summary>
+    /// <returns></returns>
+    private void createSurpriseTime() {
+        float minSurpriseTime = 1F;
+        // 0 ~指を離す時間÷5の回数分びびらす（19秒なら3回）
+        int surpriseCount = Mathf.FloorToInt(Random.Range(0, _gameManager.StandardTime / 5));
+        Debug.Log($"びびらし回数：{surpriseCount}");
+        for (int i = 0; i < surpriseCount; i++) {
+            if (i == 0) {
+                surpriseTimes.Add(Random.Range(minSurpriseTime, _gameManager.StandardTime));
+            } else {
+                float surpriseTime = Random.Range(surpriseTimes[i - 1] + 1.0F, _gameManager.StandardTime);
+                // 指を離す時間より1秒以上前で値が生成された場合のみ追加
+                if (surpriseTime + 1.0F < _gameManager.StandardTime) {
+                    surpriseTimes.Add(surpriseTime);
+                }
+            }
+        }
+        Debug.Log($"びびらし秒数：{string.Join(",", surpriseTimes)}");
     }
 
     /// <summary>
