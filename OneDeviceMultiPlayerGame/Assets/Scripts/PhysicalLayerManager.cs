@@ -12,6 +12,7 @@ public class PhysicalLayerManager : SingletonMonoBehaviour<PhysicalLayerManager>
     [SerializeField] private AudioClip surprise2SE;
     [SerializeField] private AudioClip fireSE;
     private AudioSource audioSource;
+    private GameManager _gameManager;
 
     public void Awake() {
         if (this != Instance) {
@@ -24,6 +25,7 @@ public class PhysicalLayerManager : SingletonMonoBehaviour<PhysicalLayerManager>
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
+        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
     }
 
     public void onLeftTouch() {
@@ -35,11 +37,26 @@ public class PhysicalLayerManager : SingletonMonoBehaviour<PhysicalLayerManager>
     }
 
     public void onSurpriseRandom() {
-        // 0,1,2のいずれかを取る。Max値は含まない
-        int random = Random.Range(0, 3);
+        Debug.Log($"バイブ:{_gameManager.isOnVibration}、音{_gameManager.isOnFeintSound}");
+        if (!_gameManager.isOnFeintSound && _gameManager.isOnVibration) {
+            shortVibration();
+            return;
+        } else if (_gameManager.isOnFeintSound && !_gameManager.isOnVibration) {
+            onSurpriseSoundRandom();
+            return;
+        } else if (!_gameManager.isOnFeintSound && !_gameManager.isOnVibration) {
+            return;
+        }
+        // 0,1のいずれかを取る。Max値は含まない
+        int random = Random.Range(0, 2);
+        if (random == 0) onSurpriseSoundRandom();
+        else if (random == 1) shortVibration();
+    }
+
+    private void onSurpriseSoundRandom() {
+        int random = Random.Range(0, 2);
         if (random == 0) onSurprise();
         else if (random == 1) onSurprise2();
-        else shortVibration();
     }
 
     public void onSurprise() {

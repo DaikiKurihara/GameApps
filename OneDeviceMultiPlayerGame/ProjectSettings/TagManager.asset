@@ -24,6 +24,10 @@ TagManager:
   - fingerID13
   - fingerID14
   - PhysicalLayerManager
+  - MaxTimeValue
+  - SettingSceneCanvasManager
+  - VibrationToggle
+  - FeintSoundToggle
   layers:
   - Default
   - TransparentFX

@@ -58,6 +58,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public float StandardTime {
         get { return this.standardTime; }
     }
+    /** 指を離す最大時間 */
+    private float maxTime;
+    public float MaxTime {
+        get {
+            if (maxTime == 0) {
+                return 15;
+            }
+            return maxTime;
+        }
+    }
+    /** ビビらせバイブ有無 */
+    public bool isOnVibration;
+    /** ビビらせ音有無 */
+    public bool isOnFeintSound;
     /** ゲームが終了した時間 */
     private float endTime { get; set; } = 0.0F;
     /** 指を離した時間を格納する辞書 */
@@ -156,6 +170,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     public void decreaseTouchingPlayerCount() {
         this.touchingPlayerCount--;
+    }
+
+    public void setMaxTime(string value) {
+        int i;
+        if (int.TryParse(value, out i) || i == 0) {
+            Debug.Log($"変換成功{i}");
+            maxTime = i;
+        } else {
+            Debug.Log($"変換失敗{i}");
+            maxTime = int.Parse(MaxTimeMapConstant.DEFAULT_MAX_TIME);
+        }
     }
 
     /// <summary>

@@ -11,8 +11,6 @@ public class Timer : MonoBehaviour {
     private float currentCountUpTime = 0.0F;
     public TextMeshProUGUI countDownText;
     [SerializeField] private float countTime = 5.0F;
-    /** 指を離す時間（最大）の指定 */
-    [SerializeField] int maxLeavingTime = 20;
     private bool _leaveFingerCounted = false;
     private float _leavingTime = 0.0F;
 
@@ -45,8 +43,8 @@ public class Timer : MonoBehaviour {
                 this.gameStart();
                 this.countDownText.text = "";
                 this._leavingTime = createLeaveFingerTime();
-                createSurpriseTime();
                 Debug.Log("離す時間は：" + this._leavingTime);
+                createSurpriseTime();
             }
         } else if (!this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
             // カウントダウン開始秒数をリセット
@@ -89,7 +87,8 @@ public class Timer : MonoBehaviour {
     /// </summary>
     private float createLeaveFingerTime() {
         // int型で生成した値をfloatの2で除算して0.5秒単位で生成する
-        float leavingTime = (Random.Range(3 * 2, maxLeavingTime * 2)) / 2.0F;
+        Debug.Log($"Managerから取得した値は{_gameManager.MaxTime}");
+        float leavingTime = (Random.Range(3 * 2, _gameManager.MaxTime * 2)) / 2.0F;
         // ゲームマネージャーに離す時間確定を通知
         this._gameManager.decideStandardTime(leavingTime);
         return leavingTime;
@@ -112,9 +111,11 @@ public class Timer : MonoBehaviour {
     private void createSurpriseTime() {
         // 0 ~指を離す時間÷5の回数分びびらす（19秒なら3回）
         int surpriseCount = Mathf.FloorToInt(Random.Range(0, _gameManager.StandardTime / 5));
+        // max時間は指を離す時間より1秒以上前
         float maxTime = _gameManager.StandardTime - 1.0F;
         Debug.Log($"びびらし回数：{surpriseCount}");
         for (int i = 0; i < surpriseCount; i++) {
+            // min時間は前回のビビらせ時間より1秒以上間隔を空ける
             float minTime = i == 0 ? 1.0F : _gameManager.SurpriseTimes[i - 1] + 1.0F;
             _gameManager.SurpriseTimes.Add(Random.Range(minTime, maxTime));
         }
