@@ -13,9 +13,14 @@
     public const string MAX_TIME_VALUE = "MaxTimeValue";
 
     /**
-     * 最大時間の値
+     * 設定画面マネージャー
      */
     public const string SETTING_SCENE_CANVAS_MANAGER = "SettingSceneCanvasManager";
+
+    /**
+     * タイトル画面マネージャー
+     */
+    public const string TITLE_SCENE_MANAGER = "TitleSceneManager";
 
     /**
      * チェックボックス：ビビらせ音
@@ -56,8 +61,20 @@
 
     /************************シーン名****************************/
 
-    //仮でGameSceneにしておく
-    public const string HOME_SCENE = "GameScene";
+    /**
+     * タイトル
+     */
+    public const string TITLE_SCENE = "TitleScene";
+
+    /**
+     * ゲームシーン
+     */
+    public const string GAME_SCENE = "GameScene";
+
+    /**
+     * 設定シーン
+     */
+    public const string SETTING_SCENE = "SettingScene";
 
     /************************シーン名****************************/
 }

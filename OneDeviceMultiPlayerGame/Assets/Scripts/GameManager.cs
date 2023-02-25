@@ -174,12 +174,13 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     public void setMaxTime(string value) {
         int i;
-        if (int.TryParse(value, out i) || i == 0) {
+        if (int.TryParse(value, out i)) {
+            i = i == 0 ? int.Parse(MaxTimeMapConstant.DEFAULT_MAX_TIME) : i;
             Debug.Log($"変換成功{i}");
             maxTime = i;
         } else {
-            Debug.Log($"変換失敗{i}");
             maxTime = int.Parse(MaxTimeMapConstant.DEFAULT_MAX_TIME);
+            Debug.Log($"変換失敗{maxTime}");
         }
     }
 

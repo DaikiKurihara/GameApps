@@ -41,16 +41,16 @@ public class SettingSceneCanvasManager : SingletonMonoBehaviour<SettingSceneCanv
     }
 
     public void onBackToHome() {
-        SceneManager.sceneLoaded += homeSceneLoaded;
+        SceneManager.sceneLoaded += titleSceneLoaded;
         // シーン切り替え
-        SceneManager.LoadScene(CommonConstant.HOME_SCENE);
+        SceneManager.LoadScene(CommonConstant.TITLE_SCENE);
     }
 
-    private void homeSceneLoaded(Scene next, LoadSceneMode mode) {
-        GameManager gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-        gameManager.setMaxTime(maxTimeValue.text);
-        gameManager.isOnVibration = vibrationToggle.isOn;
-        gameManager.isOnFeintSound = feintSoundToggle.isOn;
-        SceneManager.sceneLoaded -= homeSceneLoaded;
+    private void titleSceneLoaded(Scene next, LoadSceneMode mode) {
+        TitleSceneManager titleSceneManager = GameObject.FindWithTag(CommonConstant.TITLE_SCENE_MANAGER).GetComponent<TitleSceneManager>();
+        titleSceneManager.maxTime = maxTimeValue.text;
+        titleSceneManager.isOnVibration = vibrationToggle.isOn;
+        titleSceneManager.isOnFeintSound = feintSoundToggle.isOn;
+        SceneManager.sceneLoaded -= titleSceneLoaded;
     }
 }

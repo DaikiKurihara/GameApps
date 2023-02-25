@@ -28,6 +28,7 @@ TagManager:
   - SettingSceneCanvasManager
   - VibrationToggle
   - FeintSoundToggle
+  - TitleSceneManager
   layers:
   - Default
   - TransparentFX
