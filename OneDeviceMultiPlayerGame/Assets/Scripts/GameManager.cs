@@ -49,7 +49,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private int playerCount = 0;
 
     // 結果表示
-    private bool openResult = false;
+    private bool isOpenResult = false;
 
     /** ゲーム開始からの経過時間 */
     private float passedTime { get; set; } = 0.0F;
@@ -105,27 +105,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
 
         // 指が離れてから3秒後に結果を出す
-        if (this.openResult && this.passedTime - this.endTime > 3.0) {
-            // フライングしたプレイヤーを除いたディクショナリをクローンする
-            var cloneDict = new Dictionary<int, float>(this.leftTimeMap).
-                Where(x => x.Value > 0).
-                ToDictionary(d => d.Key, d => d.Value);
-            // 話した時間の絶対値を取る
-            List<int> keys = new List<int>(cloneDict.Keys);
-            foreach (int k in keys) {
-                cloneDict[k] = Math.Abs(cloneDict[k]);
-            }
-            // LINQを使ってValueでソート
-            var sortedList = cloneDict.OrderBy(x => x.Value).ToList();
-            // 結果の表示（Debug）
-            int i = 1;
-            foreach (KeyValuePair<int, float> kvp in sortedList) {
-                Debug.Log(string.Format("{0}位: 差:{1:0.00}, プレイヤー {2}", i++, kvp.Value, playerNumberMap[kvp.Key]));
-            }
-            foreach (int fingerId in falseStartedList) {
-                Debug.Log(string.Format("失格者:Player{0}", playerNumberMap[fingerId]));
-            }
-            this.openResult = false;
+        if (this.isOpenResult && this.passedTime - this.endTime > 3.0) {
+            openResult();
         }
     }
 
@@ -161,7 +142,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     /// </summary>
     private void decideEndTime() {
         this.endTime = this.passedTime;
-        this.openResult = true;
+        this.isOpenResult = true;
     }
 
     public void increaseTouchingPlayerCount() {
@@ -206,12 +187,43 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.playerNumberMap.Add(fingerId, playerNum);
     }
 
+    private void openResult() {
+        // フライングしたプレイヤーを除いたディクショナリをクローンする
+        var cloneDict = new Dictionary<int, float>(this.leftTimeMap).
+            Where(x => x.Value > 0).
+            ToDictionary(d => d.Key, d => d.Value);
+        // 話した時間の絶対値を取る
+        List<int> keys = new List<int>(cloneDict.Keys);
+        foreach (int k in keys) {
+            cloneDict[k] = Math.Abs(cloneDict[k]);
+        }
+        // LINQを使ってValueでソート
+        var sortedList = cloneDict.OrderBy(x => x.Value).ToList();
+        // 結果の表示（Debug）
+        int i = 1;
+        int rank = 0;
+        float previousPlayerTime = -1;
+        foreach (KeyValuePair<int, float> kvp in sortedList) {
+            if (previousPlayerTime != kvp.Value) {
+                rank = i;
+            }
+            Debug.Log(string.Format("{0}位: 差:{1:0.00}, プレイヤー {2}", rank, kvp.Value, playerNumberMap[kvp.Key]));
+            i++;
+            previousPlayerTime = kvp.Value;
+        }
+        foreach (int fingerId in falseStartedList) {
+            Debug.Log(string.Format("失格者:Player{0}", playerNumberMap[fingerId]));
+        }
+        this.isOpenResult = false;
+    }
+
+
     private void gameReset() {
         this.isCountDownStart = false;
         this.isGameEnd = false;
         this.isGameStart = false;
         this.isStopped = false;
-        this.openResult = false;
+        this.isOpenResult = false;
         this.touchingPlayerCount = 0;
         this.playerCount = 0;
         this.leftTimeMap.Clear();

@@ -86,9 +86,8 @@ public class Timer : MonoBehaviour {
     /// 指を離す指定時間を生成する
     /// </summary>
     private float createLeaveFingerTime() {
-        // int型で生成した値をfloatの2で除算して0.5秒単位で生成する
         Debug.Log($"Managerから取得した値は{_gameManager.MaxTime}");
-        float leavingTime = (Random.Range(3 * 2, _gameManager.MaxTime * 2)) / 2.0F;
+        float leavingTime = Random.Range(3, _gameManager.MaxTime);
         // ゲームマネージャーに離す時間確定を通知
         this._gameManager.decideStandardTime(leavingTime);
         return leavingTime;
