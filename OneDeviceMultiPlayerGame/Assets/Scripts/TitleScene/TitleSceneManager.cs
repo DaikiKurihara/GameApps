@@ -24,7 +24,6 @@ public class TitleSceneManager : MonoBehaviour {
 
     private void gameSceneLoaded(Scene next, LoadSceneMode mode) {
         GameManager gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-        Debug.Log($"タイトルシーンから出力バイブ:{isOnVibration}、音{isOnFeintSound}");
         gameManager.isOnFeintSound = isOnFeintSound;
         gameManager.isOnVibration = isOnVibration;
         gameManager.setMaxTime(maxTime);

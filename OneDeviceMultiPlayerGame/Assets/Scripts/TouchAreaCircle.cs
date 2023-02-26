@@ -51,12 +51,20 @@ public class TouchAreaCircle : MonoBehaviour {
         textObj.SetActive(true);
         TextMeshProUGUI playerNumTxt = textObj.GetComponent<TextMeshProUGUI>();
         this.playerNumber = playerNumber;
-        playerNumTxt.text = "Player" + playerNumber.ToString();
+        playerNumTxt.text = $"Player{playerNumber}";
     }
 
     public void left() {
         this.isLeft = true;
         this.GetComponent<SpriteRenderer>().color = ColorConstant.CIRCLE_FINISHED;
+    }
+
+    public void openResult(int rank, float diff) {
+        // 非アクティブなオブジェクトはfindWithTagでは取得できないためtransformのメソッドを使う
+        GameObject rankObj = transform.GetChild(1).gameObject;
+        rankObj.SetActive(true);
+        TextMeshProUGUI rankTxt = rankObj.GetComponent<TextMeshProUGUI>();
+        rankTxt.text = $"{rank}：+{diff.ToString("N3")}";
     }
 
     /// <summary>

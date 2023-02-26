@@ -29,6 +29,7 @@ TagManager:
   - VibrationToggle
   - FeintSoundToggle
   - TitleSceneManager
+  - RankLabel
   layers:
   - Default
   - TransparentFX

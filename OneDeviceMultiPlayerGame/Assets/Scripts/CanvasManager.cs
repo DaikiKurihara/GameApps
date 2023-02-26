@@ -96,6 +96,17 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     }
 
     /// <summary>
+    /// タッチサークルの上部に結果を表示する
+    /// </summary>
+    /// <param name="players"></param>
+    public void openResult(List<(int fingerId, int rank, float diff)> players) {
+        foreach ((int fingerId, int rank, float diff) playerResult in players) {
+            getTouchAreaCircleByFingerId(playerResult.fingerId).GetComponent<TouchAreaCircle>()
+                .openResult(playerResult.rank, playerResult.diff);
+        }
+    }
+
+    /// <summary>
     /// fingerIDからタッチエリアの円オブジェクトを取得する
     /// </summary>
     /// <param name="fingerId"></param>
@@ -104,6 +115,9 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId}");
     }
 
+    /// <summary>
+    /// キャンバスを初期状態に戻す
+    /// </summary>
     public void resetCanvas() {
         this.timer.reset();
         destroyAllTouchAreaCircle();

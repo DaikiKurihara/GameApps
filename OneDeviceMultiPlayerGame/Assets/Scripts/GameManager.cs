@@ -85,6 +85,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     public List<float> SurpriseTimes {
         get { return surpriseTimes; }
     }
+    /** <プレイヤーNo, <ランク, 秒差>> */
+    private List<(int fingerId, int rank, float diff)> playersResult = new List<(int fingerId, int rank, float diff)>();
+    public List<(int fingerId, int rank, float diff)> PlayerResult {
+        get { return playersResult; }
+    }
 
     public void Awake() {
         if (this != Instance) {
@@ -208,12 +213,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 rank = i;
             }
             Debug.Log(string.Format("{0}位: 差:{1:0.00}, プレイヤー {2}", rank, kvp.Value, playerNumberMap[kvp.Key]));
+            playersResult.Add((kvp.Key, rank, kvp.Value));
             i++;
             previousPlayerTime = kvp.Value;
         }
         foreach (int fingerId in falseStartedList) {
             Debug.Log(string.Format("失格者:Player{0}", playerNumberMap[fingerId]));
+            playersResult.Add((fingerId, -1, -1));
         }
+        _canvasManager.openResult(playersResult);
         this.isOpenResult = false;
     }
 
