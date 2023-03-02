@@ -17,9 +17,9 @@ public class ResultCanvasManager : MonoBehaviour {
             GameObject viewContent = GameObject.FindWithTag(CommonConstant.RESULT_VIEW_CONTENT);
             GameObject playerResult = Resources.Load<GameObject>(CommonConstant.PLAYER_RESULT);
             GameObject playerResultInstance = Instantiate(playerResult);
-            playerResultInstance.transform.SetParent(viewContent.transform, false);
             TextMeshProUGUI textObj = playerResultInstance.GetComponent<TextMeshProUGUI>();
-            textObj.text = $"{generateRankAbbreviation(result.rank)} : {result.playerNum} +{result.diff}";
+            textObj.text = $"{generateRankAbbreviation(result.rank)} : Player{result.playerNum} {format(result.diff)}";
+            playerResultInstance.transform.SetParent(viewContent.transform, false);
         }
     }
 
@@ -35,7 +35,9 @@ public class ResultCanvasManager : MonoBehaviour {
     }
 
     private string generateRankAbbreviation(int rank) {
-        if (rank == 1) {
+        if (rank < 0) {
+            return "DQ";
+        } else if (rank == 1) {
             return "1st";
         } else if (rank == 2) {
             return "2nd";
@@ -43,6 +45,14 @@ public class ResultCanvasManager : MonoBehaviour {
             return "3rd";
         } else {
             return $"{rank}th";
+        }
+    }
+
+    private string format(float diff) {
+        if (diff < 0) {
+            return "--";
+        } else {
+            return $"+{diff.ToString("N2")}";
         }
     }
 }

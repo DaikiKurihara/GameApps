@@ -97,9 +97,6 @@ public class GameManager : MonoBehaviour {
     }
 
     void Update() {
-        if (resultCanvas == null) {
-            Debug.Log("nullになった！");
-        }
         if (this.isGameStart) {
             this.passedTime += Time.deltaTime;
         }
