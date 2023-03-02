@@ -228,6 +228,9 @@ public class GameManager : MonoBehaviour {
         this.isGameStart = false;
         this.isStopped = false;
         this.playerCount = 0;
+        this.passedTime = 0;
+        this.endTime = 0;
+        this.standardTime = 0;
         this.leftTimeMap.Clear();
         this.playerNumberMap.Clear();
         this.falseStartedList.Clear();
@@ -236,6 +239,7 @@ public class GameManager : MonoBehaviour {
         this._canvasManager.turnLeftLightDefault();
         this.playersResult.Clear();
         this.touchingPlayerCount = 0;
+        this.isOpenResult = false;
     }
 
     /// <summary>
@@ -243,7 +247,6 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void gameRetry() {
         gameReset();
-        this.isOpenResult = false; // リセットとの相違点
         this.resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
     }
 }

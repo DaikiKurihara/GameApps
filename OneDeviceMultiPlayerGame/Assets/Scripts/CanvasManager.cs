@@ -19,6 +19,13 @@ public class CanvasManager : MonoBehaviour {
         }
     }
 
+    private List<int> finishedPlayerIds = new List<int>();
+    public List<int> FinishedPlayerIds {
+        get {
+            return this.finishedPlayerIds;
+        }
+    }
+
     void Start() {
         _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
@@ -75,6 +82,7 @@ public class CanvasManager : MonoBehaviour {
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
         this._gameManager.decreaseTouchingPlayerCount();
         this._gameManager.fingerLeft(fingerId);
+        finishedPlayerIds.Add(fingerId);
     }
 
     /// <summary>
@@ -116,6 +124,8 @@ public class CanvasManager : MonoBehaviour {
     /// </summary>
     public void resetCanvas() {
         this.timer.reset();
+        this.playerIds.Clear();
+        this.finishedPlayerIds.Clear();
         destroyAllTouchAreaCircle();
     }
 

@@ -76,8 +76,8 @@ public class TouchArea : MonoBehaviour {
         }
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
-                if (!this._canvasManager.PlayerIds.Contains(touch.fingerId)) {
-                    // 画面上にいるプレイヤーではない場合処理終了
+                if (!this._canvasManager.PlayerIds.Contains(touch.fingerId) || _canvasManager.FinishedPlayerIds.Contains(touch.fingerId)) {
+                    // 画面上にいるプレイヤーではないもしくはすでにタッチ終了したプレイヤーの場合処理終了
                     return;
                 }
                 _physicalLayerManager.onLeftTouch();
