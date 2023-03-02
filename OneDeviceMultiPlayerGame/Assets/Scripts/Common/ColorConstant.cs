@@ -11,4 +11,9 @@ public class ColorConstant {
      * 指を離す合図
      */
     public static readonly Color LEFT_LIGHT_BLUE = new Color(0, 131, 253, 0.317F);
+
+    /**
+     * デフォルトの中心サークルの色
+     */
+    public static readonly Color LEFT_LIGHT_DEFAULT = new Color(253, 0, 133, 0.17F);
 }

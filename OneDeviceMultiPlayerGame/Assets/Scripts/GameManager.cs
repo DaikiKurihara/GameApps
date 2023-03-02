@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System.Linq;
 
 public class GameManager : SingletonMonoBehaviour<GameManager> {
 
     /** GameManager */
     private CanvasManager _canvasManager;
+    [SerializeField] private GameObject resultCanvas;
 
     // 準備画面突入有無のフラグ
     private bool isCountDownStart = false;
@@ -26,6 +26,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
         get { return this.isGameStart; }
     }
+
     // ゲーム終了（ゲーム開始→ストップタイム→指が全部離れた状態）フラグ
     private bool isGameEnd = false;
     public bool IsGameEnd {
@@ -69,9 +70,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         }
     }
     /** ビビらせバイブ有無 */
-    public bool isOnVibration;
+    [NonSerialized] public bool isOnVibration;
     /** ビビらせ音有無 */
-    public bool isOnFeintSound;
+    [NonSerialized] public bool isOnFeintSound;
     /** ゲームが終了した時間 */
     private float endTime { get; set; } = 0.0F;
     /** 指を離した時間を格納する辞書 */
@@ -86,8 +87,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         get { return surpriseTimes; }
     }
     /** <プレイヤーNo, <ランク, 秒差>> */
-    private List<(int fingerId, int rank, float diff)> playersResult = new List<(int fingerId, int rank, float diff)>();
-    public List<(int fingerId, int rank, float diff)> PlayerResult {
+    private List<(int fingerId, int playerNum, int rank, float diff)> playersResult = new List<(int fingerId, int playerNum, int rank, float diff)>();
+    public List<(int fingerId, int playerNum, int rank, float diff)> PlayersResult {
         get { return playersResult; }
     }
 
@@ -105,6 +106,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     void Update() {
+        if (resultCanvas == null) {
+            Debug.Log("nullになった！");
+        }
         if (this.isGameStart) {
             this.passedTime += Time.deltaTime;
         }
@@ -112,6 +116,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         // 指が離れてから3秒後に結果を出す
         if (this.isOpenResult && this.passedTime - this.endTime > 3.0) {
             openResult();
+            this.isOpenResult = false;
         }
     }
 
@@ -155,7 +160,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     }
 
     public void decreaseTouchingPlayerCount() {
-        this.touchingPlayerCount--;
+        if (touchingPlayerCount > 0) {
+            this.touchingPlayerCount--;
+        }
     }
 
     public void setMaxTime(string value) {
@@ -213,16 +220,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
                 rank = i;
             }
             Debug.Log(string.Format("{0}位: 差:{1:0.00}, プレイヤー {2}", rank, kvp.Value, playerNumberMap[kvp.Key]));
-            playersResult.Add((kvp.Key, rank, kvp.Value));
+            playersResult.Add((kvp.Key, playerNumberMap[kvp.Key], rank, kvp.Value));
             i++;
             previousPlayerTime = kvp.Value;
         }
         foreach (int fingerId in falseStartedList) {
             Debug.Log(string.Format("失格者:Player{0}", playerNumberMap[fingerId]));
-            playersResult.Add((fingerId, -1, -1));
+            playersResult.Add((fingerId, playerNumberMap[fingerId], -1, -1));
         }
         _canvasManager.openResult(playersResult);
-        this.isOpenResult = false;
+        resultCanvas.SetActive(true);
+        resultCanvas.GetComponent<ResultCanvasManager>().openPlayerResults(playersResult);
     }
 
 
@@ -231,13 +239,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
         this.isGameEnd = false;
         this.isGameStart = false;
         this.isStopped = false;
-        this.isOpenResult = false;
-        this.touchingPlayerCount = 0;
         this.playerCount = 0;
         this.leftTimeMap.Clear();
         this.playerNumberMap.Clear();
         this.falseStartedList.Clear();
         this.surpriseTimes.Clear();
         this._canvasManager.resetCanvas();
+        this._canvasManager.turnLeftLightDefault();
+        this.playersResult.Clear();
+        this.touchingPlayerCount = 0;
+    }
+
+    /// <summary>
+    /// ゲーム終了後に再開する
+    /// </summary>
+    public void gameRetry() {
+        gameReset();
+        this.isOpenResult = false; // リセットとの相違点
+        this.resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
     }
 }

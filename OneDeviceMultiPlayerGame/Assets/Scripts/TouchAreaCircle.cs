@@ -1,4 +1,3 @@
-
 using TMPro;
 using UnityEngine;
 public class TouchAreaCircle : MonoBehaviour {
@@ -17,7 +16,7 @@ public class TouchAreaCircle : MonoBehaviour {
     /// <param name="fingerId"></param>
     /// <returns> プレハブのインスタンス </returns>
     public static GameObject Init(int fingerId) {
-        GameObject touchAreaCirclePrefab = Resources.Load<GameObject>("TouchAreaCircle");
+        GameObject touchAreaCirclePrefab = Resources.Load<GameObject>(CommonConstant.TOUCH_AREA_CIRCLE);
         GameObject touchAreaCirclePrefabInsatance = Instantiate(touchAreaCirclePrefab);
         // 新規タグの追加
         string tag = CommonConstant.FINGER_ID + fingerId.ToString();
@@ -64,7 +63,8 @@ public class TouchAreaCircle : MonoBehaviour {
         GameObject rankObj = transform.GetChild(1).gameObject;
         rankObj.SetActive(true);
         TextMeshProUGUI rankTxt = rankObj.GetComponent<TextMeshProUGUI>();
-        rankTxt.text = $"{rank}：+{diff.ToString("N3")}";
+        // 小数点第２位で誤差表記
+        rankTxt.text = $"{rank} : +{diff.ToString("N2")}";
     }
 
     /// <summary>

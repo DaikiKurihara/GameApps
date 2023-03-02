@@ -5,7 +5,6 @@ using UnityEngine;
 public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
 
     [SerializeField] private Canvas canvas;
-
     [SerializeField] private GameObject leftSignLight;
 
     private GameManager _gameManager;
@@ -35,7 +34,6 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     }
 
     public void generateTouchAreaCircle(Vector2 touchPosition, int fingerId) {
-
         // touchPositionは画面ピクセルの位置なので、ワールド座標に変換
         Vector3 worldTouchPosition = Camera.main.ScreenToWorldPoint(touchPosition);
         worldTouchPosition.z = 0;
@@ -96,11 +94,18 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     }
 
     /// <summary>
+    /// 中央の円オブジェクトの色をデフォルトに戻す
+    /// </summary>
+    public void turnLeftLightDefault() {
+        this.leftSignLight.GetComponent<SpriteRenderer>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
+    }
+
+    /// <summary>
     /// タッチサークルの上部に結果を表示する
     /// </summary>
     /// <param name="players"></param>
-    public void openResult(List<(int fingerId, int rank, float diff)> players) {
-        foreach ((int fingerId, int rank, float diff) playerResult in players) {
+    public void openResult(List<(int fingerId, int playerNum, int rank, float diff)> players) {
+        foreach ((int fingerId, int playerNum, int rank, float diff) playerResult in players) {
             getTouchAreaCircleByFingerId(playerResult.fingerId).GetComponent<TouchAreaCircle>()
                 .openResult(playerResult.rank, playerResult.diff);
         }
@@ -127,6 +132,7 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
     /// 画面に存在する円オブジェクトを全て削除する
     /// </summary>
     private void destroyAllTouchAreaCircle() {
+        Debug.Log(canvas);
         for (int i = 0; i < this.canvas.transform.childCount; i++) {
             GameObject go = this.canvas.transform.GetChild(i).gameObject;
             if (go.tag.Contains(CommonConstant.FINGER_ID)) {
