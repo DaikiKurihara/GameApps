@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
+public class CanvasManager : MonoBehaviour {
 
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject leftSignLight;
@@ -17,15 +17,6 @@ public class CanvasManager : SingletonMonoBehaviour<CanvasManager> {
         get {
             return this.playerIds;
         }
-    }
-
-    public void Awake() {
-        if (this != Instance) {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     void Start() {

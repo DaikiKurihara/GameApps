@@ -1,7 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// シングルトンにしたいオブジェクトに継承させるクラス
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour {
     private static T instance;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class GameManager : SingletonMonoBehaviour<GameManager> {
+public class GameManager : MonoBehaviour {
 
     /** GameManager */
     private CanvasManager _canvasManager;
@@ -90,15 +90,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager> {
     private List<(int fingerId, int playerNum, int rank, float diff)> playersResult = new List<(int fingerId, int playerNum, int rank, float diff)>();
     public List<(int fingerId, int playerNum, int rank, float diff)> PlayersResult {
         get { return playersResult; }
-    }
-
-    public void Awake() {
-        if (this != Instance) {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     void Start() {

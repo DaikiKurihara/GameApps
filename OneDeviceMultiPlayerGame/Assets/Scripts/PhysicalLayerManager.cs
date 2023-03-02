@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 物理層の出力（音、振動）を統括するクラス
 /// </summary>
-public class PhysicalLayerManager : SingletonMonoBehaviour<PhysicalLayerManager> {
+public class PhysicalLayerManager : MonoBehaviour {
     [SerializeField] private AudioClip leftTouchSE;
     [SerializeField] private AudioClip touchSE;
     [SerializeField] private AudioClip surpriseSE;
@@ -13,15 +13,6 @@ public class PhysicalLayerManager : SingletonMonoBehaviour<PhysicalLayerManager>
     [SerializeField] private AudioClip fireSE;
     private AudioSource audioSource;
     private GameManager _gameManager;
-
-    public void Awake() {
-        if (this != Instance) {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     void Start() {
         audioSource = GetComponent<AudioSource>();

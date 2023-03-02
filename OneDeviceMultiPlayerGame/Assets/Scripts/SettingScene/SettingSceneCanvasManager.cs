@@ -5,22 +5,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SettingSceneCanvasManager : SingletonMonoBehaviour<SettingSceneCanvasManager> {
+public class SettingSceneCanvasManager : MonoBehaviour {
 
     private TextMeshProUGUI maxTimeValue;
     private List<string> maxTimeValues;
     private int currentMaxTimeIndex;
     private Toggle feintSoundToggle;
     private Toggle vibrationToggle;
-
-    public void Awake() {
-        if (this != Instance) {
-            Destroy(gameObject);
-            return;
-        }
-
-        DontDestroyOnLoad(gameObject);
-    }
 
     void Start() {
         maxTimeValue = GameObject.FindWithTag(CommonConstant.MAX_TIME_VALUE).GetComponent<TextMeshProUGUI>();
