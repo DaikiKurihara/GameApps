@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CanvasManager : MonoBehaviour {
 
@@ -90,14 +91,14 @@ public class CanvasManager : MonoBehaviour {
     /// 中央の円オブジェクトの色を変える
     /// </summary>
     public void turnLeftLightBlue() {
-        this.leftSignLight.GetComponent<SpriteRenderer>().color = ColorConstant.LEFT_LIGHT_BLUE;
+        this.leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_BLUE;
     }
 
     /// <summary>
     /// 中央の円オブジェクトの色をデフォルトに戻す
     /// </summary>
     public void turnLeftLightDefault() {
-        this.leftSignLight.GetComponent<SpriteRenderer>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
+        this.leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
     }
 
     /// <summary>
