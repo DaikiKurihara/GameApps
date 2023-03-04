@@ -19,6 +19,8 @@ public class HomeButtonManager : MonoBehaviour {
     }
 
     public void onHomeButtonDown() {
+        // 一度長押し完了したけどボタンエリア外で離された場合、trueになってしまうのでここで再度falseにしておく
+        isLongPressed = false;
         ghostAnimator.SetBool(CommonConstant.HOME_BUTTON_MOVE, true);
     }
 
