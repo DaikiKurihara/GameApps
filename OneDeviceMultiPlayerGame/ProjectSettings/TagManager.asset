@@ -31,6 +31,8 @@ TagManager:
   - TitleSceneManager
   - RankLabel
   - ResultViewContent
+  - HomeButtonGhost
+  - HomeButtonManager
   layers:
   - Default
   - TransparentFX

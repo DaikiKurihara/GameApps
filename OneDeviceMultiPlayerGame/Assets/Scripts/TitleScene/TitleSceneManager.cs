@@ -13,7 +13,7 @@ public class TitleSceneManager : MonoBehaviour {
     }
 
     public void onClickStart() {
-        SceneManager.sceneLoaded += gameSceneLoaded;
+        SceneManager.sceneLoaded += titleSceneToGameSceneLoaded;
         // シーン切り替え
         SceneManager.LoadScene(CommonConstant.GAME_SCENE);
     }
@@ -22,11 +22,11 @@ public class TitleSceneManager : MonoBehaviour {
         SceneManager.LoadScene(CommonConstant.SETTING_SCENE);
     }
 
-    private void gameSceneLoaded(Scene next, LoadSceneMode mode) {
+    private void titleSceneToGameSceneLoaded(Scene next, LoadSceneMode mode) {
         GameManager gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
         gameManager.isOnFeintSound = isOnFeintSound;
         gameManager.isOnVibration = isOnVibration;
         gameManager.setMaxTime(maxTime);
-        SceneManager.sceneLoaded -= gameSceneLoaded;
+        SceneManager.sceneLoaded -= titleSceneToGameSceneLoaded;
     }
 }

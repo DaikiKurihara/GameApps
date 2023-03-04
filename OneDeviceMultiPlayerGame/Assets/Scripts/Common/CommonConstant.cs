@@ -37,6 +37,16 @@
      */
     public const string RESULT_VIEW_CONTENT = "ResultViewContent";
 
+    /**
+     * ホームボタンマネージャ
+     */
+    public const string HOME_BUTTON_MANAGER = "HomeButtonManager";
+
+    /**
+     * ホームボタンマネージャ
+     */
+    public const string HOME_BUTTON_GHOST = "HomeButtonGhost";
+
     /******************************タグ名///*****************************/
 
     /************************///オブジェクト名****************************/
@@ -90,4 +100,13 @@
      */
     public const string SETTING_SCENE = "SettingScene";
     /************************シーン名///****************************/
+
+    /************************///アニメーション名****************************/
+
+    /**
+     * ホームボタンの移動
+     */
+    public const string HOME_BUTTON_MOVE = "Move";
+
+    /************************アニメーション名///****************************/
 }

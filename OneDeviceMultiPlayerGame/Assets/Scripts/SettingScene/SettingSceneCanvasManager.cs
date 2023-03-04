@@ -32,16 +32,16 @@ public class SettingSceneCanvasManager : MonoBehaviour {
     }
 
     public void onBackToHome() {
-        SceneManager.sceneLoaded += titleSceneLoaded;
+        SceneManager.sceneLoaded += settingSceneToTitleSceneLoaded;
         // シーン切り替え
         SceneManager.LoadScene(CommonConstant.TITLE_SCENE);
     }
 
-    private void titleSceneLoaded(Scene next, LoadSceneMode mode) {
+    private void settingSceneToTitleSceneLoaded(Scene next, LoadSceneMode mode) {
         TitleSceneManager titleSceneManager = GameObject.FindWithTag(CommonConstant.TITLE_SCENE_MANAGER).GetComponent<TitleSceneManager>();
         titleSceneManager.maxTime = maxTimeValue.text;
         titleSceneManager.isOnVibration = vibrationToggle.isOn;
         titleSceneManager.isOnFeintSound = feintSoundToggle.isOn;
-        SceneManager.sceneLoaded -= titleSceneLoaded;
+        SceneManager.sceneLoaded -= settingSceneToTitleSceneLoaded;
     }
 }
