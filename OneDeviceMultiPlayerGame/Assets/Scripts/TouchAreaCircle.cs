@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+
 public class TouchAreaCircle : MonoBehaviour {
     private int fingerId { get; set; }
     private bool isLeft = false;
@@ -55,7 +57,7 @@ public class TouchAreaCircle : MonoBehaviour {
 
     public void left() {
         this.isLeft = true;
-        this.GetComponent<SpriteRenderer>().color = ColorConstant.CIRCLE_FINISHED;
+        this.GetComponent<Image>().color = ColorConstant.CIRCLE_FINISHED;
     }
 
     public void openResult(int rank, float diff) {

@@ -7,6 +7,7 @@ public class CanvasManager : MonoBehaviour {
 
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject leftSignLight;
+    [SerializeField] private GameObject backGround;
 
     private GameManager _gameManager;
 
@@ -40,7 +41,7 @@ public class CanvasManager : MonoBehaviour {
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
         touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
-        touchAreaCircleInstans.transform.SetAsFirstSibling();
+        touchAreaCircleInstans.transform.SetSiblingIndex(backGround.transform.GetSiblingIndex() + 1);
         playerIds.Add(fingerId);
         // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
         this._gameManager.increaseTouchingPlayerCount();

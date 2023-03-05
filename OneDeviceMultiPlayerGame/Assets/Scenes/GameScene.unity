@@ -587,7 +587,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1462841189}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1755,6 +1755,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 1462841188}
   leftSignLight: {fileID: 1407129833}
+  backGround: {fileID: 664747410}
 --- !u!1 &1462841185
 GameObject:
   m_ObjectHideFlags: 0
@@ -1847,8 +1848,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1996355819}
   - {fileID: 664747411}
+  - {fileID: 1996355819}
   - {fileID: 219108173}
   - {fileID: 1447960249}
   - {fileID: 1870010781}
@@ -2854,7 +2855,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1462841189}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
