@@ -40,9 +40,9 @@ public class CanvasManager : MonoBehaviour {
         Vector3 worldTouchPosition = Camera.main.ScreenToWorldPoint(touchPosition);
         worldTouchPosition.z = 0;
         GameObject touchAreaCircleInstans = TouchAreaCircle.Init(fingerId);
+        touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
         // 変換したワールド座標をキャンバスのローカル座標に変換してボタンの位置に代入
         touchAreaCircleInstans.transform.position = worldTouchPosition;
-        touchAreaCircleInstans.transform.SetParent(canvas.transform, false);
         touchAreaCircleInstans.transform.SetSiblingIndex(backGround.transform.GetSiblingIndex() + 1);
         playerIds.Add(fingerId);
         // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
