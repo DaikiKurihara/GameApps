@@ -11,6 +11,7 @@ public class PhysicalLayerManager : MonoBehaviour {
     [SerializeField] private AudioClip surpriseSE;
     [SerializeField] private AudioClip surprise2SE;
     [SerializeField] private AudioClip fireSE;
+    [SerializeField] private AudioClip resultSE;
     private AudioSource audioSource;
     private GameManager _gameManager;
 
@@ -28,7 +29,6 @@ public class PhysicalLayerManager : MonoBehaviour {
     }
 
     public void onSurpriseRandom() {
-        Debug.Log($"バイブ:{_gameManager.isOnVibration}、音{_gameManager.isOnFeintSound}");
         if (!_gameManager.isOnFeintSound && _gameManager.isOnVibration) {
             shortVibration();
             return;
@@ -51,14 +51,17 @@ public class PhysicalLayerManager : MonoBehaviour {
     }
 
     public void onSurprise() {
+        Debug.Log("音が鳴った");
         audioSource.PlayOneShot(surpriseSE);
     }
 
     public void onSurprise2() {
+        Debug.Log("音2が鳴った");
         audioSource.PlayOneShot(surprise2SE);
     }
 
     public void shortVibration() {
+        Debug.Log("バイブ");
         if (SystemInfo.supportsVibration) {
             Handheld.Vibrate();
         }
@@ -68,6 +71,22 @@ public class PhysicalLayerManager : MonoBehaviour {
     /// サークルの色が変わったとき
     /// </summary>
     public void onFire() {
-        audioSource.PlayOneShot(fireSE);
+        int random = Random.Range(0, 4);
+        Debug.Log("fire!" + random);
+        if (random == 0) {
+            onSurprise();
+        } else if (random == 1) {
+            onSurprise2();
+        } else if (random == 2) {
+            onSurprise2();
+            shortVibration();
+        } else if (random == 3) {
+            // なにもしない
+        }
+    }
+
+    public void result() {
+        Debug.Log("結果表示のおと！");
+        audioSource.PlayOneShot(resultSE);
     }
 }

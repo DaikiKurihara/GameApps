@@ -8,6 +8,7 @@ public class CanvasManager : MonoBehaviour {
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject leftSignLight;
     [SerializeField] private GameObject backGround;
+    private PhysicalLayerManager _physicalLayerManager;
 
     private GameManager _gameManager;
 
@@ -29,7 +30,8 @@ public class CanvasManager : MonoBehaviour {
     }
 
     void Start() {
-        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        _gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
+        _physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
         timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
     }
 
@@ -92,6 +94,7 @@ public class CanvasManager : MonoBehaviour {
     /// 中央の円オブジェクトの色を変える
     /// </summary>
     public void turnLeftLightBlue() {
+        _physicalLayerManager.onFire();
         this.leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_BLUE;
     }
 
@@ -107,6 +110,7 @@ public class CanvasManager : MonoBehaviour {
     /// </summary>
     /// <param name="players"></param>
     public void openResult(List<(int fingerId, int playerNum, int rank, float diff)> players) {
+        _physicalLayerManager.result();
         foreach ((int fingerId, int playerNum, int rank, float diff) playerResult in players) {
             getTouchAreaCircleByFingerId(playerResult.fingerId).GetComponent<TouchAreaCircle>()
                 .openResult(playerResult.rank, playerResult.diff);

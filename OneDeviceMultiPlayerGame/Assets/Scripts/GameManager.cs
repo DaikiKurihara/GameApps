@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour {
     public List<float> SurpriseTimes {
         get { return surpriseTimes; }
     }
-    /** <プレイヤーNo, <ランク, 秒差>> */
+    /** <fingerID, プレイヤーNo, ランク, 秒差> */
     private List<(int fingerId, int playerNum, int rank, float diff)> playersResult = new List<(int fingerId, int playerNum, int rank, float diff)>();
     public List<(int fingerId, int playerNum, int rank, float diff)> PlayersResult {
         get { return playersResult; }

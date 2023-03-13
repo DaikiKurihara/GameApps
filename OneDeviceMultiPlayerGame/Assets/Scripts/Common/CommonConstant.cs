@@ -43,9 +43,24 @@
     public const string HOME_BUTTON_MANAGER = "HomeButtonManager";
 
     /**
-     * ホームボタンマネージャ
+     * ホームボタンマネージャのフロート画像
      */
     public const string HOME_BUTTON_GHOST = "HomeButtonGhost";
+
+    /**
+     * 物理層マネージャ
+     */
+    public const string PHYSICAL_LAYER_MANAGER = "PhysicalLayerManager";
+
+    /**
+     * キャンバスマネージャ
+     */
+    public const string CANVAS_MANAGER = "CanvasManager";
+
+    /**
+     * ゲームマネージャ
+     */
+    public const string GAME_MANAGER = "GameController";
 
     /******************************タグ名///*****************************/
 

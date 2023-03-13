@@ -12,6 +12,7 @@ public class SettingSceneCanvasManager : MonoBehaviour {
     private int currentMaxTimeIndex;
     private Toggle feintSoundToggle;
     private Toggle vibrationToggle;
+    private SettingScenePhysicalLayerManager _physicalLayerManager;
 
     void Start() {
         maxTimeValue = GameObject.FindWithTag(CommonConstant.MAX_TIME_VALUE).GetComponent<TextMeshProUGUI>();
@@ -20,6 +21,7 @@ public class SettingSceneCanvasManager : MonoBehaviour {
         maxTimeValue.text = maxTimeValues[currentMaxTimeIndex];
         feintSoundToggle = GameObject.FindWithTag(CommonConstant.FEINT_SOUND_TOGGLE).GetComponent<Toggle>();
         vibrationToggle = GameObject.FindWithTag(CommonConstant.VIBRATION_TOGGLE).GetComponent<Toggle>();
+        _physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<SettingScenePhysicalLayerManager>();
     }
 
     public void onChangeMaxTime(int index) {
@@ -27,11 +29,13 @@ public class SettingSceneCanvasManager : MonoBehaviour {
         if (tempCurrentIndex < 0 || tempCurrentIndex > maxTimeValues.Count - 1) {
             return;
         }
+        _physicalLayerManager.setting();
         currentMaxTimeIndex = tempCurrentIndex;
         maxTimeValue.text = maxTimeValues[currentMaxTimeIndex];
     }
 
     public void onBackToHome() {
+        _physicalLayerManager.setting();
         SceneManager.sceneLoaded += settingSceneToTitleSceneLoaded;
         // シーン切り替え
         SceneManager.LoadScene(CommonConstant.TITLE_SCENE);

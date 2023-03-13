@@ -11,9 +11,9 @@ public class TouchArea : MonoBehaviour {
     private PhysicalLayerManager _physicalLayerManager;
 
     void Start() {
-        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
-        _physicalLayerManager = GameObject.FindWithTag("PhysicalLayerManager").GetComponent<PhysicalLayerManager>();
+        _gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
+        _canvasManager = GameObject.FindWithTag(CommonConstant.CANVAS_MANAGER).GetComponent<CanvasManager>();
+        _physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
     }
 
     // Update is called once per frame
