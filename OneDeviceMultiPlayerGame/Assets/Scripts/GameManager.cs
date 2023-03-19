@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -91,9 +92,18 @@ public class GameManager : MonoBehaviour {
     public List<(int fingerId, int playerNum, int rank, float diff)> PlayersResult {
         get { return playersResult; }
     }
+    private List<Color32> colors = new List<Color32>() { ColorConstant.LEFT_LIGHT_PINK, ColorConstant.LEFT_LIGHT_GREEN, ColorConstant.LEFT_LIGHT_BLUE };
+    public List<Color32> Colors {
+        get { return colors.ToList(); }
+    }
+    private int leftCircleColorIndex = -1;
+    public int LeftCircleColorIndex {
+        get { return leftCircleColorIndex; }
+    }
 
     void Start() {
         _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
+        dicideCircleColor();
     }
 
     void Update() {
@@ -157,11 +167,9 @@ public class GameManager : MonoBehaviour {
         int i;
         if (int.TryParse(value, out i)) {
             i = i == 0 ? int.Parse(MaxTimeMapConstant.DEFAULT_MAX_TIME) : i;
-            Debug.Log($"変換成功{i}");
             maxTime = i;
         } else {
             maxTime = int.Parse(MaxTimeMapConstant.DEFAULT_MAX_TIME);
-            Debug.Log($"変換失敗{maxTime}");
         }
     }
 
@@ -187,6 +195,15 @@ public class GameManager : MonoBehaviour {
         this.playerNumberMap.Add(fingerId, playerNum);
     }
 
+    /// <summary>
+    /// 指を離す時の色を決める
+    /// </summary>
+    private void dicideCircleColor() {
+        leftCircleColorIndex = UnityEngine.Random.Range(0, colors.Count);
+        // 0：ピンク、1：緑、2：青
+        Debug.Log($"色のインデックス{leftCircleColorIndex}");
+    }
+
     private void openResult() {
         // フライングしたプレイヤーを除いたディクショナリをクローンする
         var cloneDict = new Dictionary<int, float>(this.leftTimeMap).
@@ -207,13 +224,11 @@ public class GameManager : MonoBehaviour {
             if (previousPlayerTime != kvp.Value) {
                 rank = i;
             }
-            Debug.Log(string.Format("{0}位: 差:{1:0.00}, プレイヤー {2}", rank, kvp.Value, playerNumberMap[kvp.Key]));
             playersResult.Add((kvp.Key, playerNumberMap[kvp.Key], rank, kvp.Value));
             i++;
             previousPlayerTime = kvp.Value;
         }
         foreach (int fingerId in falseStartedList) {
-            Debug.Log(string.Format("失格者:Player{0}", playerNumberMap[fingerId]));
             playersResult.Add((fingerId, playerNumberMap[fingerId], -1, -1));
         }
         _canvasManager.openResult(playersResult);
@@ -236,7 +251,7 @@ public class GameManager : MonoBehaviour {
         this.falseStartedList.Clear();
         this.surpriseTimes.Clear();
         this._canvasManager.resetCanvas();
-        this._canvasManager.turnLeftLightDefault();
+        GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 255);
         this.playersResult.Clear();
         this.touchingPlayerCount = 0;
         this.isOpenResult = false;
@@ -246,6 +261,8 @@ public class GameManager : MonoBehaviour {
     /// ゲーム終了後に再開する
     /// </summary>
     public void gameRetry() {
+        // 指を離す色を再度決め直す
+        this.dicideCircleColor();
         gameReset();
         this.resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
     }

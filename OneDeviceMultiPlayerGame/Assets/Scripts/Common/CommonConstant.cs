@@ -8,6 +8,11 @@
     public const string FINGER_ID = "fingerID";
 
     /**
+     * タイマー
+     */
+    public const string TIMER = "Timer";
+
+    /**
      * 最大時間の値
      */
     public const string MAX_TIME_VALUE = "MaxTimeValue";
@@ -61,6 +66,11 @@
      * ゲームマネージャ
      */
     public const string GAME_MANAGER = "GameController";
+
+    /**
+     * 
+     */
+    public const string COLOR_INSTRUCTION = "ColorInstruction";
 
     /******************************タグ名///*****************************/
 

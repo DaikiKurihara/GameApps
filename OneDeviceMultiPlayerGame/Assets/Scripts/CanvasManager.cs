@@ -29,10 +29,15 @@ public class CanvasManager : MonoBehaviour {
         }
     }
 
+    private List<Color32> feintColors;
+
     void Start() {
         _gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
         _physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
-        timer = GameObject.FindWithTag("Timer").GetComponent<Timer>();
+        timer = GameObject.FindWithTag(CommonConstant.TIMER).GetComponent<Timer>();
+        presentLeftColor();
+        feintColors = _gameManager.Colors;
+        feintColors.RemoveAt(_gameManager.LeftCircleColorIndex);
     }
 
     public void generateTouchAreaCircle(Vector2 touchPosition, int fingerId) {
@@ -93,13 +98,13 @@ public class CanvasManager : MonoBehaviour {
     /// <summary>
     /// 中央の円オブジェクトの色を変える
     /// </summary>
-    public void turnLeftLightBlue() {
+    public void turnLeftLight() {
         _physicalLayerManager.onFire();
-        this.leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_BLUE;
+        this.leftSignLight.GetComponent<Image>().color = _gameManager.Colors[_gameManager.LeftCircleColorIndex];
     }
 
     /// <summary>
-    /// 中央の円オブジェクトの色をデフォルトに戻す
+    /// 中央の円オブジェクトの色をデフォルトにする
     /// </summary>
     public void turnLeftLightDefault() {
         this.leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
@@ -133,6 +138,9 @@ public class CanvasManager : MonoBehaviour {
         this.timer.reset();
         this.playerIds.Clear();
         this.finishedPlayerIds.Clear();
+        this.presentLeftColor();
+        feintColors = _gameManager.Colors;
+        feintColors.RemoveAt(_gameManager.LeftCircleColorIndex);
         destroyAllTouchAreaCircle();
     }
 
@@ -140,12 +148,29 @@ public class CanvasManager : MonoBehaviour {
     /// 画面に存在する円オブジェクトを全て削除する
     /// </summary>
     private void destroyAllTouchAreaCircle() {
-        Debug.Log(canvas);
         for (int i = 0; i < this.canvas.transform.childCount; i++) {
             GameObject go = this.canvas.transform.GetChild(i).gameObject;
             if (go.tag.Contains(CommonConstant.FINGER_ID)) {
                 Destroy(go);
             }
         }
+    }
+
+    /// <summary>
+    /// 指を離す色を表示する
+    /// </summary>
+    public void presentLeftColor() {
+        Debug.Log($"実際の画面表示のインデックス{_gameManager.LeftCircleColorIndex}");
+        this.leftSignLight.GetComponent<Image>().color = _gameManager.Colors[_gameManager.LeftCircleColorIndex];
+    }
+
+    public void supriseColorChange() {
+        if (feintColors.Count <= 0) {
+            return;
+        }
+        int feintIndex = Random.Range(0, feintColors.Count);
+        this.leftSignLight.GetComponent<Image>().color = feintColors[feintIndex];
+        // 一度ビビらしに使用した色は使わない
+        feintColors.RemoveAt(feintIndex);
     }
 }

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour {
 
@@ -38,12 +39,8 @@ public class Timer : MonoBehaviour {
             this.currentCountDownTime -= Time.deltaTime;
             this.countDownText.text = formatTime(this.currentCountDownTime);
             if (this.currentCountDownTime <= 0.000F) {
-                this.currentCountDownTime = 0.00F;
                 this.gameStart();
-                this.countDownText.text = "";
-                this._leavingTime = createLeaveFingerTime();
-                Debug.Log("離す時間は：" + this._leavingTime);
-                createSurpriseTime();
+
             }
         } else if (!this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
             // カウントダウン開始秒数をリセット
@@ -62,7 +59,7 @@ public class Timer : MonoBehaviour {
                 this.stop();
                 this._leaveFingerCounted = true;
                 // 色を変えて離す合図
-                this._canvasManager.turnLeftLightBlue();
+                this._canvasManager.turnLeftLight();
             }
         }
     }
@@ -72,6 +69,13 @@ public class Timer : MonoBehaviour {
     /// </summary>
     private void gameStart() {
         this._gameManager.IsGameStart = true;
+        this.currentCountDownTime = 0.00F;
+        this.countDownText.text = "";
+        this._canvasManager.turnLeftLightDefault();
+        this._leavingTime = createLeaveFingerTime();
+        Debug.Log("離す時間は：" + this._leavingTime);
+        createSurpriseTime();
+        GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 0);
     }
 
     /// <summary>
@@ -85,7 +89,6 @@ public class Timer : MonoBehaviour {
     /// 指を離す指定時間を生成する
     /// </summary>
     private float createLeaveFingerTime() {
-        Debug.Log($"Managerから取得した値は{_gameManager.MaxTime}");
         float leavingTime = Random.Range(3, _gameManager.MaxTime);
         // ゲームマネージャーに離す時間確定を通知
         this._gameManager.decideStandardTime(leavingTime);
@@ -98,6 +101,7 @@ public class Timer : MonoBehaviour {
     private void onSurprise() {
         if (_gameManager.SurpriseTimes?.Count > 0 && _gameManager.SurpriseTimes[0] <= currentCountUpTime) {
             _physicalLayerManager.onSurpriseRandom();
+            _canvasManager.supriseColorChange();
             _gameManager.SurpriseTimes.RemoveAt(0);
         }
     }
@@ -107,7 +111,7 @@ public class Timer : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     private void createSurpriseTime() {
-        // 0 ~指を離す時間÷5の回数分びびらす（19秒なら3回）
+        // 0~指を離す時間÷5の回数分びびらす（19秒なら最大3回）
         int surpriseCount = Mathf.FloorToInt(Random.Range(0, _gameManager.StandardTime / 5));
         // max時間は指を離す時間より1秒以上前
         float maxTime = _gameManager.StandardTime - 1.0F;

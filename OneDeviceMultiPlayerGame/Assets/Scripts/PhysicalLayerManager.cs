@@ -50,17 +50,17 @@ public class PhysicalLayerManager : MonoBehaviour {
         else if (random == 1) onSurprise2();
     }
 
-    public void onSurprise() {
+    private void onSurprise() {
         Debug.Log("音が鳴った");
         audioSource.PlayOneShot(surpriseSE);
     }
 
-    public void onSurprise2() {
+    private void onSurprise2() {
         Debug.Log("音2が鳴った");
         audioSource.PlayOneShot(surprise2SE);
     }
 
-    public void shortVibration() {
+    private void shortVibration() {
         Debug.Log("バイブ");
         if (SystemInfo.supportsVibration) {
             Handheld.Vibrate();
@@ -86,7 +86,6 @@ public class PhysicalLayerManager : MonoBehaviour {
     }
 
     public void result() {
-        Debug.Log("結果表示のおと！");
         audioSource.PlayOneShot(resultSE);
     }
 }

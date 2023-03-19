@@ -33,6 +33,7 @@ TagManager:
   - ResultViewContent
   - HomeButtonGhost
   - HomeButtonManager
+  - ColorInstruction
   layers:
   - Default
   - TransparentFX
