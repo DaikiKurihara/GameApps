@@ -1,6 +1,5 @@
 using TMPro;
 using UnityEngine;
-using System.Collections.Generic;
 using System;
 using Random = UnityEngine.Random;
 using UnityEngine.UI;
@@ -49,7 +48,8 @@ public class Timer : MonoBehaviour {
         }
 
         // 離す時間までのカウントアップ
-        if (this._gameManager.IsGameStart && !_leaveFingerCounted) {
+        // 強制終了されている場合は動かない
+        if (!_gameManager.IsForcedTermination && this._gameManager.IsGameStart && !_leaveFingerCounted) {
             currentCountUpTime += Time.deltaTime;
 
             // びびらす

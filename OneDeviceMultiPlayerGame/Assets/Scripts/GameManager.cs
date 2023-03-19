@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.UI;
+using System.Collections;
 
 public class GameManager : MonoBehaviour {
 
@@ -20,11 +21,10 @@ public class GameManager : MonoBehaviour {
     // 準備時間が終わって全プレイヤーの指がついている状態
     private bool isGameStart = false;
     public bool IsGameStart {
-        // falseは代入不可
         set {
             this.isGameStart = true;
             this.gameStart();
-        }
+        } // falseは代入不可
         get { return this.isGameStart; }
     }
 
@@ -70,12 +70,18 @@ public class GameManager : MonoBehaviour {
             return maxTime;
         }
     }
-    /** ビビらせバイブ有無 */
     [NonSerialized] public bool isOnVibration;
     /** ビビらせ音有無 */
     [NonSerialized] public bool isOnFeintSound;
     /** ゲームが終了した時間 */
     private float endTime { get; set; } = 0.0F;
+    /// <summary>
+    /// ゲームが強制終了されたか
+    /// </summary>
+    private bool isForcedTermination = false;
+    public bool IsForcedTermination {
+        get { return isForcedTermination; }
+    }
     /** 指を離した時間を格納する辞書 */
     private Dictionary<int, float> leftTimeMap = new Dictionary<int, float>();
     /** フライングしたfingerIDリスト */
@@ -112,9 +118,8 @@ public class GameManager : MonoBehaviour {
         }
 
         // 指が離れてから3秒後に結果を出す
-        if (this.isOpenResult && this.passedTime - this.endTime > 3.0) {
+        if (!isForcedTermination && this.isOpenResult && this.passedTime - this.endTime > 3.0) {
             openResult();
-            this.isOpenResult = false;
         }
     }
 
@@ -180,7 +185,9 @@ public class GameManager : MonoBehaviour {
     private void falseStartPlayer(int fingerId) {
         this.falseStartedList.Add(fingerId);
         if (this.falseStartedList.Count == this.playerCount) {
-            this.gameReset();
+            isForcedTermination = true;
+            // forceTerminateをコルーチンで呼ぶ
+            StartCoroutine("forceTerminate");
         }
     }
 
@@ -200,7 +207,6 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     private void dicideCircleColor() {
         leftCircleColorIndex = UnityEngine.Random.Range(0, colors.Count);
-        // 0：ピンク、1：緑、2：青
         Debug.Log($"色のインデックス{leftCircleColorIndex}");
     }
 
@@ -234,6 +240,7 @@ public class GameManager : MonoBehaviour {
         _canvasManager.openResult(playersResult);
         resultCanvas.SetActive(true);
         resultCanvas.GetComponent<ResultCanvasManager>().openPlayerResults(playersResult);
+        this.isOpenResult = false;
     }
 
 
@@ -263,7 +270,13 @@ public class GameManager : MonoBehaviour {
     public void gameRetry() {
         // 指を離す色を再度決め直す
         this.dicideCircleColor();
+        isForcedTermination = false;
         gameReset();
         this.resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
+    }
+
+    IEnumerator forceTerminate() {
+        yield return new WaitForSeconds(1);
+        openResult();
     }
 }

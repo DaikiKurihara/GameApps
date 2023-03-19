@@ -2279,6 +2279,7 @@ MonoBehaviour:
   surprise2SE: {fileID: 8300000, guid: 141ceabb59da14620a37325314a7c8f7, type: 3}
   fireSE: {fileID: 8300000, guid: 84021bf50a553462b8aba7e4f8380d33, type: 3}
   resultSE: {fileID: 8300000, guid: 38c150745b162451f998a49ae072e7ac, type: 3}
+  forceTerminatedSE: {fileID: 8300000, guid: 288c68969a32844f48a15807acb01531, type: 3}
 --- !u!1 &1853197958
 GameObject:
   m_ObjectHideFlags: 0

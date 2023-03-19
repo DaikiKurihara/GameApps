@@ -12,6 +12,7 @@ public class PhysicalLayerManager : MonoBehaviour {
     [SerializeField] private AudioClip surprise2SE;
     [SerializeField] private AudioClip fireSE;
     [SerializeField] private AudioClip resultSE;
+    [SerializeField] private AudioClip forceTerminatedSE;
     private AudioSource audioSource;
     private GameManager _gameManager;
 
@@ -86,6 +87,7 @@ public class PhysicalLayerManager : MonoBehaviour {
     }
 
     public void result() {
-        audioSource.PlayOneShot(resultSE);
+        if (_gameManager.IsForcedTermination) audioSource.PlayOneShot(forceTerminatedSE);
+        else audioSource.PlayOneShot(resultSE);
     }
 }
