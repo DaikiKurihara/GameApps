@@ -136,7 +136,7 @@ public class Timer : MonoBehaviour {
         int tSecond = (int)Math.Floor(Math.Abs(t));
         // 秒以下部分
         int tMilliSecond = (int)Math.Floor(Math.Abs(t - tSecond) * Math.Pow(10, Ndigit));
-        s = string.Format("{0:00}:{1:00}", tSecond, tMilliSecond);
+        s = $"<mspace=0.5em>{string.Format("{0:00}:{1:00}", tSecond, tMilliSecond)}</mspace>";
         return s;
     }
 }
