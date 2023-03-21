@@ -195,6 +195,7 @@ public class GameManager : MonoBehaviour {
         if (Input.touchCount != this.touchingPlayerCount) {
             Debug.Log($"プレイヤー人数に異常が発生しました。{this.touchingPlayerCount}");
             this.gameReset();
+            _canvasManager.displayError();
         }
     }
 

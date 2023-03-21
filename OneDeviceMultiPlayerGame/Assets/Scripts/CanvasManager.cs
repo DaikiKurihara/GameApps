@@ -8,6 +8,7 @@ public class CanvasManager : MonoBehaviour {
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject leftSignLight;
     [SerializeField] private GameObject backGround;
+    [SerializeField] private GameObject errorPopup;
     private PhysicalLayerManager _physicalLayerManager;
 
     private GameManager _gameManager;
@@ -129,6 +130,10 @@ public class CanvasManager : MonoBehaviour {
     /// <returns></returns>
     private GameObject getTouchAreaCircleByFingerId(int fingerId) {
         return GameObject.FindWithTag($"{CommonConstant.FINGER_ID}{fingerId}");
+    }
+
+    public void displayError() {
+        errorPopup.SetActive(true);
     }
 
     /// <summary>
