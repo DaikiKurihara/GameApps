@@ -9,9 +9,9 @@ public class CanvasManager : MonoBehaviour {
     [SerializeField] private GameObject leftSignLight;
     [SerializeField] private GameObject backGround;
     [SerializeField] private GameObject errorPopup;
-    private PhysicalLayerManager _physicalLayerManager;
+    private PhysicalLayerManager physicalLayerManager;
 
-    private GameManager _gameManager;
+    private GameManager gameManager;
 
     private Timer timer;
 
@@ -19,26 +19,26 @@ public class CanvasManager : MonoBehaviour {
     private List<int> playerIds = new List<int>();
     public List<int> PlayerIds {
         get {
-            return this.playerIds;
+            return playerIds;
         }
     }
 
     private List<int> finishedPlayerIds = new List<int>();
     public List<int> FinishedPlayerIds {
         get {
-            return this.finishedPlayerIds;
+            return finishedPlayerIds;
         }
     }
 
     private List<Color32> feintColors;
 
     void Start() {
-        _gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
-        _physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
+        gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
+        physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
         timer = GameObject.FindWithTag(CommonConstant.TIMER).GetComponent<Timer>();
         presentLeftColor();
-        feintColors = _gameManager.Colors;
-        feintColors.RemoveAt(_gameManager.LeftCircleColorIndex);
+        feintColors = gameManager.Colors;
+        feintColors.RemoveAt(gameManager.LeftCircleColorIndex);
     }
 
     public void generateTouchAreaCircle(Vector2 touchPosition, int fingerId) {
@@ -52,7 +52,7 @@ public class CanvasManager : MonoBehaviour {
         touchAreaCircleInstans.transform.SetSiblingIndex(backGround.transform.GetSiblingIndex() + 1);
         playerIds.Add(fingerId);
         // ゲームマネージャーにプレイヤーが増えたことを通知してタップ数のチェックに利用する
-        this._gameManager.increaseTouchingPlayerCount();
+        gameManager.increaseTouchingPlayerCount();
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public class CanvasManager : MonoBehaviour {
             Touch touch = Input.GetTouch(i);
             TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(touch.fingerId).GetComponent<TouchAreaCircle>();
             touchAreaCircle.dicidePlayerNumber(i + 1);
-            this._gameManager.dicidePlayerNumber(touch.fingerId, i + 1);
+            gameManager.dicidePlayerNumber(touch.fingerId, i + 1);
         }
 
     }
@@ -80,7 +80,7 @@ public class CanvasManager : MonoBehaviour {
         Destroy(touchAreaCircle);
         playerIds.Remove(fingerId);
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
-        this._gameManager.decreaseTouchingPlayerCount();
+        gameManager.decreaseTouchingPlayerCount();
     }
 
     /// <summary>
@@ -91,8 +91,8 @@ public class CanvasManager : MonoBehaviour {
         TouchAreaCircle touchAreaCircle = getTouchAreaCircleByFingerId(fingerId).GetComponent<TouchAreaCircle>();
         touchAreaCircle.left();
         // ゲームマネージャーにプレイヤーが減ったことを通知してタップ数のチェックに利用する
-        this._gameManager.decreaseTouchingPlayerCount();
-        this._gameManager.fingerLeft(fingerId);
+        gameManager.decreaseTouchingPlayerCount();
+        gameManager.fingerLeft(fingerId);
         finishedPlayerIds.Add(fingerId);
     }
 
@@ -100,15 +100,15 @@ public class CanvasManager : MonoBehaviour {
     /// 中央の円オブジェクトの色を変える
     /// </summary>
     public void turnLeftLight() {
-        _physicalLayerManager.onFire();
-        this.leftSignLight.GetComponent<Image>().color = _gameManager.Colors[_gameManager.LeftCircleColorIndex];
+        physicalLayerManager.onFire();
+        leftSignLight.GetComponent<Image>().color = gameManager.Colors[gameManager.LeftCircleColorIndex];
     }
 
     /// <summary>
     /// 中央の円オブジェクトの色をデフォルトにする
     /// </summary>
     public void turnLeftLightDefault() {
-        this.leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
+        leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
     }
 
     /// <summary>
@@ -116,7 +116,7 @@ public class CanvasManager : MonoBehaviour {
     /// </summary>
     /// <param name="players"></param>
     public void openResult(List<(int fingerId, int playerNum, int rank, float diff)> players) {
-        _physicalLayerManager.result();
+        physicalLayerManager.result();
         foreach ((int fingerId, int playerNum, int rank, float diff) playerResult in players) {
             getTouchAreaCircleByFingerId(playerResult.fingerId).GetComponent<TouchAreaCircle>()
                 .openResult(playerResult.rank, playerResult.diff);
@@ -140,12 +140,12 @@ public class CanvasManager : MonoBehaviour {
     /// キャンバスを初期状態に戻す
     /// </summary>
     public void resetCanvas() {
-        this.timer.reset();
-        this.playerIds.Clear();
-        this.finishedPlayerIds.Clear();
-        this.presentLeftColor();
-        feintColors = _gameManager.Colors;
-        feintColors.RemoveAt(_gameManager.LeftCircleColorIndex);
+        timer.reset();
+        playerIds.Clear();
+        finishedPlayerIds.Clear();
+        presentLeftColor();
+        feintColors = gameManager.Colors;
+        feintColors.RemoveAt(gameManager.LeftCircleColorIndex);
         destroyAllTouchAreaCircle();
     }
 
@@ -153,8 +153,8 @@ public class CanvasManager : MonoBehaviour {
     /// 画面に存在する円オブジェクトを全て削除する
     /// </summary>
     private void destroyAllTouchAreaCircle() {
-        for (int i = 0; i < this.canvas.transform.childCount; i++) {
-            GameObject go = this.canvas.transform.GetChild(i).gameObject;
+        for (int i = 0; i < canvas.transform.childCount; i++) {
+            GameObject go = canvas.transform.GetChild(i).gameObject;
             if (go.tag.Contains(CommonConstant.FINGER_ID)) {
                 Destroy(go);
             }
@@ -165,8 +165,8 @@ public class CanvasManager : MonoBehaviour {
     /// 指を離す色を表示する
     /// </summary>
     public void presentLeftColor() {
-        Debug.Log($"実際の画面表示のインデックス{_gameManager.LeftCircleColorIndex}");
-        this.leftSignLight.GetComponent<Image>().color = _gameManager.Colors[_gameManager.LeftCircleColorIndex];
+        Debug.Log($"実際の画面表示のインデックス{gameManager.LeftCircleColorIndex}");
+        leftSignLight.GetComponent<Image>().color = gameManager.Colors[gameManager.LeftCircleColorIndex];
     }
 
     public void supriseColorChange() {
@@ -174,7 +174,7 @@ public class CanvasManager : MonoBehaviour {
             return;
         }
         int feintIndex = Random.Range(0, feintColors.Count);
-        this.leftSignLight.GetComponent<Image>().color = feintColors[feintIndex];
+        leftSignLight.GetComponent<Image>().color = feintColors[feintIndex];
         // 一度ビビらしに使用した色は使わない
         feintColors.RemoveAt(feintIndex);
     }

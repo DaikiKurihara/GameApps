@@ -1,53 +1,53 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using UnityEngine;
 
 public class TouchArea : MonoBehaviour {
     /** 現在タッチしている指の本数 */
     private int _touchCount = 0;
     /** GameManager */
-    private GameManager _gameManager;
+    private GameManager gameManager;
     /** CanvasManager */
-    private CanvasManager _canvasManager;
-    private PhysicalLayerManager _physicalLayerManager;
+    private CanvasManager canvasManager;
+    private PhysicalLayerManager physicalLayerManager;
 
     void Start() {
-        _gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
-        _canvasManager = GameObject.FindWithTag(CommonConstant.CANVAS_MANAGER).GetComponent<CanvasManager>();
-        _physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
+        gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
+        canvasManager = GameObject.FindWithTag(CommonConstant.CANVAS_MANAGER).GetComponent<CanvasManager>();
+        physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<PhysicalLayerManager>();
     }
 
     // Update is called once per frame
     void Update() {
-        if (!this._gameManager.IsGameStart) {
+        if (!gameManager.IsGameStart) {
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
             // 触れている指が2本以上でカウントダウン開始
-            this._gameManager.IsCountDownStart = Input.touchCount >= 2;
+            gameManager.IsCountDownStart = Input.touchCount >= 2;
 
-            this.touchBegan();
+            touchBegan();
 
-            this.touchEnded();
+            touchEnded();
             //----------------ゲーム開始前のプレイヤースタンバイ時間------------------------
         } else {
             //----------------ゲーム開始後のプレイ時間-----------------------------------
-            this.touchFinished();
-            if (Input.touchCount == 0 && !this._gameManager.IsGameEnd) {
-                this._gameManager.IsGameEnd = true;
+            touchFinished();
+            if (Input.touchCount == 0 && !gameManager.IsGameEnd) {
+                gameManager.IsGameEnd = true;
             }
             //----------------ゲーム開始後のプレイ時間-----------------------------------
         }
         // iPhoneではタップの限界を超えた場合にtouchCountが0になるのでプレイヤー人数をチェックする
         if (_touchCount != 0 && Input.touchCount == 0) {
-            this._gameManager.checkPlayerCount();
+            gameManager.checkPlayerCount();
         }
 
-        this._touchCount = Input.touchCount;
+        _touchCount = Input.touchCount;
     }
 
     private void touchBegan() {
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Began) {
-                _physicalLayerManager.onTouch();
-                this._canvasManager.generateTouchAreaCircle(touch.position, touch.fingerId);
+                physicalLayerManager.onTouch();
+                canvasManager.generateTouchAreaCircle(touch.position, touch.fingerId);
             }
         }
     }
@@ -57,12 +57,12 @@ public class TouchArea : MonoBehaviour {
     /// </summary>
     /// <param name="touch"></param>
     private void touchEnded() {
-        if (this._gameManager.IsGameStart) {
+        if (gameManager.IsGameStart) {
             return;
         }
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
-                this._canvasManager.destroyTouchAreaCircle(touch.fingerId);
+                canvasManager.destroyTouchAreaCircle(touch.fingerId);
             }
         }
     }
@@ -71,17 +71,17 @@ public class TouchArea : MonoBehaviour {
     /// ゲーム開始後に指が離れた場合
     /// </summary>
     private void touchFinished() {
-        if (!this._gameManager.IsGameStart || this._gameManager.IsGameEnd) {
+        if (!gameManager.IsGameStart || gameManager.IsGameEnd) {
             return;
         }
         foreach (Touch touch in Input.touches) {
             if (touch.phase == TouchPhase.Ended) {
-                if (!this._canvasManager.PlayerIds.Contains(touch.fingerId) || _canvasManager.FinishedPlayerIds.Contains(touch.fingerId)) {
+                if (!canvasManager.PlayerIds.Contains(touch.fingerId) || canvasManager.FinishedPlayerIds.Contains(touch.fingerId)) {
                     // 画面上にいるプレイヤーではないもしくはすでにタッチ終了したプレイヤーの場合処理終了
                     return;
                 }
-                _physicalLayerManager.onLeftTouch();
-                this._canvasManager.touchFinished(touch.fingerId);
+                physicalLayerManager.onLeftTouch();
+                canvasManager.touchFinished(touch.fingerId);
             }
         }
     }

@@ -8,41 +8,41 @@ using System.Collections;
 public class GameManager : MonoBehaviour {
 
     /** GameManager */
-    private CanvasManager _canvasManager;
+    private CanvasManager canvasManager;
     [SerializeField] private GameObject resultCanvas;
 
     // 準備画面突入有無のフラグ
     private bool isCountDownStart = false;
     public bool IsCountDownStart {
-        set { this.isCountDownStart = value; }
-        get { return this.isCountDownStart; }
+        set { isCountDownStart = value; }
+        get { return isCountDownStart; }
     }
 
     // 準備時間が終わって全プレイヤーの指がついている状態
     private bool isGameStart = false;
     public bool IsGameStart {
         set {
-            this.isGameStart = true;
-            this.gameStart();
+            isGameStart = true;
+            gameStart();
         } // falseは代入不可
-        get { return this.isGameStart; }
+        get { return isGameStart; }
     }
 
     // ゲーム終了（ゲーム開始→ストップタイム→指が全部離れた状態）フラグ
     private bool isGameEnd = false;
     public bool IsGameEnd {
         set {
-            this.isGameEnd = true;
+            isGameEnd = true;
             decideEndTime();
         } // falseは代入不可
-        get { return this.isGameEnd; }
+        get { return isGameEnd; }
     }
 
     // 指を離す時間になったか
     private bool isStopped = false;
     public bool IsStopped {
-        set { this.isStopped = true; } // falseは代入不可
-        get { return this.isStopped; }
+        set { isStopped = true; } // falseは代入不可
+        get { return isStopped; }
     }
 
     // 現在タッチしているプレイヤーの数
@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour {
     /** 指を離す指定時間 */
     private float standardTime { get; set; } = 0.0F;
     public float StandardTime {
-        get { return this.standardTime; }
+        get { return standardTime; }
     }
     /** 指を離す最大時間 */
     private float maxTime;
@@ -108,17 +108,17 @@ public class GameManager : MonoBehaviour {
     }
 
     void Start() {
-        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
+        canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
         dicideCircleColor();
     }
 
     void Update() {
-        if (this.isGameStart) {
-            this.passedTime += Time.deltaTime;
+        if (isGameStart) {
+            passedTime += Time.deltaTime;
         }
 
         // 指が離れてから3秒後に結果を出す
-        if (!isForcedTermination && this.isOpenResult && this.passedTime - this.endTime > 3.0) {
+        if (!isForcedTermination && isOpenResult && passedTime - endTime > 3.0) {
             openResult();
         }
     }
@@ -127,8 +127,8 @@ public class GameManager : MonoBehaviour {
     /// ゲームスタート（（準備時間が終わって全プレイヤーの指がついている状態）に走る処理
     /// </summary>
     private void gameStart() {
-        this.playerCount = Input.touchCount;
-        this._canvasManager.dicidePlayerNumbers();
+        playerCount = Input.touchCount;
+        canvasManager.dicidePlayerNumbers();
     }
 
     /// <summary>
@@ -136,8 +136,8 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     /// <param name="fingerId"></param>
     public void fingerLeft(int fingerId) {
-        this.leftTimeMap.Add(fingerId, this.passedTime - this.standardTime);
-        if (!this.isStopped) {
+        leftTimeMap.Add(fingerId, passedTime - standardTime);
+        if (!isStopped) {
             // 指を離す時間になっていない場合、フライングしたプレイヤーとして格納しておく
             falseStartPlayer(fingerId);
         }
@@ -147,24 +147,24 @@ public class GameManager : MonoBehaviour {
     /// 指を離すべき基準時間を決定する
     /// </summary>
     public void decideStandardTime(float standardTime) {
-        this.standardTime = standardTime;
+        standardTime = standardTime;
     }
 
     /// <summary>
     /// 全員の指が離れた時間を決定する
     /// </summary>
     private void decideEndTime() {
-        this.endTime = this.passedTime;
-        this.isOpenResult = true;
+        endTime = passedTime;
+        isOpenResult = true;
     }
 
     public void increaseTouchingPlayerCount() {
-        this.touchingPlayerCount++;
+        touchingPlayerCount++;
     }
 
     public void decreaseTouchingPlayerCount() {
         if (touchingPlayerCount > 0) {
-            this.touchingPlayerCount--;
+            touchingPlayerCount--;
         }
     }
 
@@ -183,8 +183,8 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     /// <param name="fingerId"></param>
     private void falseStartPlayer(int fingerId) {
-        this.falseStartedList.Add(fingerId);
-        if (this.falseStartedList.Count == this.playerCount) {
+        falseStartedList.Add(fingerId);
+        if (falseStartedList.Count == playerCount) {
             isForcedTermination = true;
             // forceTerminateをコルーチンで呼ぶ
             StartCoroutine("forceTerminate");
@@ -192,15 +192,15 @@ public class GameManager : MonoBehaviour {
     }
 
     public void checkPlayerCount() {
-        if (Input.touchCount != this.touchingPlayerCount) {
-            Debug.Log($"プレイヤー人数に異常が発生しました。{this.touchingPlayerCount}");
-            this.gameReset();
-            _canvasManager.displayError();
+        if (Input.touchCount != touchingPlayerCount) {
+            Debug.Log($"プレイヤー人数に異常が発生しました。{touchingPlayerCount}");
+            gameReset();
+            canvasManager.displayError();
         }
     }
 
     public void dicidePlayerNumber(int fingerId, int playerNum) {
-        this.playerNumberMap.Add(fingerId, playerNum);
+        playerNumberMap.Add(fingerId, playerNum);
     }
 
     /// <summary>
@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour {
 
     private void openResult() {
         // フライングしたプレイヤーを除いたディクショナリをクローンする
-        var cloneDict = new Dictionary<int, float>(this.leftTimeMap).
+        var cloneDict = new Dictionary<int, float>(leftTimeMap).
             Where(x => x.Value > 0).
             ToDictionary(d => d.Key, d => d.Value);
         // 話した時間の絶対値を取る
@@ -238,31 +238,31 @@ public class GameManager : MonoBehaviour {
         foreach (int fingerId in falseStartedList) {
             playersResult.Add((fingerId, playerNumberMap[fingerId], -1, -1));
         }
-        _canvasManager.openResult(playersResult);
+        canvasManager.openResult(playersResult);
         resultCanvas.SetActive(true);
         resultCanvas.GetComponent<ResultCanvasManager>().openPlayerResults(playersResult);
-        this.isOpenResult = false;
+        isOpenResult = false;
     }
 
 
     private void gameReset() {
-        this.isCountDownStart = false;
-        this.isGameEnd = false;
-        this.isGameStart = false;
-        this.isStopped = false;
-        this.playerCount = 0;
-        this.passedTime = 0;
-        this.endTime = 0;
-        this.standardTime = 0;
-        this.leftTimeMap.Clear();
-        this.playerNumberMap.Clear();
-        this.falseStartedList.Clear();
-        this.surpriseTimes.Clear();
-        this._canvasManager.resetCanvas();
+        isCountDownStart = false;
+        isGameEnd = false;
+        isGameStart = false;
+        isStopped = false;
+        playerCount = 0;
+        passedTime = 0;
+        endTime = 0;
+        standardTime = 0;
+        leftTimeMap.Clear();
+        playerNumberMap.Clear();
+        falseStartedList.Clear();
+        surpriseTimes.Clear();
+        canvasManager.resetCanvas();
         GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 255);
-        this.playersResult.Clear();
-        this.touchingPlayerCount = 0;
-        this.isOpenResult = false;
+        playersResult.Clear();
+        touchingPlayerCount = 0;
+        isOpenResult = false;
     }
 
     /// <summary>
@@ -270,10 +270,10 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void gameRetry() {
         // 指を離す色を再度決め直す
-        this.dicideCircleColor();
+        dicideCircleColor();
         isForcedTermination = false;
         gameReset();
-        this.resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
+        resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
     }
 
     IEnumerator forceTerminate() {

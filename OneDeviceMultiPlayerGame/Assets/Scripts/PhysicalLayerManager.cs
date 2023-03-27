@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,11 +14,11 @@ public class PhysicalLayerManager : MonoBehaviour {
     [SerializeField] private AudioClip resultSE;
     [SerializeField] private AudioClip forceTerminatedSE;
     private AudioSource audioSource;
-    private GameManager _gameManager;
+    private GameManager gameManager;
 
     void Start() {
         audioSource = GetComponent<AudioSource>();
-        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        gameManager = GameObject.FindWithTag(CommonConstant.GAME_MANAGER).GetComponent<GameManager>();
     }
 
     public void onLeftTouch() {
@@ -30,13 +30,13 @@ public class PhysicalLayerManager : MonoBehaviour {
     }
 
     public void onSurpriseRandom() {
-        if (!_gameManager.isOnFeintSound && _gameManager.isOnVibration) {
+        if (!gameManager.isOnFeintSound && gameManager.isOnVibration) {
             shortVibration();
             return;
-        } else if (_gameManager.isOnFeintSound && !_gameManager.isOnVibration) {
+        } else if (gameManager.isOnFeintSound && !gameManager.isOnVibration) {
             onSurpriseSoundRandom();
             return;
-        } else if (!_gameManager.isOnFeintSound && !_gameManager.isOnVibration) {
+        } else if (!gameManager.isOnFeintSound && !gameManager.isOnVibration) {
             return;
         }
         // 0,1のいずれかを取る。Max値は含まない
@@ -87,7 +87,7 @@ public class PhysicalLayerManager : MonoBehaviour {
     }
 
     public void result() {
-        if (_gameManager.IsForcedTermination) audioSource.PlayOneShot(forceTerminatedSE);
+        if (gameManager.IsForcedTermination) audioSource.PlayOneShot(forceTerminatedSE);
         else audioSource.PlayOneShot(resultSE);
     }
 }

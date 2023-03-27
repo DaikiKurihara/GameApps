@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
@@ -10,56 +10,56 @@ public class Timer : MonoBehaviour {
     private float currentCountUpTime = 0.0F;
     public TextMeshProUGUI countDownText;
     [SerializeField] private float countTime = 5.0F;
-    private bool _leaveFingerCounted = false;
-    private float _leavingTime = 0.0F;
+    private bool leaveFingerCounted = false;
+    private float leavingTime = 0.0F;
 
-    private GameManager _gameManager;
-    private CanvasManager _canvasManager;
-    private PhysicalLayerManager _physicalLayerManager;
+    private GameManager gameManager;
+    private CanvasManager canvasManager;
+    private PhysicalLayerManager physicalLayerManager;
 
     public void reset() {
-        this.currentCountDownTime = countTime;
-        this._leaveFingerCounted = false;
-        this.currentCountUpTime = 0.0F;
+        currentCountDownTime = countTime;
+        leaveFingerCounted = false;
+        currentCountUpTime = 0.0F;
     }
 
     void Start() {
-        _gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
-        _canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
-        _physicalLayerManager = GameObject.FindWithTag("PhysicalLayerManager").GetComponent<PhysicalLayerManager>();
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        canvasManager = GameObject.FindWithTag("CanvasManager").GetComponent<CanvasManager>();
+        physicalLayerManager = GameObject.FindWithTag("PhysicalLayerManager").GetComponent<PhysicalLayerManager>();
         // カウントダウン開始秒数をセット
-        this.currentCountDownTime = countTime;
+        currentCountDownTime = countTime;
     }
 
     void Update() {
         // カウントダウン
-        if (this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
+        if (gameManager.IsCountDownStart && !gameManager.IsGameStart) {
             // 経過時刻を引いていく
-            this.currentCountDownTime -= Time.deltaTime;
-            this.countDownText.text = formatTime(this.currentCountDownTime);
-            if (this.currentCountDownTime <= 0.000F) {
-                this.gameStart();
+            currentCountDownTime -= Time.deltaTime;
+            countDownText.text = formatTime(currentCountDownTime);
+            if (currentCountDownTime <= 0.000F) {
+                gameStart();
 
             }
-        } else if (!this._gameManager.IsCountDownStart && !this._gameManager.IsGameStart) {
+        } else if (!gameManager.IsCountDownStart && !gameManager.IsGameStart) {
             // カウントダウン開始秒数をリセット
-            this.currentCountDownTime = countTime;
-            this.countDownText.text = formatTime(this.currentCountDownTime);
+            currentCountDownTime = countTime;
+            countDownText.text = formatTime(currentCountDownTime);
         }
 
         // 離す時間までのカウントアップ
         // 強制終了されている場合は動かない
-        if (!_gameManager.IsForcedTermination && this._gameManager.IsGameStart && !_leaveFingerCounted) {
+        if (!gameManager.IsForcedTermination && gameManager.IsGameStart && !leaveFingerCounted) {
             currentCountUpTime += Time.deltaTime;
 
             // びびらす
             onSurprise();
 
-            if (this.currentCountUpTime >= this._leavingTime) {
-                this.stop();
-                this._leaveFingerCounted = true;
+            if (currentCountUpTime >= leavingTime) {
+                stop();
+                leaveFingerCounted = true;
                 // 色を変えて離す合図
-                this._canvasManager.turnLeftLight();
+                canvasManager.turnLeftLight();
             }
         }
     }
@@ -68,12 +68,12 @@ public class Timer : MonoBehaviour {
     /// ゲーム開始の通知
     /// </summary>
     private void gameStart() {
-        this._gameManager.IsGameStart = true;
-        this.currentCountDownTime = 0.00F;
-        this.countDownText.text = "";
-        this._canvasManager.turnLeftLightDefault();
-        this._leavingTime = createLeaveFingerTime();
-        Debug.Log("離す時間は：" + this._leavingTime);
+        gameManager.IsGameStart = true;
+        currentCountDownTime = 0.00F;
+        countDownText.text = "";
+        canvasManager.turnLeftLightDefault();
+        leavingTime = createLeaveFingerTime();
+        Debug.Log("離す時間は：" + leavingTime);
         createSurpriseTime();
         GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 0);
     }
@@ -82,16 +82,16 @@ public class Timer : MonoBehaviour {
     /// 指を離す時間の通知
     /// </summary>
     private void stop() {
-        this._gameManager.IsStopped = true;
+        gameManager.IsStopped = true;
     }
 
     /// <summary>
     /// 指を離す指定時間を生成する
     /// </summary>
     private float createLeaveFingerTime() {
-        float leavingTime = Random.Range(3, _gameManager.MaxTime);
+        float leavingTime = Random.Range(3, gameManager.MaxTime);
         // ゲームマネージャーに離す時間確定を通知
-        this._gameManager.decideStandardTime(leavingTime);
+        gameManager.decideStandardTime(leavingTime);
         return leavingTime;
     }
 
@@ -99,10 +99,10 @@ public class Timer : MonoBehaviour {
     /// ビビらす
     /// </summary>
     private void onSurprise() {
-        if (_gameManager.SurpriseTimes?.Count > 0 && _gameManager.SurpriseTimes[0] <= currentCountUpTime) {
-            _physicalLayerManager.onSurpriseRandom();
-            _canvasManager.supriseColorChange();
-            _gameManager.SurpriseTimes.RemoveAt(0);
+        if (gameManager.SurpriseTimes?.Count > 0 && gameManager.SurpriseTimes[0] <= currentCountUpTime) {
+            physicalLayerManager.onSurpriseRandom();
+            canvasManager.supriseColorChange();
+            gameManager.SurpriseTimes.RemoveAt(0);
         }
     }
 
@@ -112,16 +112,16 @@ public class Timer : MonoBehaviour {
     /// <returns></returns>
     private void createSurpriseTime() {
         // 0~指を離す時間÷5の回数分びびらす（19秒なら最大3回）
-        int surpriseCount = Mathf.FloorToInt(Random.Range(0, _gameManager.StandardTime / 5));
+        int surpriseCount = Mathf.FloorToInt(Random.Range(0, gameManager.StandardTime / 5));
         // max時間は指を離す時間より1秒以上前
-        float maxTime = _gameManager.StandardTime - 1.0F;
+        float maxTime = gameManager.StandardTime - 1.0F;
         Debug.Log($"びびらし回数：{surpriseCount}");
         for (int i = 0; i < surpriseCount; i++) {
             // min時間は前回のビビらせ時間より1秒以上間隔を空ける
-            float minTime = i == 0 ? 1.0F : _gameManager.SurpriseTimes[i - 1] + 1.0F;
-            _gameManager.SurpriseTimes.Add(Random.Range(minTime, maxTime));
+            float minTime = i == 0 ? 1.0F : gameManager.SurpriseTimes[i - 1] + 1.0F;
+            gameManager.SurpriseTimes.Add(Random.Range(minTime, maxTime));
         }
-        Debug.Log($"びびらし秒数：{string.Join(",", _gameManager.SurpriseTimes)}");
+        Debug.Log($"びびらし秒数：{string.Join(",", gameManager.SurpriseTimes)}");
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public class Timer : MonoBehaviour {
         int tSecond = (int)Math.Floor(Math.Abs(t));
         // 秒以下部分
         int tMilliSecond = (int)Math.Floor(Math.Abs(t - tSecond) * Math.Pow(10, Ndigit));
-        s = $"<mspace=0.5em>{string.Format("{0:00}:{1:00}", tSecond, tMilliSecond)}</mspace>";
+        s = $"<mspace=0.5em>{string.Format("{0:00}.{1:00}", tSecond, tMilliSecond)}</mspace>";
         return s;
     }
 }
