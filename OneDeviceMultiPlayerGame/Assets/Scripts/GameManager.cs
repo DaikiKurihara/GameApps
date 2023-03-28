@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour {
     /// 指を離すべき基準時間を決定する
     /// </summary>
     public void decideStandardTime(float standardTime) {
-        standardTime = standardTime;
+        this.standardTime = standardTime;
     }
 
     /// <summary>
