@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class SettingSceneCanvasManager : MonoBehaviour {
     private int currentMaxTimeIndex;
     private Toggle feintSoundToggle;
     private Toggle vibrationToggle;
+    [NonSerialized] public bool isOnFeint;
+    [NonSerialized] public bool isOnVibration;
     private SettingScenePhysicalLayerManager physicalLayerManager;
 
     void Start() {
@@ -22,6 +25,8 @@ public class SettingSceneCanvasManager : MonoBehaviour {
         feintSoundToggle = GameObject.FindWithTag(CommonConstant.FEINT_SOUND_TOGGLE).GetComponent<Toggle>();
         vibrationToggle = GameObject.FindWithTag(CommonConstant.VIBRATION_TOGGLE).GetComponent<Toggle>();
         physicalLayerManager = GameObject.FindWithTag(CommonConstant.PHYSICAL_LAYER_MANAGER).GetComponent<SettingScenePhysicalLayerManager>();
+        vibrationToggle.isOn = isOnVibration;
+        feintSoundToggle.isOn = isOnFeint;
     }
 
     public void onChangeMaxTime(int index) {
