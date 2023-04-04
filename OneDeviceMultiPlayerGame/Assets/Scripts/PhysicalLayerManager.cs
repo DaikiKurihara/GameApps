@@ -72,14 +72,23 @@ public class PhysicalLayerManager : MonoBehaviour {
     /// サークルの色が変わったとき
     /// </summary>
     public void onFire() {
+        if (!gameManager.isOnFeintSound && gameManager.isOnVibration) {
+            shortVibration();
+            return;
+        } else if (gameManager.isOnFeintSound && !gameManager.isOnVibration) {
+            onSurpriseSoundRandom();
+            return;
+        } else if (!gameManager.isOnFeintSound && !gameManager.isOnVibration) {
+            return;
+        }
         int random = Random.Range(0, 4);
         Debug.Log("fire!" + random);
         if (random == 0) {
             onSurprise();
         } else if (random == 1) {
-            onSurprise2();
+            onSurpriseSoundRandom();
         } else if (random == 2) {
-            onSurprise2();
+            onSurpriseSoundRandom();
             shortVibration();
         } else if (random == 3) {
             // なにもしない
