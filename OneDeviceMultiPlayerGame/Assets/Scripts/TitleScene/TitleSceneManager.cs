@@ -6,6 +6,7 @@ public class TitleSceneManager : MonoBehaviour {
     public bool isOnVibration = true;
     public bool isOnFeintSound = true;
     public string maxTime;
+    [SerializeField] private GameObject infoPopup;
 
     // Start is called before the first frame update
     void Start() {
@@ -35,5 +36,9 @@ public class TitleSceneManager : MonoBehaviour {
         gameManager.isOnVibration = isOnVibration;
         gameManager.setMaxTime(maxTime);
         SceneManager.sceneLoaded -= titleSceneToGameSceneLoaded;
+    }
+
+    public void onClickInfo() {
+        infoPopup.SetActive(true);
     }
 }
