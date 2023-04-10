@@ -208,7 +208,6 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     private void dicideCircleColor() {
         leftCircleColorIndex = UnityEngine.Random.Range(0, colors.Count);
-        Debug.Log($"色のインデックス{leftCircleColorIndex}");
     }
 
     private void openResult() {

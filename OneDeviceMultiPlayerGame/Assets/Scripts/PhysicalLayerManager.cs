@@ -82,7 +82,6 @@ public class PhysicalLayerManager : MonoBehaviour {
             return;
         }
         int random = Random.Range(0, 4);
-        Debug.Log("fire!" + random);
         if (random == 0) {
             onSurprise();
         } else if (random == 1) {

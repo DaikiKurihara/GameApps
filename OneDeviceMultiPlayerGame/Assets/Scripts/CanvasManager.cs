@@ -165,7 +165,6 @@ public class CanvasManager : MonoBehaviour {
     /// 指を離す色を表示する
     /// </summary>
     public void presentLeftColor() {
-        Debug.Log($"実際の画面表示のインデックス{gameManager.LeftCircleColorIndex}");
         leftSignLight.GetComponent<Image>().color = gameManager.Colors[gameManager.LeftCircleColorIndex];
     }
 

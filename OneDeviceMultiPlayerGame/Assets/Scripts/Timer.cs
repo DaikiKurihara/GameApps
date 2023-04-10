@@ -73,7 +73,6 @@ public class Timer : MonoBehaviour {
         countDownText.text = "";
         canvasManager.turnLeftLightDefault();
         leavingTime = createLeaveFingerTime();
-        Debug.Log("離す時間は：" + leavingTime);
         createSurpriseTime();
         GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 0);
     }
@@ -115,13 +114,11 @@ public class Timer : MonoBehaviour {
         int surpriseCount = Mathf.FloorToInt(Random.Range(0, gameManager.StandardTime / 5));
         // max時間は指を離す時間より1秒以上前
         float maxTime = gameManager.StandardTime - 1.0F;
-        Debug.Log($"びびらし回数：{surpriseCount}");
         for (int i = 0; i < surpriseCount; i++) {
             // min時間は前回のビビらせ時間より1秒以上間隔を空ける
             float minTime = i == 0 ? 1.0F : gameManager.SurpriseTimes[i - 1] + 1.0F;
             gameManager.SurpriseTimes.Add(Random.Range(minTime, maxTime));
         }
-        Debug.Log($"びびらし秒数：{string.Join(",", gameManager.SurpriseTimes)}");
     }
 
     /// <summary>
