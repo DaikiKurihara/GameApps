@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
 
-public class GoogleMoblieAds : MonoBehaviour {
+public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
+    public void Awake() {
+        if (this != Instance) {
+            Destroy(gameObject);
+            return;
+        }
+        DontDestroyOnLoad(gameObject);
+    }
+
     // Start is called before the first frame update
     void Start() {
         // When true all events raised by GoogleMobileAds will be raised
@@ -55,7 +63,11 @@ public class GoogleMoblieAds : MonoBehaviour {
         }
 
         // Create a 320x50 banner at top of the screen
-        _bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Top);
+        _bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Bottom);
+        AdSize adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
+
+        _bannerView = new BannerView(_adUnitId, adaptiveSize, AdPosition.Bottom);
+
     }
 
     public void DestroyAd() {
