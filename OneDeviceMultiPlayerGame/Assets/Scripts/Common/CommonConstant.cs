@@ -68,9 +68,11 @@
     public const string GAME_MANAGER = "GameController";
 
     /**
-     * 
+     * 中央カラー
      */
     public const string COLOR_INSTRUCTION = "ColorInstruction";
+
+    public const string GOOGLE_MOBILE_ADS = "GoogleMoblieAds";
 
     /******************************タグ名///*****************************/
 
