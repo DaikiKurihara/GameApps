@@ -41,7 +41,7 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
     /// <summary>
     /// Creates the banner view and loads a banner ad.
     /// </summary>
-    private void LoadAd() {
+    public void LoadAd() {
         // create an instance of a banner view first.
         if (bannerView == null) {
             CreateBannerView();
@@ -57,7 +57,7 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
     }
 
     /// <summary>
-    /// Creates a 320x50 banner at top of the screen.
+    /// Creates a Adaptive banner at top of the screen.
     /// </summary>
     public void CreateBannerView() {
         Debug.Log("Creating banner view");
@@ -86,6 +86,7 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
     /// Loads the interstitial ad.
     /// </summary>
     private void LoadInterstitialAd() {
+
         // Clean up the old ad before loading a new one.
         if (interstitialAd != null) {
             interstitialAd.Destroy();
@@ -113,6 +114,10 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
                           + ad.GetResponseInfo());
 
                 interstitialAd = ad;
+                ad.OnAdFullScreenContentClosed += () => {
+                    Debug.Log("閉じられたので新たに読み込みます。");
+                    LoadInterstitialAd();
+                };
             });
     }
 
@@ -120,6 +125,11 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
     /// Shows the interstitial ad.
     /// </summary>
     public void ShowInterstitialAd() {
+        int random = Random.Range(0, 2);
+        if (random == 0) {
+            // 1/2の確率でインタースティシャル広告を出す
+            return;
+        }
         if (interstitialAd != null && interstitialAd.CanShowAd()) {
             Debug.Log("Showing interstitial ad.");
             interstitialAd.Show();
