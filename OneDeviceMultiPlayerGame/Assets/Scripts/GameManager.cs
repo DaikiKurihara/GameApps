@@ -239,11 +239,17 @@ public class GameManager : MonoBehaviour {
         }
         canvasManager.openResult(playersResult);
         resultCanvas.SetActive(true);
+        destroyAd();
         resultCanvas.GetComponent<ResultCanvasManager>().openPlayerResults(playersResult);
-        GameObject.FindWithTag(CommonConstant.GOOGLE_MOBILE_ADS).GetComponent<GoogleMoblieAds>().DestroyAd();
         isOpenResult = false;
     }
 
+    private void destroyAd() {
+        GameObject ads = GameObject.FindWithTag(CommonConstant.GOOGLE_MOBILE_ADS);
+        if (ads != null) {
+            ads.GetComponent<GoogleMoblieAds>().DestroyAd();
+        }
+    }
 
     private void gameReset() {
         isCountDownStart = false;
