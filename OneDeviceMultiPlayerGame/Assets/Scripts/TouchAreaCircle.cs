@@ -45,28 +45,19 @@ public class TouchAreaCircle : MonoBehaviour {
     }
 
     public void dicidePlayerNumber(int playerNumber) {
-        playerNumber = playerNumber;
+        this.playerNumber = playerNumber;
         // 非アクティブなオブジェクトはfindWithTagでは取得できないためtransformのメソッドを使う
         GameObject textObj = transform.GetChild(0).gameObject;
         // デフォルトはfalseになっている
         textObj.SetActive(true);
         TextMeshProUGUI playerNumTxt = textObj.GetComponent<TextMeshProUGUI>();
-        playerNumber = playerNumber;
+        this.playerNumber = playerNumber;
         playerNumTxt.text = $"Player{playerNumber}";
     }
 
     public void left() {
         isLeft = true;
         GetComponent<Image>().color = ColorConstant.CIRCLE_FINISHED;
-    }
-
-    public void openResult(int rank, float diff) {
-        // 非アクティブなオブジェクトはfindWithTagでは取得できないためtransformのメソッドを使う
-        GameObject rankObj = transform.GetChild(1).gameObject;
-        rankObj.SetActive(true);
-        TextMeshProUGUI rankTxt = rankObj.GetComponent<TextMeshProUGUI>();
-        // 小数点第２位で誤差表記
-        rankTxt.text = $"{rank} : +{diff.ToString("N2")}";
     }
 
     /// <summary>

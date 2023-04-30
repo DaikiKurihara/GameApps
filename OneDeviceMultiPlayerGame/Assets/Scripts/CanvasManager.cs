@@ -117,10 +117,6 @@ public class CanvasManager : MonoBehaviour {
     /// <param name="players"></param>
     public void openResult(List<(int fingerId, int playerNum, int rank, float diff)> players) {
         physicalLayerManager.result();
-        foreach ((int fingerId, int playerNum, int rank, float diff) playerResult in players) {
-            getTouchAreaCircleByFingerId(playerResult.fingerId).GetComponent<TouchAreaCircle>()
-                .openResult(playerResult.rank, playerResult.diff);
-        }
     }
 
     /// <summary>

@@ -251,6 +251,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    private void loadAd() {
+        GameObject ads = GameObject.FindWithTag(CommonConstant.GOOGLE_MOBILE_ADS);
+        if (ads != null) {
+            ads.GetComponent<GoogleMoblieAds>().LoadAd();
+        }
+    }
+
     private void gameReset() {
         isCountDownStart = false;
         isGameEnd = false;
@@ -279,7 +286,7 @@ public class GameManager : MonoBehaviour {
         dicideCircleColor();
         isForcedTermination = false;
         gameReset();
-        GameObject.FindWithTag(CommonConstant.GOOGLE_MOBILE_ADS).GetComponent<GoogleMoblieAds>().LoadAd();
+        loadAd();
         resultCanvas.GetComponent<ResultCanvasManager>().gemeRetry();// リセットとの相違点
     }
 
