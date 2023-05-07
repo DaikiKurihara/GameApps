@@ -3,11 +3,6 @@ using UnityEngine;
 using System.Collections.Generic;
 
 public class ResultCanvasManager : MonoBehaviour {
-    // Start is called before the first frame update
-    void Start() {
-
-    }
-
     /// <summary>
     /// 結果表示行を各プレイヤーごとに生成して表示する
     /// </summary>

@@ -13,6 +13,7 @@ public class SettingSceneCanvasManager : MonoBehaviour {
     private int currentMaxTimeIndex;
     private Toggle feintSoundToggle;
     private Toggle vibrationToggle;
+    [NonSerialized] public string maxTimeText;
     [NonSerialized] public bool isOnFeint;
     [NonSerialized] public bool isOnVibration;
     private SettingScenePhysicalLayerManager physicalLayerManager;
@@ -20,7 +21,10 @@ public class SettingSceneCanvasManager : MonoBehaviour {
     void Start() {
         maxTimeValue = GameObject.FindWithTag(CommonConstant.MAX_TIME_VALUE).GetComponent<TextMeshProUGUI>();
         maxTimeValues = MaxTimeMapConstant.MAX_TIMES;
-        currentMaxTimeIndex = MaxTimeMapConstant.DEFAULT_MAX_TIME_INDEX;
+        if (currentMaxTimeIndex < 0) {
+            currentMaxTimeIndex = MaxTimeMapConstant.DEFAULT_MAX_TIME_INDEX;
+        }
+        Debug.Log("インデックスは" + currentMaxTimeIndex);
         maxTimeValue.text = maxTimeValues[currentMaxTimeIndex];
         feintSoundToggle = GameObject.FindWithTag(CommonConstant.FEINT_SOUND_TOGGLE).GetComponent<Toggle>();
         vibrationToggle = GameObject.FindWithTag(CommonConstant.VIBRATION_TOGGLE).GetComponent<Toggle>();
@@ -52,5 +56,18 @@ public class SettingSceneCanvasManager : MonoBehaviour {
         titleSceneManager.isOnVibration = vibrationToggle.isOn;
         titleSceneManager.isOnFeintSound = feintSoundToggle.isOn;
         SceneManager.sceneLoaded -= settingSceneToTitleSceneLoaded;
+    }
+
+    public void setFloatMaxTime(float maxTime) {
+        string maxTimeText = ((int)maxTime).ToString();
+        setMaxTime(maxTimeText);
+    }
+
+    /// <summary>
+    /// 見つからなかった場合（初期表示とか）はcurrentMaxTimeIndexに-1が設定される
+    /// </summary>
+    /// <param name="maxTime"></param>
+    public void setMaxTime(string maxTime) {
+        currentMaxTimeIndex = MaxTimeMapConstant.MAX_TIMES.FindIndex(x => x.Equals(maxTime));
     }
 }

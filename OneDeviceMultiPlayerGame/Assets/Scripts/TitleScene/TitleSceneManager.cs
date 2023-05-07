@@ -25,6 +25,7 @@ public class TitleSceneManager : MonoBehaviour {
 
     private void titleSceneToSettingSceneLoaded(Scene next, LoadSceneMode mode) {
         SettingSceneCanvasManager canvasManager = GameObject.FindWithTag(CommonConstant.SETTING_SCENE_CANVAS_MANAGER).GetComponent<SettingSceneCanvasManager>();
+        canvasManager.setMaxTime(maxTime);
         canvasManager.isOnVibration = isOnVibration;
         canvasManager.isOnFeint = isOnFeintSound;
         SceneManager.sceneLoaded -= titleSceneToSettingSceneLoaded;
