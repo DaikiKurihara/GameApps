@@ -10,10 +10,12 @@ public class CanvasManager : MonoBehaviour {
     [SerializeField] private GameObject backGround;
     [SerializeField] private GameObject errorPopup;
     private PhysicalLayerManager physicalLayerManager;
-
     private GameManager gameManager;
-
     private Timer timer;
+    private bool isColorChanged = true;
+    private float moveTime = 3.0f;  // 移動時間
+    private float elapsedTime = 0f;         // 経過時間
+    private float rate;                     // 割合
 
     /** 現在タッチしているプレイヤーのIDリスト */
     private List<int> playerIds = new List<int>();
@@ -108,7 +110,26 @@ public class CanvasManager : MonoBehaviour {
     /// 中央の円オブジェクトの色をデフォルトにする
     /// </summary>
     public void turnLeftLightDefault() {
-        leftSignLight.GetComponent<Image>().color = ColorConstant.LEFT_LIGHT_DEFAULT;
+        Debug.Log("lerp始めます" + leftSignLight.GetComponent<Image>().color);
+        // コルーチンで色が変わった判定を行う
+        StartCoroutine(colorChanged());
+        isColorChanged = false;
+    }
+
+    void Update() {
+        if (isColorChanged) {
+            return;
+        }
+        elapsedTime += Time.deltaTime;  // 経過時間の加算
+        rate = Mathf.Clamp01(elapsedTime / moveTime);   // 割合計算
+        leftSignLight.GetComponent<Image>().color = Color.Lerp(leftSignLight.GetComponent<Image>().color, ColorConstant.LEFT_LIGHT_DEFAULT, rate);
+        GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = Color.Lerp(leftSignLight.GetComponent<Image>().color, new Color32(0, 0, 0, 0), rate);
+    }
+
+    IEnumerator colorChanged() {
+        yield return new WaitForSeconds(3f);
+        Debug.Log("色が変わりました。");
+        isColorChanged = true;
     }
 
     /// <summary>
@@ -142,6 +163,8 @@ public class CanvasManager : MonoBehaviour {
         presentLeftColor();
         feintColors = gameManager.Colors;
         feintColors.RemoveAt(gameManager.LeftCircleColorIndex);
+        isColorChanged = true;
+        elapsedTime = 0f;
         destroyAllTouchAreaCircle();
     }
 

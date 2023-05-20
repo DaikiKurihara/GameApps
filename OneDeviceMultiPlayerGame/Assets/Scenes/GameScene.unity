@@ -829,7 +829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3099057497346314862, guid: 9895dd53aabf6484f91a24f25c34a02f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3099057497346314863, guid: 9895dd53aabf6484f91a24f25c34a02f, type: 3}
       propertyPath: m_Pivot.x
@@ -841,7 +841,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3099057497346314863, guid: 9895dd53aabf6484f91a24f25c34a02f, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 3099057497346314863, guid: 9895dd53aabf6484f91a24f25c34a02f, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1893,7 +1893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.7075472, g: 0.7075472, b: 0.7075472, a: 0.5803922}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.33333334}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2204,6 +2204,8 @@ MonoBehaviour:
   leftSignLight: {fileID: 1407129833}
   backGround: {fileID: 664747410}
   errorPopup: {fileID: 1477305434}
+  isColorChanged: 1
+  testBool: 0
 --- !u!1 &1462841185
 GameObject:
   m_ObjectHideFlags: 0

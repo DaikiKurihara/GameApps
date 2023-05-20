@@ -12,17 +12,6 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
         DontDestroyOnLoad(gameObject);
     }
 
-#if UNITY_ANDROID
-  private string interStitialAdUnitId = "ca-app-pub-3940256099942544/1033173712";
-  private string adUnitId = "ca-app-pub-3940256099942544/6300978111";
-#elif UNITY_IPHONE
-    private string interStitialAdUnitId = "ca-app-pub-3940256099942544/4411468910";
-    private string adUnitId = "ca-app-pub-3940256099942544/2934735716";
-#else
-  private string adUnitId = "unused";
-  private string interStitialAdUnitId = "unused";
-#endif
-
     BannerView bannerView;
 
     private InterstitialAd interstitialAd;
@@ -68,10 +57,10 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
         }
 
         // Create a 320x50 banner at top of the screen
-        bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+        bannerView = new BannerView(ExternalUtil.getBannerAdUnitId(), AdSize.Banner, AdPosition.Bottom);
         AdSize adaptiveSize = AdSize.GetPortraitAnchoredAdaptiveBannerAdSizeWithWidth(AdSize.FullWidth);
 
-        bannerView = new BannerView(adUnitId, adaptiveSize, AdPosition.Bottom);
+        bannerView = new BannerView(ExternalUtil.getBannerAdUnitId(), adaptiveSize, AdPosition.Bottom);
 
     }
 
@@ -101,7 +90,7 @@ public class GoogleMoblieAds : SingletonMonoBehaviour<GoogleMoblieAds> {
                 .Build();
 
         // send the request to load the ad.
-        InterstitialAd.Load(interStitialAdUnitId, adRequest,
+        InterstitialAd.Load(ExternalUtil.getInterstitialAdUnitId(), adRequest,
             (InterstitialAd ad, LoadAdError error) => {
                 // if error is not null, the load request failed.
                 if (error != null || ad == null) {

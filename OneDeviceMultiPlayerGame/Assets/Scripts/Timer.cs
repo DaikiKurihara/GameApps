@@ -74,7 +74,7 @@ public class Timer : MonoBehaviour {
         canvasManager.turnLeftLightDefault();
         leavingTime = createLeaveFingerTime();
         createSurpriseTime();
-        GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 0);
+        //GameObject.FindWithTag(CommonConstant.COLOR_INSTRUCTION).GetComponent<Image>().color = new Color32(0, 0, 0, 0);
     }
 
     /// <summary>

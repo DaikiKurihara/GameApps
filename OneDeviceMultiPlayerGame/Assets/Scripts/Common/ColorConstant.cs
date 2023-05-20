@@ -7,7 +7,6 @@ public class ColorConstant {
      */
     public static readonly Color CIRCLE_FINISHED = new Color(0, 0, 0, 0.667F);
 
-
     /**
      * デフォルトの中心サークルの色
      */
@@ -16,7 +15,7 @@ public class ColorConstant {
     /**
      * サークルの色：ピンク
      */
-    public static readonly Color32 LEFT_LIGHT_PINK = new Color32(253, 0, 133, 30);
+    public static readonly Color32 LEFT_LIGHT_PINK = new Color32(255, 169, 215, 90);
 
     /**
      * サークルの色：緑

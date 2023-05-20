@@ -108,6 +108,11 @@
      */
     public const string HOME_BUTTON = "HomeButton";
 
+    /**
+     * 広告ID
+     */
+    public const string AD_UNIT_ID = "AdUnitID";
+
 
     /************************オブジェクト名///****************************/
 
